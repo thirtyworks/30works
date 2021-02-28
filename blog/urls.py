@@ -12,6 +12,8 @@ from .views import (PostListView,
 urlpatterns = [
     # path('', views.home, name="blog-home"),
     path('', views.home, name="home"),
+    path('countdown', views.countdown, name="countdown"),
+    path('success', views.success, name="success"),
     path('user_detail/', views.user_detail, name="user_detail"),
     path('post/', PostListView.as_view(), name="blog-home"),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),

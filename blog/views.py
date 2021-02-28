@@ -199,7 +199,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse('blog-about')
+        return reverse('success')
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -244,7 +244,7 @@ class UserPostListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        posts = Post.objects.filter(author=user, is_private=False).order_by('datetime_posted')
+        posts = Post.objects.filter(author=user).order_by('datetime_posted')
         context = super(UserPostListView, self).get_context_data(**kwargs)
         context['posts'] = posts
         context['user'] = user
@@ -277,4 +277,11 @@ def user_detail(request):
     except:
         posts = {}
     return render(request, "blog/user_blogs.html", context={'posts': posts, 'users': user_profile})
+
+
+def countdown(request):
+    return render(request, "blog/countdown.html")
+
+def success(request):
+    return render(request, "blog/success.html")
 

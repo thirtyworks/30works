@@ -67,8 +67,6 @@ def profile(request):
         else:
             messages.error(request, 'Invalid character in username, please use only alphanumeric characters and underscores')
 
-
-
     else:
         print('NOT a POST method')
         u_form = UserUpdateForm(instance=request.user)
