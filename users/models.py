@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     '''
     Extend default model to contain profile photo
     '''
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
     bio = models.TextField(default='')
     contact_info = models.TextField(default='')
     profilepic = models.ImageField(default='default_profilepic.png', upload_to='profile_pics')
@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     insta_handler = models.TextField(default='', blank=True, null=True)
     url = models.CharField(max_length=100, blank=True, null=True)
     date_blocked = models.DateField(blank=True, null=True)
+    user_uuid = models.UUIDField(default=None, blank=True, null=True)
 
 
     def __str__(self):

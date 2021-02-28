@@ -6,5 +6,8 @@ def GetDate(request):
 
 def get_latest_day_number(request):
     day = Day.objects.last()
-    day_number = day.number
-    return {"day_number": day_number}
+    if day:
+        day_number = day.number
+    else:
+        day_number = 1
+    return {"day_number": 1}

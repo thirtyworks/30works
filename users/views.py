@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from blog.models import Day
 from django.forms import ValidationError
+from django.contrib.auth.models import User
 import copy
 
 
@@ -70,10 +71,20 @@ def profile(request):
     else:
         print('NOT a POST method')
         u_form = UserUpdateForm(instance=request.user)
-        p_form = UserProfileUpdateForm(instance=request.user.userprofile)
+        p_form = UserProfileUpdateForm(instance=request.user.user_profile)
 
     context = {
         'u_form': u_form,
         'p_form': p_form
     }
     return render(request, 'users/profile.html', context)
+
+@login_required
+def all_users(request):
+    context = {}
+    users = User.objects.filter(is_staff=False, is_superuser=False)
+    for user in users:
+        context[str(user.user_profile.user_uuid)] = user.username
+    print(context)
+    return render(request, 'users/all_users.html', context)
+    

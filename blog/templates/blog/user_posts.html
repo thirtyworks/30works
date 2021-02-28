@@ -86,17 +86,17 @@ img{
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="infinite-container text-center">
-<h1 class="mb-3">{{ view.kwargs.username }}'s Works</h1>
+<h1 class="mb-3">{{ user.username }}'s Works</h1>
 
-    {% if user.userprofile.insta_handler %}
-        <h4><strong>Instagram:</strong> {{ user.userprofile.insta_handler }}</h4>
+    {% if user.user_profile.insta_handler %}
+        <h4><strong>Instagram:</strong> {{ user.user_profile.insta_handler }}</h4>
     {% endif %}
 
-    {% if user.userprofile.url %}
-        {% if user.userprofile.url|slice:":4" == 'http' %}
-            <h4> <a href="{{ user.userprofile.url }}"  target="_blank">{{ user.userprofile.url }}</a></h4>
+    {% if user.user_profile.url %}
+        {% if user.user_profile.url|slice:":4" == 'http' %}
+            <h4> <a href="{{ user.user_profile.url }}"  target="_blank">{{ user.user_profile.url }}</a></h4>
         {% else %}
-            <h4> <a href="//{{ user.userprofile.url }}" target="_blank">{{ user.userprofile.url }}</a></h4>
+            <h4> <a href="//{{ user.user_profile.url }}" target="_blank">{{ user.user_profile.url }}</a></h4>
         {% endif %}
     {% endif %}
 
@@ -104,11 +104,6 @@ img{
     <br>
 
     {% for post in posts %}
-
-<!--        <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>-->
-<!--        <a class="mr-2" href="{% url 'user-posts' post.author.username %}">By {{ post.author }} on {{ post.datetime_posted }}</a>-->
-<!--        <img class="rounded-circle article-img " src="{{ post.author.userprofile.profilepic.url }}">-->
-<!--        <p>{{ post.content }}</p>-->
 
 
 <div class="infinite-item" aria-labelledby="{{post.alt_text}}">
