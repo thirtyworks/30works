@@ -10,7 +10,7 @@ select{
 </style>
 <div class="content-section mt-5">
 
-    <form  method="POST" enctype="multipart/form-data">
+    <form  method="POST" action="/profile" enctype="multipart/form-data">
       <div class="text-center">
         <h2>Profile Info</h2>
     </div>
@@ -31,12 +31,13 @@ select{
             <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" id="insta">
             <label for="exampleFormControlInput1">Instagram:</label>
-            <input type="text" class="form-control" name="insta_handler" value="{{ user.userprofile.insta_handler|default:'' }}"  placeholder="Enter instgram handle">
+            <input type="text" class="form-control" name="insta_handler" value="{{ user.userprofile.insta_handler|default:'' }}"  placeholder="Enter instagram handle">            
           </div>
+          <button class="btn btn-success" type="button" onclick="add_field()">Add Insta Account</button>
 
-            <div class="form-group">
+            <div class="form-group mt-3">
             <label for="exampleFormControlInput1">Website:</label>
             <input type="text" class="form-control" name="url" value="{{ user.userprofile.url|default:'' }}" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url"  placeholder="Enter website">
           </div>
@@ -91,6 +92,10 @@ select{
         </form>
     </div>
     <script>
+      function add_field(){
+        $( `            <input type="text" class="form-control mb-3" name="insta_handler"  placeholder="Enter instagram handle">` ).insertAfter( "#insta" );
+
+      }
     var temp = document.getElementById("img").getAttribute("data-name")
     if(temp.includes('profile_pics/')){
         temp = temp.replace('profile_pics/','')
