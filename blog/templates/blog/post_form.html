@@ -1,0 +1,115 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<style>
+.hide{
+    display: none;
+}
+label{
+    font-weight: bold;
+}
+#select{
+  display: none !important;
+}
+</style>
+<div class="content-section mt-5">
+    <div class="text-center">
+    <h2>Submit for Day {{latest_day}}</h2>
+    <h3><strong><i> Brief: </i></strong> {{day}}</h3>
+        <h4>Fields marked with a (*) are required</h4>
+</div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+      <div class="alert alert-danger text-center hide">
+
+      </div>
+        <div class="form-group">
+        <label for="email">Title (*)</label>
+        <input type="text" class="form-control" id="email" placeholder="Enter Title" name="title" maxlength="100" required>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Submission Format (*)</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+            <option value="1">Upload JPEG / PNG</option>
+            <option value="2">Vimeo / Youtube / Soundcloud URL</option>
+            <option value="3">Webpage URL</option>
+        </select>
+      </div>
+         <div class="form-group" id="form">
+<!--          <label for="pwd">Webpage URL (*)</label>-->
+<!--          <input class="form-control" name="url"  placeholder="Enter Url" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url" required />-->
+         <label for="exampleFormControlFile1">Post Pic:</label>
+        <input type="file" class="form-control-file" name="postpic" accept="image/*"  id="id_postpic" required>
+         </div>
+         <div class="form-group">
+          <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 250 characters) (*)</label>
+          <textarea class="form-control" name="alt_text"  rows="5" placeholder="Enter Alt-text" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Anything else you'd like to say to us? (Max 250 characters)</label>
+          <textarea class="form-control" name="anything_else"  rows="5" placeholder="Anything else you'd like to say to us?"></textarea>
+        </div>
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input" name="is_private" id="customControlAutosizing">
+            <label class="custom-control-label" for="customControlAutosizing">Tick this box if you <u>DO NOT</u> want this work to be made public.</label>
+        </div>
+      <br>
+      <div class="text-center">
+      <button type="submit" class="btn btn-primary btn-lg  " style="background-color: #343a40!important;border-color:#343a40!important ;" id="submitbutton1">Click Here To Submit</button>
+    </div>
+    </form>
+  </div>
+  
+
+
+
+    <div class="content-section" style="display: none;">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Submit for Day</legend>
+                {{ form.as_p }}
+            </fieldset>
+            <div class="form-group">
+                <button class="'btn btn-outline-info" type="submit" id="submitbutton2">Click Here To Submit</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   
+    <script>
+     if(document.querySelector(".errorlist")){
+          document.querySelector(".alert").classList.remove("hide");
+          document.querySelector(".alert").innerText = document.querySelector(".errorlist").innerText
+     }
+     document.getElementById("date").innerText = localStorage.getItem("date_value");
+     $('select').on('change', function() {
+       console.log(this.value)
+  if(this.value === "3"){
+    $("#form").html(` <label for="pwd">Webpage URL:</label>
+    <input class="form-control" name="url"  placeholder="Enter Url" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url" required />`)
+  }
+  else if(this.value === "1" ){
+    $("#form").html(`        <label for="exampleFormControlFile1">Post Pic:</label>
+        <input type="file" class="form-control-file" name="postpic" accept="image/*"  id="id_postpic" required>
+`)
+
+  }
+  else{
+    $("#form").html(`  <label for="email">Post Video:</label>
+        <input type="url"  class="form-control" id="id_postvideo" placeholder="Enter Video Url" name="postvideo" required  >`)
+  }
+});
+
+    </script>
+
+<script>
+
+$("#submitbutton1").on("click", function() {
+    $(this).prop("disabled", true);
+    this.form.submit();
+});
+
+</script>
+
+{% endblock content %}

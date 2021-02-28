@@ -1,0 +1,116 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<style>
+label{
+  font-weight: bold;
+}
+select{
+  display: none !important;
+}
+</style>
+<div class="content-section mt-5">
+
+    <form  method="POST" enctype="multipart/form-data">
+      <div class="text-center">
+        <h2>Profile Info</h2>
+    </div>
+
+      {% csrf_token %}
+        <div class="row">
+          <div class="col-md-8">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Username (please avoid spaces and special characters):</label>
+            <div>
+            <small>Note: This is the name you log in with, and is displayed under all your works</small>
+            </div>
+            <input type="text" class="form-control" name="username" value="{{ user.username|default:'' }}"  placeholder="Enter Username" maxlength="150" required>
+          </div>
+         
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Email address:</label>
+            <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Instagram:</label>
+            <input type="text" class="form-control" name="insta_handler" value="{{ user.userprofile.insta_handler|default:'' }}"  placeholder="Enter instgram handle">
+          </div>
+
+            <div class="form-group">
+            <label for="exampleFormControlInput1">Website:</label>
+            <input type="text" class="form-control" name="url" value="{{ user.userprofile.url|default:'' }}" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url"  placeholder="Enter website">
+          </div>
+
+<!--          <div class="form-group">-->
+<!--            <label for="exampleFormControlFile1">Profile Pic(Currently):</label>-->
+<!--            <a href="{{user.userprofile.profilepic.url|default:''}}" id='img' data-name="{{user.userprofile.profilepic.url}}"></a>-->
+<!--        </div>-->
+<!--          <div class="form-group">-->
+<!--            <label for="exampleFormControlFile1">Change:</label>-->
+<!--            <input type="file" class="form-control-file" name="profilepic" accept="image/*" >-->
+<!--          </div>-->
+        </div>
+        <div class="col-md-4 text-center">
+          
+            <img class="rounded-circle account-img" src="{{ user.userprofile.profilepic.url }}">
+            
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      
+
+      </div>
+      <br>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg  " style="background-color: #343a40!important;border-color:#343a40!important ;">Update</button>
+
+      </div>
+    </form>
+
+</div>
+<div class="content-section" style="display: none;">
+<!--        Section to view profile content-->
+
+
+        <div class="media">
+          
+            <img class="rounded-circle account-img" src="{{ user.userprofile.profilepic.url }}">
+           
+        </div>
+<!--        Section to allow user to update info-->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Profile Info</legend>
+                {{ u_form.as_p }}
+                {{ p_form.as_p }}
+            </fieldset>
+            <div class="form-group">
+                <button class="'btn btn-outline-info" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+    <script>
+    var temp = document.getElementById("img").getAttribute("data-name")
+    if(temp.includes('profile_pics/')){
+        temp = temp.replace('profile_pics/','')
+    }
+    document.getElementById('img').innerText =  temp.replace('/media/','')
+    </script>
+
+    <div class="wrapper">
+    <form>
+        <button type="submit" class="btn btn-secondary btn-lg" formaction="{% url 'password_reset' %}">Change Password</button>
+    </form>
+    </div>
+<style>
+    .wrapper {
+    text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+}
+</style>
+{% endblock content %}

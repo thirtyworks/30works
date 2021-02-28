@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+<head>
+        <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+
+    {% if title %}
+        <title>30 works - {{ title }}</title>
+    {% else %}
+        <title>30 works </title>
+    {% endif %}
+    <style>
+    .bg-dark{
+  background-color: rgb(254,236,242) !important;
+
+}
+.nav-link{
+  color: black !important;
+}
+    </style>
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-light bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="/"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+<!--              <a class="nav-item nav-link" href="/">Home</a>-->
+                <a class="nav-item nav-link" href="{% url 'blog-about' %}">About&nbsp&nbsp&nbsp</a>
+
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+<!--                <a class="nav-item nav-link" href="">Day</a>-->
+                <span class="navbar-text" >Day&nbsp&nbsp&nbsp</span>
+
+              <select class="form_control" id="select" >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21</option>
+                <option>22</option>
+                <option>23</option>
+                <option>24</option>
+                <option>25</option>
+                <option>26</option>
+                <option>27</option>
+                <option>28</option>
+                <option>29</option>
+                <option>30</option>
+
+              </select>
+              
+                {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'profile' %}">Edit Profile</a>
+                    <a class="nav-item nav-link" href="{% url 'user-posts' user.username %}">My Works</a>
+                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                    <a class="nav-item nav-link" href="{% url 'post-create' %}">SUBMIT</a>
+                 
+                    {% else %}
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container-fluid">
+<!--    <main role="main" class="row infinite-container">-->
+      <div class="row">
+        <div class="col-md-12">
+          
+          {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+<!--        <div class="col-md-4">-->
+<!--          <div class="content-section">-->
+<!--            <h3>Our Sidebar</h3>-->
+<!--            <p class='text-muted'>You can put any information here you'd like.-->
+<!--              <ul class="list-group">-->
+<!--                <li class="list-group-item list-group-item-light">Latest Posts</li>-->
+<!--                <li class="list-group-item list-group-item-light">Announcements</li>-->
+<!--                <li class="list-group-item list-group-item-light">Calendars</li>-->
+<!--                <li class="list-group-item list-group-item-light">etc</li>-->
+<!--              </ul>-->
+<!--            </p>-->
+<!--          </div>-->
+        </div>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+ document.getElementsByClassName("navbar-brand")[0].innerHTML = "<img alt='Home' src='{% static 'logo.png' %}' style='width: 48px !important'>"
+$('select').on('change', function() {
+  if(window.location.pathname != "/post/new/"){
+  sessionStorage.setItem("value",this.value);
+ window.location.href = "/post/?day="+this.value;
+  }
+});
+
+</script>
+  </body>
+</html>

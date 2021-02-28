@@ -1,0 +1,41 @@
+from django.db import models
+from django.contrib.auth.models import User
+from PIL import Image
+
+
+# Create your models here.
+
+class UserProfile(models.Model):
+    '''
+    Extend default model to contain profile photo
+    '''
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(default='')
+    contact_info = models.TextField(default='')
+    profilepic = models.ImageField(default='default_profilepic.png', upload_to='profile_pics')
+    blocked = models.BooleanField(default=False)
+    insta_handler = models.TextField(default='', blank=True, null=True)
+    url = models.CharField(max_length=100, blank=True, null=True)
+    date_blocked = models.DateField(blank=True, null=True)
+
+
+    def __str__(self):
+        return '{} Profile'.format(self.user.username)
+
+    def save(self, *args, **kwargs):
+        '''
+        Overriding default save to implement image downsampling for disk space saving
+        '''
+        if self.blocked == True:
+            User.objects.filter(username=self.user.username).update(is_active=False)
+        else:
+            User.objects.filter(username=self.user.username).update(is_active=True)
+
+        super(UserProfile, self).save(*args, **kwargs)
+        
+        im = Image.open(self.profilepic.path)
+
+        if im.height > 300 or im.width > 300:
+            output_size = (300,300)
+            im.thumbnail(output_size)
+            im.save(self.profilepic.path)
