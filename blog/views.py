@@ -243,7 +243,8 @@ class UserPostListView(ListView):
     # ordering = ['-date_posted'] # newest to oldest
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        user_profile = UserProfile.objects.get(user_uuid=self.kwargs.get('user_uuid')) 
+        user = user_profile.user
         posts = Post.objects.filter(author=user).order_by('datetime_posted')
         context = super(UserPostListView, self).get_context_data(**kwargs)
         context['posts'] = posts
@@ -251,7 +252,8 @@ class UserPostListView(ListView):
         return context
 
     def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        user_profile = UserProfile.objects.get(user_uuid=self.kwargs.get('user_uuid')) 
+        user = user_profile.user
         return Post.objects.filter(author=user, is_private=False).order_by('datetime_posted')
 
 
