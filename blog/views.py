@@ -262,7 +262,7 @@ def about(request):
 
 def home(request):
     latest_day = Day.objects.last()
-    return render(request, "blog/home.html")
+    return render(request, "blog/home.html", context={'latest_day': latest_day})
 
 def user_detail(request):
     # day = request.POST['day']
