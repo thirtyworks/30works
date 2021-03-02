@@ -10,7 +10,7 @@ select{
 </style>
 <div class="content-section mt-5">
 
-    <form  method="POST" action="/profile" enctype="multipart/form-data">
+  <form  method="POST" action="/profile/" enctype="multipart/form-data" onsubmit="form_submit()">
       <div class="text-center">
         <h2>Profile Info</h2>
     </div>
@@ -30,16 +30,49 @@ select{
             <label for="exampleFormControlInput1">Email address:</label>
             <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
           </div>
-
+          {% if user.user_profile.insta_handler|length > 0 %}
           <div class="form-group" >
             <label for="exampleFormControlInput1">Instagram:</label>
-            <input type="text" class="form-control" name="insta_handler" value="{{ user.userprofile.insta_handler|default:'' }}"  placeholder="Enter instagram handle">            
+            <input type="text" class="form-control insta mb-3" id='insta-1'  placeholder="Enter instagram handle">            
            <div class="row" id="insta">
                     
            </div>
           </div>
-          <button class="btn btn-success" type="button" onclick="add_field()">Add Insta Account</button>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+           <script>
+                  var temp = {{user.user_profile.insta_handler|safe}}
+                 document.getElementById("insta-1").value =  temp[0];
+                 var count = temp.length
+                 for(var i = 1;i< temp.length;i++){
+                  count++;        
+                  $( "#insta" ).append(`
+      <div class="row col-lg-12" id="field-${count}">
+      <div class="col-lg-8">
+        <input type="text" class="form-control mb-3 insta" value="${temp[i]}"  placeholder="Enter instagram handle">
+      </div>
+      <div >
+      <button class="btn btn-danger" type="button" onclick="delete_field(${count})">Delete</button>
+      </div>
+      </div>
+      `)
+                 }
+           </script>
+          {% else %}
+          <div class="form-group" >
+            <label for="exampleFormControlInput1">Instagram:</label>
+            <input type="text" class="form-control insta mb-3"   placeholder="Enter instagram handle">            
+           <div class="row" id="insta">
+                    
+           </div>
+          </div>
+          <script>
+             var count = 0;
 
+          </script>
+         {% endif %}
+          <button class="btn btn-success" type="button" onclick="add_field()">Add Insta Account</button>
+          
+          <input class="d-none" type="text" name="insta_handler" id="insta_handler">
             <div class="form-group mt-3">
             <label for="exampleFormControlInput1">Website:</label>
             <input type="text" class="form-control" name="url" value="{{ user.userprofile.url|default:'' }}" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url"  placeholder="Enter website">
@@ -95,22 +128,41 @@ select{
         </form>
     </div>
     <script>
-      function add_field(){
+       function add_field(){
+        count++;        
+      
         $( "#insta" ).append(`
+        <div class="row col-lg-12" id="field-${count}">
         <div class="col-lg-8">
-          <input type="text" class="form-control mb-3" name="insta_handler"  placeholder="Enter instagram handle">
+          <input type="text" class="form-control mb-3 insta"  placeholder="Enter instagram handle">
         </div>
-        <div>
-        <button class="btn btn-danger">Delete</button>
+        <div >
+        <button class="btn btn-danger" type="button" onclick="delete_field(${count})">Delete</button>
+        </div>
         </div>
         `)
-
       }
+      function delete_field(val){
+        $("#field-"+val).remove();
+      }
+      function form_submit(){
+        var arr = [];
+        document.querySelectorAll(".insta").forEach(element => {
+           arr.push(element.value)
+        });
+        document.getElementById("insta_handler").value = JSON.stringify(arr);
+      }
+      if(document.getElementById("img")){
     var temp = document.getElementById("img").getAttribute("data-name")
     if(temp.includes('profile_pics/')){
         temp = temp.replace('profile_pics/','')
     }
     document.getElementById('img').innerText =  temp.replace('/media/','')
+  }
+  else{
+    document.querySelector("img").style.display = "none"
+  }
+  
     </script>
 
     <div class="wrapper">
