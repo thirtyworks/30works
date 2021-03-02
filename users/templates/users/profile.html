@@ -31,9 +31,12 @@ select{
             <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
           </div>
 
-          <div class="form-group" id="insta">
+          <div class="form-group" >
             <label for="exampleFormControlInput1">Instagram:</label>
             <input type="text" class="form-control" name="insta_handler" value="{{ user.userprofile.insta_handler|default:'' }}"  placeholder="Enter instagram handle">            
+           <div class="row" id="insta">
+                    
+           </div>
           </div>
           <button class="btn btn-success" type="button" onclick="add_field()">Add Insta Account</button>
 
@@ -93,7 +96,14 @@ select{
     </div>
     <script>
       function add_field(){
-        $( `            <input type="text" class="form-control mb-3" name="insta_handler"  placeholder="Enter instagram handle">` ).insertAfter( "#insta" );
+        $( "#insta" ).append(`
+        <div class="col-lg-8">
+          <input type="text" class="form-control mb-3" name="insta_handler"  placeholder="Enter instagram handle">
+        </div>
+        <div>
+        <button class="btn btn-danger">Delete</button>
+        </div>
+        `)
 
       }
     var temp = document.getElementById("img").getAttribute("data-name")

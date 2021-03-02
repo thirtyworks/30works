@@ -1,7 +1,7 @@
 from .models import Day
 
 def GetDate(request):
-    days = Day.objects.all()
+    days = Day.objects.last()
     return {"days":days}
 
 def get_latest_day_number(request):
