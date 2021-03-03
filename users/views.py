@@ -81,10 +81,9 @@ def profile(request):
 
 @login_required
 def all_users(request):
-    context = {}
+    all_users = {}
     users = User.objects.filter(is_staff=False, is_superuser=False)
     for user in users:
-        context[str(user.user_profile.user_uuid)] = user.username
-    print(context)
-    return render(request, 'users/all_users.html', context)
+        all_users[str(user.user_profile.user_uuid)] = user.username
+    return render(request, 'users/all_users.html', context={'all_users':all_users})
     
