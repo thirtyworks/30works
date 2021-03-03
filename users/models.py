@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
@@ -10,8 +12,8 @@ class UserProfile(models.Model):
     Extend default model to contain profile photo
     '''
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
-    bio = models.TextField(default='')
-    contact_info = models.TextField(default='')
+    bio = models.TextField(default='', blank=True, null=True)
+    contact_info = models.TextField(default='', blank=True, null=True)
     profilepic = models.ImageField(default='default_profilepic.png', upload_to='profile_pics')
     blocked = models.BooleanField(default=False)
     insta_handler = models.TextField(default='', blank=True, null=True)
@@ -27,6 +29,9 @@ class UserProfile(models.Model):
         '''
         Overriding default save to implement image downsampling for disk space saving
         '''
+        if self.user_uuid is None:
+            self.user_uuid = str(uuid.uuid4())
+
         if self.blocked == True:
             User.objects.filter(username=self.user.username).update(is_active=False)
         else:
