@@ -1,1 +1,29 @@
-{{all_users}}
+{% extends "blog/base.html" %}
+{% block content %}
+<style>
+    #select,#select2{
+  display: none !important;
+}
+</style>
+<div class="container mt-5">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+              <tr class="text-center">
+              <th>Username</th>
+              <th>Profile Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key, values in all_users.items %}
+               <tr class="text-center">
+                   <td>{{values}}</td>
+                   <td><a href="/user/{{key}}">/user/{{key}}</a> </td>
+               </tr>
+             {% endfor %}
+          </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
