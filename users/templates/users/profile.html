@@ -38,6 +38,10 @@ select{
             <label for="exampleFormControlInput1">Contact Info:</label>
             <textarea class="form-control" name="contact_info"   placeholder="Enter Contact Info"  required>{{ user.user_profile.contact_info|default:'' }}</textarea>
           </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Profile Picture</label>
+            <input type="file" class="form-control" name="profilepic"  placeholder="Enter email"  accept="image/png, image/jpeg"  >
+          </div>
           {% if user.user_profile.insta_handler|length > 0 %}
           <div class="form-group" >
             <label for="exampleFormControlInput1">Instagram:</label>
@@ -96,9 +100,9 @@ select{
 <!--          </div>-->
         </div>
         <div class="col-md-4 text-center">
-          
-            <img class="rounded-circle account-img" src="{{ user.userprofile.profilepic.url }}">
-            
+          {% if user.user_profile.profilepic.url != ""  %}
+            <img class="rounded-circle account-img" src="{{ user.user_profile.profilepic.url }}">
+            {% endif %}
             <h2 class="account-heading">{{ user.username }}</h2>
             <p class="text-secondary">{{ user.email }}</p>
         </div>
@@ -113,7 +117,7 @@ select{
     </form>
 
 </div>
-<div class="content-section" style="display: none;">
+<div class="content-section d-none" >
 <!--        Section to view profile content-->
 
 
@@ -160,16 +164,16 @@ select{
         });
         document.getElementById("insta_handler").value = JSON.stringify(arr);
       }
-      if(document.getElementById("img")){
-    var temp = document.getElementById("img").getAttribute("data-name")
-    if(temp.includes('profile_pics/')){
-        temp = temp.replace('profile_pics/','')
-    }
-    document.getElementById('img').innerText =  temp.replace('/media/','')
-  }
-  else{
-    document.querySelector("img").style.display = "none"
-  }
+  //     if(document.getElementById("img")){
+  //   var temp = document.getElementById("img").getAttribute("data-name")
+  //   if(temp.includes('profile_pics/')){
+  //       temp = temp.replace('profile_pics/','')
+  //   }
+  //   document.getElementById('img').innerText =  temp.replace('/media/','')
+  // }
+  // else{
+  //   document.querySelector("img").style.display = "none"
+  // }
   
     </script>
 
