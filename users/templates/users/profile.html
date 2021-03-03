@@ -30,6 +30,14 @@ select{
             <label for="exampleFormControlInput1">Email address:</label>
             <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
           </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Bio:</label>
+            <textarea class="form-control" name="bio"   placeholder="Enter Bio"  required>{{ user.user_profile.bio|default:'' }}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Contact Info:</label>
+            <textarea class="form-control" name="contact_info"   placeholder="Enter Contact Info"  required>{{ user.user_profile.contact_info|default:'' }}</textarea>
+          </div>
           {% if user.user_profile.insta_handler|length > 0 %}
           <div class="form-group" >
             <label for="exampleFormControlInput1">Instagram:</label>
@@ -75,7 +83,7 @@ select{
           <input class="d-none" type="text" name="insta_handler" id="insta_handler">
             <div class="form-group mt-3">
             <label for="exampleFormControlInput1">Website:</label>
-            <input type="text" class="form-control" name="url" value="{{ user.userprofile.url|default:'' }}" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url"  placeholder="Enter website">
+            <input type="text" class="form-control" name="url" value="{{ user.user_profile.url|default:'' }}" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url"  placeholder="Enter website">
           </div>
 
 <!--          <div class="form-group">-->
