@@ -12,7 +12,7 @@ from django import forms
 from django.utils import timezone
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from datetime import date
+from datetime import date, datetime
 import os
 import json
 from django.db.models import Q
@@ -27,6 +27,8 @@ from django.urls import reverse
 
 with open(os.path.join(os.path.expanduser('~'), '30works.json'), 'r') as f:
     config_json = json.load(f)
+
+config_json["live_date"] = "01-04-2021"
 
 # function-based views
 
@@ -282,6 +284,9 @@ def user_detail(request):
 
 
 def countdown(request):
+    start_date = datetime.now()
+    live_date = datetime.strptime(config_json["live_date"], "%d-%m-%Y") 
+    remaining_days = abs((live_date - start_date).days)
     return render(request, "blog/countdown.html")
 
 def success(request):
