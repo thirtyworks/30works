@@ -17,8 +17,7 @@
           <tbody>
             {% for key, values in all_users.items %}
                <tr class="text-center">
-                   <td>{{values}}</td>
-                   <td><a href="/user/{{key}}">/user/{{key}}</a> </td>
+                   <td><a href="/user/{{key}}">{{values}}</a></td>
                </tr>
              {% endfor %}
           </tbody>
