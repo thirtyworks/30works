@@ -234,7 +234,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == post.author
 
 
-class UserPostListView(LoginRequiredMixin, ListView):
+class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html'  # <app>/<model>_<viewtype>.html
     # by default ListView will want to loop over a variable called `object_list`, but we called it `posts`
