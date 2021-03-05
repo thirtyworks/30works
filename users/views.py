@@ -79,7 +79,6 @@ def profile(request):
     }
     return render(request, 'users/profile.html', context)
 
-@login_required
 def all_users(request):
     all_users = {}
     users = User.objects.filter(is_staff=False, is_superuser=False)
