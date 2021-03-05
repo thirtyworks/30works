@@ -101,7 +101,7 @@ select,#select2{
         </div>
         <div class="col-md-4 text-center">
           {% if user.user_profile.profilepic.url != ""  %}
-            <img class="rounded-circle account-img" src="{{ user.user_profile.profilepic.url }}">
+            <img class="account-img" src="{{ user.user_profile.profilepic.url }}">
             {% endif %}
             <h2 class="account-heading">{{ user.username }}</h2>
             <p class="text-secondary">{{ user.email }}</p>
