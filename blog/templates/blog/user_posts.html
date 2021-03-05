@@ -86,17 +86,17 @@ img{
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="infinite-container text-center">
-<h1 class="mb-3">{{ user.username }}'s Works</h1>
+<h1 class="mb-3">{{ user_details.username }}'s Works</h1>
 
-    {% if user.user_profile.insta_handler %}
-        <h4><strong>Instagram:</strong> {{ user.user_profile.insta_handler }}</h4>
+    {% if user_details.user_profile.insta_handler %}
+        <h4><strong>Instagram:</strong> {{ user_details.user_profile.insta_handler }}</h4>
     {% endif %}
 
-    {% if user.user_profile.url %}
-        {% if user.user_profile.url|slice:":4" == 'http' %}
-            <h4> <a href="{{ user.user_profile.url }}"  target="_blank">{{ user.user_profile.url }}</a></h4>
+    {% if user_details.user_profile.url %}
+        {% if user_details.user_profile.url|slice:":4" == 'http' %}
+            <h4> <a href="{{ user_details.user_profile.url }}"  target="_blank">{{ user_details.user_profile.url }}</a></h4>
         {% else %}
-            <h4> <a href="//{{ user.user_profile.url }}" target="_blank">{{ user.user_profile.url }}</a></h4>
+            <h4> <a href="//{{ user_details.user_profile.url }}" target="_blank">{{ user_details.user_profile.url }}</a></h4>
         {% endif %}
     {% endif %}
 

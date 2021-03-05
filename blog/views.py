@@ -250,7 +250,7 @@ class UserPostListView(ListView):
         posts = Post.objects.filter(author=user).order_by('datetime_posted')
         context = super(UserPostListView, self).get_context_data(**kwargs)
         context['posts'] = posts
-        context['user'] = user
+        context['user_details'] = user
         return context
 
     def get_queryset(self):
