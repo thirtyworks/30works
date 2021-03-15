@@ -10,7 +10,10 @@ from datetime import datetime
 import time
 
 
-with open(os.path.join(os.path.expanduser('~'), '30works.json'), 'r') as f:
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+config_file = os.path.join(BASE_DIR, '30works.json')
+with open(config_file, 'r') as f:
     config_json = json.load(f)
 
 DAILY_BRIEF_EMAIL = """

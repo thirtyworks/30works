@@ -24,10 +24,11 @@ from PIL import Image
 from smtplib import SMTPDataError, SMTPResponseException
 from django.urls import reverse
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-with open(os.path.join(os.path.expanduser('~'), '30works.json'), 'r') as f:
+with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
-
+    
 config_json["live_date"] = "01-04-2021"
 
 # function-based views

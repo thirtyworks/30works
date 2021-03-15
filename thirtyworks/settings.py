@@ -14,11 +14,13 @@ import os
 import json
 
 
-with open(os.path.join(os.path.expanduser('~'), '30works.json'), 'r') as f:
-    config_json = json.load(f)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+config_file = os.path.join(BASE_DIR, '30works.json')
+with open(config_file, 'r') as f:
+    config_json = json.load(f)
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,7 +33,7 @@ SECRET_KEY = config_json["SECRET_KEY"]
 DEBUG = True
 
 # public IP of server goes here
-ALLOWED_HOSTS = ["139.162.202.182", "www.thirty.works", "thirty.works",'127.0.0.1']
+ALLOWED_HOSTS = ["139.162.202.182", "www.thirty.works", "thirty.works",'127.0.0.1', '212.71.249.145']
 
 
 # Application definition
