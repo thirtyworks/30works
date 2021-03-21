@@ -8,3 +8,11 @@ def insta(indexable, i):
 @register.filter
 def url(indexable, i):
     return indexable[i].url
+
+@register.filter(name='times') 
+def times(number):
+    return range(number)
+
+@register.filter(name='range') 
+def filter_range(start, end):   
+    return range(start, end+1)

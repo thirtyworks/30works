@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "base.html" %}
 {% load embed_video_tags %}
 {% load index %}
 
@@ -11,7 +11,7 @@
 }
 iframe, object, embed{
     max-width: 100%;
-    
+
 }
 img{
   height: auto;
@@ -22,13 +22,13 @@ img{
         width: auto !important;
         height: auto !important;
     }
-    
+
 }
-@media only screen 
-    and (min-device-width : 375px) 
-    and (max-device-width : 825px) 
-    and (orientation : landscape) 
- 
+@media only screen
+    and (min-device-width : 375px)
+    and (max-device-width : 825px)
+    and (orientation : landscape)
+
 {
   iframe,img {
         max-width: 100% !important;
@@ -47,7 +47,7 @@ img{
   position: fixed;
   bottom: 30px;
   right: 30px;
-  transition: background-color .3s, 
+  transition: background-color .3s,
     opacity .5s, visibility .5s;
   opacity: 0;
   visibility: hidden;
@@ -78,16 +78,35 @@ img{
 
 
 @media (min-width: 500px) {
-  
+
   #button {
     margin: 30px;
   }
 } */
-</style>  
+</style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="infinite-container text-center">
+<h1 class="mb-3">{{ user_details.username }}'s Works</h1>
+
+    {% if user_details.user_profile.insta_handler %}
+        <h4><strong>Instagram:</strong> {{ user_details.user_profile.insta_handler }}</h4>
+    {% endif %}
+
+    {% if user_details.user_profile.url %}
+        {% if user_details.user_profile.url|slice:":4" == 'http' %}
+            <h4> <a href="{{ user_details.user_profile.url }}"  target="_blank">{{ user_details.user_profile.url }}</a></h4>
+        {% else %}
+            <h4> <a href="//{{ user_details.user_profile.url }}" target="_blank">{{ user_details.user_profile.url }}</a></h4>
+        {% endif %}
+    {% endif %}
+
+    <br>
+    <br>
+
     {% for post in posts %}
-      <div class="infinite-item" aria-labelledby="{{post.alt_text}}">
+
+
+<div class="infinite-item" aria-labelledby="{{post.alt_text}}">
         <br>
         <!-- The video tag: -->
         {% if post.postvideo %}
@@ -104,50 +123,24 @@ img{
       {% else %}
       {% if post.url|slice:":4" == 'http' %}
       <h1> <a href="{{ post.url }}"  target="_blank"> {{ post.url }} </a></h1>
-      {% elif  post.url|slice:":3" == 'www'%}
-      <h1> <a href="http://{{ post.url }}"  target="_blank">{{ post.url }}</a></h1>
-      
    {% else %}
    <h1> <a href="//{{ post.url }}"  target="_blank"> {{ post.url }} </a></h1>
    {% endif %}
       {% endif %}
       <br><br>
-      <h4>{{post.title}}, by<a href="/user/{{post.author}}">
-        {{ post.author }}
-      </a></h4>
-      
-      {% if users|insta:forloop.counter0 %}
-      <h4>
-      <strong>Instagram:</strong> {{ users|insta:forloop.counter0 }}
-      </h4>
-      {% endif %}            
-      {% if users|url:forloop.counter0 %}
-      {% if users|url:forloop.counter0|slice:":4" == 'http' %}
+      <h4>{{post.title}}</h4>
 
-      <h4> <a href="{{ users|url:forloop.counter0 }}"  target="_blank">{{ users|url:forloop.counter0 }}</a></h4>
-      {% elif  users|url:forloop.counter0|slice:":3" == 'www'%}
-      <h4> <a href="http://{{ users|url:forloop.counter0 }}"  target="_blank">{{ users|url:forloop.counter0 }}</a></h4>
-      {% else %}
-      <h4> <a href="//{{ users|url:forloop.counter0 }}" target="_blank">{{ users|url:forloop.counter0 }}</a></h4>
-      {% endif %}
-      
-      {% endif %}
-      <br>
-            </div>
-
-            {% empty %}
-        <div class="text-center">
-            <br>
-            <br>
-          <h2>Nothing to see here yet. You’re in the future!</h2>
-        </div>
+      <h4 class="post_day" data-date="{{post.day}}"><a class="btn btn-primary btn-lg mt-2 "  href="/post/{{post.id}}">EDIT POST</a></h4>
     {% endfor %}
-  </div>
- 
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <script>
-
+         document.querySelectorAll(".post_day").forEach(function(elem){
+       if(elem.getAttribute("data-date") != localStorage.getItem("date_value")){
+            elem.style.display = 'none';
+       }
+     })
     if(document.querySelector('img')){
         document.querySelector("select").value = document.querySelector('img').getAttribute("data-name")
     }
@@ -165,7 +158,7 @@ function load() {
         // $('html,body').animate({
         //     scrollTop: $(this).offset().top
         // }, 1500);
-   
+
 }
 $(document.body).on('touchmove', onScroll); // for mobile
 $(window).on('scroll', onScroll);
@@ -174,16 +167,20 @@ var addition_constant = 0;
 
 // callback
 function onScroll(){
-    
+
     if(count === 0){
       var addition = ($(window).scrollTop() + window.innerHeight);
 
 var scrollHeight = (document.body.scrollHeight - 1);
-if (addition > scrollHeight && addition_constant < addition) {      
+if (addition > scrollHeight && addition_constant < addition) {
    $(window).unbind('scroll');
            load();
    }
     }
 }
+
   </script>
-{% endblock %}
+
+{% endblock content %}
+<!--</body>-->
+<!--</html>-->
