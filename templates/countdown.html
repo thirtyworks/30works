@@ -29,7 +29,7 @@
         hour = minute * 60,
         day = hour * 24;
 
-  let birthday = "April 1, 2021 00:00:00",
+  let birthday = "{{release_date|escapejs}}",
       countDown = new Date(birthday).getTime(),
       x = setInterval(function() {    
 
@@ -46,9 +46,9 @@
           document.querySelector(".navbar").style.display = 'block'
           var temp = "{{days|safe}}"
           console.log(temp)
-       sessionStorage.setItem("value",temp)
-       localStorage.setItem("date_value",temp)
-            window.location.href = "/post/?day="+temp     
+          sessionStorage.setItem("value",temp)
+          localStorage.setItem("date_value",temp)
+          window.location.href = "/"    
           clearInterval(x);
         }
         //seconds

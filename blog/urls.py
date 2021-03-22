@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path
 from . import views
 from .views import (PostListView,
@@ -10,9 +9,6 @@ from .views import (PostListView,
 
 
 urlpatterns = [
-    # path('', views.home, name="blog-home"),
-    path('', views.home, name="home"),
-    path('countdown', views.countdown, name="countdown"),
     path('success', views.success, name="success"),
     path('user_detail/', views.user_detail, name="user_detail"),
     path('post/', PostListView.as_view(), name="blog-home"),

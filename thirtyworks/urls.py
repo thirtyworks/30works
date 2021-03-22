@@ -18,14 +18,32 @@ from django.urls import path, include
 from users import views as user_views
 from django.contrib.auth import views as auth_views
 
+from blog.views import home
+from countdown.views import countdown
+
 from django.conf import settings
 from django.conf.urls.static import static
+from datetime import date, datetime
+import os
+import json
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
+    config_json = json.load(f)
+
+if datetime.now() > datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021' ), "%d-%m-%Y") :
+    set_homepage = path('', home)
+else:
+    set_homepage = path('', countdown)
+    
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
-    path('blog/', include("blog.urls")),
-    path('', include("blog.urls")),
+    set_homepage,
+    path('', include('blog.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('profile/', user_views.profile, name='profile'),
@@ -37,6 +55,7 @@ urlpatterns = [
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

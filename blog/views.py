@@ -28,7 +28,27 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
+
+def home(request):
+    if len(Day.objects.all()) != 30:
+        for i in range(1,31):
+            try:
+                Day.objects.create(number=i)
+                print('Day {} added!'.format(i))
+            except:
+                print('Day {} already exists'.format(i))
+            Day.save
+        print('All 30 days now exist!')
+    else:
+        print('All 30 days already exist')
     
+    latest_day = Day.objects.last()
+    return render(request, "home.html")
+
+def about(request):
+    return render(request, "about.html", context={'title': 'About 30Works'})
+    
+
 config_json["live_date"] = "01-04-2021"
 
 # function-based views
@@ -260,12 +280,7 @@ class UserPostListView(ListView):
         return Post.objects.filter(author=user, is_private=False).order_by('datetime_posted')
 
 
-def about(request):
-    return render(request, "blog/about.html", context={'title': 'About 30Works'})
 
-def home(request):
-    latest_day = Day.objects.last()
-    return render(request, "blog/home.html", context={'latest_day': latest_day})
 
 def user_detail(request):
     # day = request.POST['day']
@@ -284,11 +299,11 @@ def user_detail(request):
     return render(request, "blog/user_blogs.html", context={'posts': posts, 'users': user_profile})
 
 
-def countdown(request):
-    start_date = datetime.now()
-    live_date = datetime.strptime(config_json["live_date"], "%d-%m-%Y") 
-    remaining_days = abs((live_date - start_date).days)
-    return render(request, "blog/countdown.html")
+# def countdown(request):
+#     start_date = datetime.now()
+#     live_date = datetime.strptime(config_json["live_date"], "%d-%m-%Y") 
+#     remaining_days = abs((live_date - start_date).days)
+#     return render(request, "countdown.html")
 
 def success(request):
     return render(request, "blog/success.html")

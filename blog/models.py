@@ -28,13 +28,16 @@ def resize_to_maxsize(max_size, pil_image):
 
     return pil_image
 
-
 class Day(models.Model):
-    number = models.IntegerField(verbose_name="Day Number")
+    number = models.IntegerField(verbose_name="Day Number", unique=True)
     date_posted = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return (str(self.number))
+        return str(self.number)
+    
+    class Meta:
+        ordering = ['number']
+    
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
