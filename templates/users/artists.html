@@ -14,9 +14,9 @@
             </tr>
           </thead>
           <tbody>
-            {% for key, values in all_users.items %}
+            {% for key, values in artists.items %}
                <tr class="text-center">
-                   <td><a href="/user/{{key}}">{{values}}</a></td>
+                   <td><a href="/artist/{{key}}">{{values}}</a></td>
                </tr>
              {% endfor %}
           </tbody>

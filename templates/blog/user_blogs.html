@@ -115,7 +115,7 @@ img{
               </select>
                 {% if user.is_authenticated %}
                     <a class="nav-item nav-link" href="{% url 'profile' %}">Edit Profile</a>
-                    <a class="nav-item nav-link" href="{% url 'user-posts' user.user_profile.user_uuid %}">My Works</a>
+                    <a class="nav-item nav-link" href="{% url 'user-posts' user.user_profile.acount_id %}">My Works</a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     <a class="nav-item nav-link" href="{% url 'post-create' %}">SUBMIT</a>
 

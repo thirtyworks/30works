@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     url = models.CharField(max_length=100, blank=True, null=True)
     date_blocked = models.DateField(blank=True, null=True)
     user_uuid = models.UUIDField(default=None, blank=True, null=True)
-
+    acount_id = models.CharField(default=None,max_length=4, blank=True, null=True, unique=True)
 
     def __str__(self):
         return '{} Profile'.format(self.user.username)
@@ -31,6 +31,9 @@ class UserProfile(models.Model):
         '''
         if self.user_uuid is None:
             self.user_uuid = str(uuid.uuid4())
+
+        if self.acount_id is None:
+            self.acount_id = str(self.user.id).zfill(4)
 
         if self.blocked == True:
             User.objects.filter(username=self.user.username).update(is_active=False)

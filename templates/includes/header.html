@@ -32,8 +32,8 @@
                 <option>{{day}}</option>  
               {% endfor %}
           </select>
-          <a class="nav-item nav-link" href="{% url 'all_users' %}"
-            >All Users</a
+          <a class="nav-item nav-link" href="{% url 'artists' %}"
+            >Artists</a
           >
 
           {% if user.is_authenticated %}
@@ -42,7 +42,7 @@
           >
           <a
             class="nav-item nav-link"
-            href="{% url 'user-posts' user.user_profile.user_uuid %}"
+            href="{% url 'user-posts' user.user_profile.acount_id %}"
             >My Works</a
           >
           <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>

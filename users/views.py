@@ -79,10 +79,10 @@ def profile(request):
     }
     return render(request, 'users/profile.html', context)
 
-def all_users(request):
-    all_users = {}
+def artists(request):
+    artists = {}
     users = User.objects.filter(is_staff=False, is_superuser=False)
     for user in users:
-        all_users[str(user.user_profile.user_uuid)] = user.username
-    return render(request, 'users/all_users.html', context={'all_users':all_users})
+        artists[str(user.user_profile.acount_id)] = user.username
+    return render(request, 'users/artists.html', context={'artists':artists})
     
