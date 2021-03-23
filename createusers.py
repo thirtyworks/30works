@@ -1,34 +1,32 @@
 """
-
 Usage: $ python manage.py shell < createusers.py
 
 """
-
-
 from django.contrib.auth.models import User
 import pandas as pd
 import os
 from django.db.utils import IntegrityError
+from django.template.loader import render_to_string
+from django.core.mail import send_mail, send_mass_mail
+from django.contrib.auth.models import User
 
+CSV_FILE = 'test.csv'
 
-EVENTBRITE_EXCEL_PATH = os.path.join(os.path.expanduser('~'), '3030DryRun2.xlsx')
-
-def id_generator(size):
+def password_generator(size):
     import random
     import string
-    chars = string.ascii_uppercase + string.digits
+    chars = string.ascii_lowercase + string.digits
     return ''.join(random.choice(chars) for _ in range(size))
 
-def email(subject, message, recipient_list):
-    from django.conf import settings
-    from django.core.mail import send_mail
-    email_from = settings.EMAIL_HOST_USER
-    send_mail( subject, message, email_from, recipient_list )
+def create_username(firstname, surname):
+    username = f'{firstname}_{surname}' 
+    return username.lower()
 
+FROM_EMAIL='30works <info@thirty.works>'
 EMAIL_SUBJECT = "Your new 30works account is ready"
 EMAIL_MESSAGE = """
 
-Dear User,
+Dear {},
 
 You're receiving this message because I wanted to say hello and see how you're doing.
 
@@ -49,31 +47,72 @@ Good luck and we look forward to receiving your works this month.
 
 Best wishes,
 
-The Unfeeling Email Robot 🤖
+The Unfeeling Email Robot 
 
 """
 
 # read the CSV file
-# df = pd.read_csv(USER_DATA_PATH)
-# read the Excel file
-df = pd.read_excel(EVENTBRITE_EXCEL_PATH)
+df = pd.read_csv(CSV_FILE)
+# datatuple = (
+#     (
+#         EMAIL_SUBJECT, 
+#         EMAIL_MESSAGE.format(df['First Name'][i], create_username(df['First Name'][i], df['Surname'][i]), password_generator(7)), 
+#         FROM_EMAIL, 
+#         [df['Email'][i]]
+#     ) 
+#     for i in df.index
+# )
+# send_mass_mail(datatuple)
 
-for i, row in df.iterrows():
-    username = row['First Name'] + '_' + row['Surname']
-    email_address = row['Email Address']
-    password = id_generator(10)
+for i in df.index:
+
+
     try:
-        user = User.objects.create_user(username=username, password=password, email=email_address)
+        name = df['First Name'][i]
+        surname = df['Surname'][i]
+        email = df['Email'][i]
+        username = create_username(name, surname)
+        password = password_generator(7)
+        user = User.objects.create_user(username=username, password=password, email=email)
         user.is_superuser = False
         user.is_staff = False
         user.save()
 
-        print('Created User: {}\nEmail: {}\nPass: {}\n=========='.format(username, email_address, password))
+        print(f'Created User: {username}\nEmail: {email}\nPass: {password}\n==========')
 
-        email_message = "{}".format(EMAIL_MESSAGE)
-        email_message = email_message.format(username, password)
-        email(EMAIL_SUBJECT, email_message, [email_address])
+        send_mail(
+            subject=EMAIL_SUBJECT,
+            from_email=FROM_EMAIL,
+            message=EMAIL_MESSAGE.format(name, username, password),
+            recipient_list=[email]
+        )
 
     except IntegrityError as ie:
         print(ie)
-        print('Couldnt create User: {}\nEmail: {}\nPass: {}\n=========='.format(username, email_address, password))
+        print(f'Unable to create User: {username}\nEmail: {email}\nPass: {password}\n==========')
+
+print('done!')
+
+
+
+
+
+# for i, row in df.iterrows():
+#     username = row['First Name'] + '_' + row['Surname']
+#     email_address = row['Email Address']
+#     password = id_generator(10)
+#     try:
+#         user = User.objects.create_user(username=username, password=password, email=email_address)
+#         user.is_superuser = False
+#         user.is_staff = False
+#         user.save()
+
+#         print('Created User: {}\nEmail: {}\nPass: {}\n=========='.format(username, email_address, password))
+
+#         email_message = "{}".format(EMAIL_MESSAGE)
+#         email_message = email_message.format(username, password)
+#         email(EMAIL_SUBJECT, email_message, [email_address])
+
+#     except IntegrityError as ie:
+#         print(ie)
+#         print('Couldnt create User: {}\nEmail: {}\nPass: {}\n=========='.format(username, email_address, password))

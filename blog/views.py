@@ -43,6 +43,8 @@ def home(request):
         print('All 30 days already exist')
     
     latest_day = Day.objects.last()
+    # current date - starting date
+    print((datetime.strptime("10-04-2021", "%d-%m-%Y")-datetime.strptime("01-04-2021", "%d-%m-%Y")).days + 1)
     return render(request, "home.html")
 
 def about(request):

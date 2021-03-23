@@ -104,6 +104,7 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = (
     ('django.contrib.auth.backends.ModelBackend'),
+    ('users.backends.EmailBackend')
 )
 
 
@@ -163,13 +164,12 @@ MEDIA_URL = '/media/'
 
 # email config stuff
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.eu.mailgun.org'
 EMAIL_PORT = 587
-#EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config_json["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = config_json["EMAIL_HOST_PASSWORD"]
-
+DEFAULT_FROM_EMAIL='info@thirty.works'
 # 30 works logic stuff
 NUM_DAYS = 30
 

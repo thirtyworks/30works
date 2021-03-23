@@ -160,5 +160,6 @@ Thumbs.db #thumbnail cache on Windows
 email_templates/
 30works_uwsgi.ini
 uwsgi_params
-
+.vscode/
+test.csv
 
