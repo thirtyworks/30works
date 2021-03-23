@@ -84,5 +84,5 @@ def artists(request):
     users = User.objects.filter(is_staff=False, is_superuser=False)
     for user in users:
         artists[str(user.user_profile.acount_id)] = user.username
-    return render(request, 'users/artists.html', context={'artists':artists})
+    return render(request, 'users/artists.html', context={'artists':users})
     

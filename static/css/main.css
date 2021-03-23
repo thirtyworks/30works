@@ -119,3 +119,26 @@ footer {
     padding: 15px;
     text-align: center;
   }
+
+/* Artists page */
+.super-header hr{
+  border: 2px solid #474747;
+  margin-top: 1px;
+  margin-bottom: 30px;
+}
+
+.card .card-body .message {
+  padding-left: 80px;
+}
+
+.card .card-body img{
+  border: 1px solid #131313; 
+  width: 64px !important;
+}
+
+.card .card-body .actions {
+  margin-top: 5px;
+}
+.artist-cards .artist-card:nth-child(odd) .card-body{
+  background-color: #feecf2;
+}

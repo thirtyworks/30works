@@ -68,12 +68,18 @@ for i in df.index:
 
 
     try:
-        name = df['First Name'][i]
+        first_name = df['First Name'][i]
         surname = df['Surname'][i]
         email = df['Email'][i]
-        username = create_username(name, surname)
+        username = create_username(first_name, surname)
         password = password_generator(7)
-        user = User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(
+            username=username, 
+            password=password, 
+            email=email,
+            first_name=first_name,
+            last_name=surname
+        )
         user.is_superuser = False
         user.is_staff = False
         user.save()
@@ -83,7 +89,7 @@ for i in df.index:
         send_mail(
             subject=EMAIL_SUBJECT,
             from_email=FROM_EMAIL,
-            message=EMAIL_MESSAGE.format(name, username, password),
+            message=EMAIL_MESSAGE.format(first_name, username, password),
             recipient_list=[email]
         )
 
