@@ -1,0 +1,166 @@
+{% extends "base.html" %} 
+{% load thumbnail %}
+{% load embed_video_tags index %} 
+
+{% block content %}
+<div class="artist-posts my-4">
+  
+  <div class="days-nav text-center">
+    Day:
+    {% for i in days_done %}
+        {% if i in this_day %}
+        {{i}} |
+        {% else %}
+        <a href="{% url 'artist-posts' i %}">
+          {{i}}
+        </a> |
+        {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="super-header mb-5">
+    <h1>Day {{this_day}}</h1>
+    <hr>
+  </div>
+
+  <div class="infinite-container my-4">
+    <div class="row">
+
+      {% if posts %}
+      {% for post in posts %}
+      
+      <!-- Picture -->
+        {% if post.postpic %}
+        <div class="col-lg-6 mb-3">
+          <div class="card border-dark">
+            <div class="post-info pl-3 pt-2 mb-2">
+              <h4 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h4>
+              <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
+              <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
+            </div>
+            {% if post.postpic|is_portrait %}
+                <div class="portrait">
+                {% thumbnail post.postpic "600x520" crop="10px 10px" format="PNG" as im %}
+                    <img class="img-fluid"  src="{{ im.url }}">
+                {% endthumbnail %}
+                </div>
+            {% else %}
+                <div class="landscape">
+                {% thumbnail post.postpic "600x520" crop="bottom" format="PNG" as im %}
+                    <img class="img-fluid" src="{{ im.url }}">
+                {% endthumbnail %}
+                </div>
+            {% endif %}     
+            <div class="p-3 text-center">
+              {{post.alt_text}}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      <!-- Picture -->
+        
+        <!-- Video/Audio url -->
+        {% if post.postvideo %}
+        <div class="col-lg-6 mb-3">
+          <div class="card border-dark">
+            <div class="post-info pl-3 pt-2 mb-2">
+              <h4 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h4>
+              <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
+              <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
+            </div>
+            <div class="bg-dark">
+              {% video post.postvideo as my_video %} 
+                  {% video my_video '640x461' %}
+              {% endvideo %}
+            </div>
+            <div class="p-3 text-center">
+              {{post.alt_text}}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <!-- Video url -->
+
+        <!-- page url -->
+        {% if post.url %}
+        <div class="col-lg-6 mb-3">
+          <div class="card border-dark">
+            <div class="post-info pl-3 pt-2 mb-2">
+              <h4 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h4>
+              <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
+              <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
+            </div>
+            <div class="post-link text-center bg-dark">
+              <h4><a href="{{post.url}}" target="_blank">{{post.alt_text}}</a></h4> 
+            </div>
+            <div class="p-3 text-center">
+              Webpage URL
+            </div>
+          </div>
+        </div>  
+        {% endif %}
+        <!-- page url -->
+        
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <div class="text-center">
+            <h2>Nothing to see here yet. Check back later!</h2>
+          </div>
+        </div>
+        {% endif %}
+        
+      </div>
+
+
+
+  </div>  
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  if (document.querySelector("img")) {
+    document.querySelector("select").value = document
+      .querySelector("img")
+      .getAttribute("data-name");
+  } else {
+    document.querySelector("select").value = sessionStorage.getItem("value");
+  }
+  var count = 0;
+  $(".infinite-item").slice(0, 2).show();
+
+  function load() {
+    $(".infinite-item:hidden").slice(0, 1).slideDown();
+    if ($(".infinite-item:hidden").length == 0) {
+      count++;
+    }
+    // $('html,body').animate({
+    //     scrollTop: $(this).offset().top
+    // }, 1500);
+  }
+  $(document.body).on("touchmove", onScroll); // for mobile
+  $(window).on("scroll", onScroll);
+
+  var addition_constant = 0;
+
+  // callback
+  function onScroll() {
+    if (count === 0) {
+      var addition = $(window).scrollTop() + window.innerHeight;
+
+      var scrollHeight = document.body.scrollHeight - 1;
+      if (addition > scrollHeight && addition_constant < addition) {
+        $(window).unbind("scroll");
+        load();
+      }
+    }
+  }
+</script>
+{% endblock %}
+
+

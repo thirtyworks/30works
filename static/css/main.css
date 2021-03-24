@@ -142,3 +142,32 @@ footer {
 .artist-cards .artist-card:nth-child(odd) .card-body{
   background-color: #feecf2;
 }
+
+/* post_list */
+.infinite-item{
+  display: none;
+}
+iframe, object, embed{
+    max-width: 100%;
+
+}
+
+/* Styles for the content section */
+
+
+@media (min-width: 500px) {
+
+  #button {
+    margin: 30px;
+  }
+} 
+
+/* posts page */
+.card .post-link {
+  height: 450px; 
+} 
+
+.card .post-link h4{
+  vertical-align: middle;
+  line-height: 450px;  
+} 

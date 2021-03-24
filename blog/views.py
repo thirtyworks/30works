@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Post, Day
 from django.views.generic import (ListView,
                                   DetailView,
@@ -23,11 +23,28 @@ from django.shortcuts import render, redirect
 from PIL import Image
 from smtplib import SMTPDataError, SMTPResponseException
 from django.urls import reverse
+import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
+
+def get_event_day():
+    now = timezone.now().strftime('%d-%m-%Y')
+    day = (datetime.strptime(now, "%d-%m-%Y")-datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021'), "%d-%m-%Y")).days + 1
+    if day > 30:
+        day = 30
+    if day < 1:
+        day = 1 
+    print('Its day:', day)
+    return day
+
+def get_brief():
+    df = pd.read_csv(os.path.join(BASE_DIR, 'briefs.csv'))
+    day = get_event_day()
+    brief_day = df['BRIEFS'][day-1]
+    return brief_day
 
 def home(request):
     if len(Day.objects.all()) != 30:
@@ -43,31 +60,19 @@ def home(request):
         print('All 30 days already exist')
     
     latest_day = Day.objects.last()
+    day_num = get_event_day()
+    days_done = Day.objects.filter(number__range=(1, day_num)).order_by('-number')
     # current date - starting date
-    print((datetime.strptime("10-04-2021", "%d-%m-%Y")-datetime.strptime("01-04-2021", "%d-%m-%Y")).days + 1)
-    return render(request, "home.html")
+    return render(request, "home.html", context={'days_done': days_done})
 
 def about(request):
     return render(request, "about.html", context={'title': 'About 30Works'})
     
 
-config_json["live_date"] = "01-04-2021"
-
-# function-based views
-
-# def home(request):
-#     # return HttpResponse("<h1>hullo :)</h1>")
-#     ontext = {
-#         # "posts": DUMMY_CONTENT
-#         "posts": Post.objects.all()
-#     }
-#     return render(request, "blog/home.html", context=ontext)
-
-# class-based views
-
-class PostListView(ListView):
+# Show all User/Artist posts on a current day
+class PostsListView(ListView):
     model = Post
-    template_name = 'blog/post_list.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blog/posts_list.html'  # <app>/<model>_<viewtype>.html
     # by default ListView will want to loop over a variable called `object_list`, but we called it `posts`
     # in the dictionary above
     # context_object_name = 'posts'
@@ -77,35 +82,22 @@ class PostListView(ListView):
     # queryset = Post.objects.all()
     # paginator = Paginator(queryset, paginate_by)
 
-    paginate_by = 10
-    
     def get_context_data(self,**kwargs):
-        users = []
-        day = self.request.GET['day']
-        day = Day.objects.filter(number=day)
-        if day:
-            posts = Post.objects.filter(day=day[0], is_private=False).order_by('-datetime_posted')
-            for post in posts:
-                users.append(UserProfile.objects.get(user=post.author))
-        else:
-            posts = Post.objects.filter(day=None).order_by('-datetime_posted')
+        day_num = get_event_day()
+        day = Day.objects.values_list('number', flat=True).get(number=day_num) 
+        this_day = Day.objects.values_list('number', flat=True).get(number=self.kwargs.get('day')) 
+        days_done = Day.objects.filter(number__range=(1, day_num)) 
 
-        context = super(PostListView, self).get_context_data(**kwargs)
+        context = super(PostsListView, self).get_context_data(**kwargs)
+        if this_day <= day:
+            posts = Post.objects.filter(day__number=this_day, is_private=False).order_by('-datetime_posted')
+        else:
+            posts = None
         context['posts'] = posts
-        context['users'] = users
+        context['days_done'] = days_done
+        context['this_day'] = this_day
         return context
 
-
-    # def get_queryset(self):
-    #     day = self.request.GET['day']
-    #     day = Day.objects.filter(number=day)
-    #     if day:
-    #         return Post.objects.filter(day=day[0], is_private=False)
-    #     else:
-    #         return Post.objects.filter(day=None)
-    #     # day = self.request.GET.get('day')
-    #     # qs = super(MyClassBasedView, self).get_queryset()
-    #     # return qs.order_by(order_by)
 
 
 class PostDetailView(DetailView):
@@ -147,7 +139,7 @@ class PostDetailView(DetailView):
 
         return redirect('post-detail', pk=thepost.id)
 
-
+# Part of handling post form for PostCreateView
 class CreatePostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')  # get user from kwargs, but don't pass that kwarg to super
@@ -159,13 +151,11 @@ class CreatePostForm(forms.ModelForm):
         exclude = ('day',)
 
     def clean(self):
-
+        day_num = get_event_day()
         # check that user has not already submitted today
         current_user = self.user  # from init
-        # if Post.objects.filter(author=current_user, date_posted=timezone.now().today()).exists():
-        print('timezone.now().date()='.format(timezone.now().date()))
-        print('current_user={}'.format(current_user))
-        if Post.objects.filter(author=current_user, datetime_posted__date=timezone.now().date()).exists():
+        # datetime_posted__date=timezone.now().date() saving here
+        if Post.objects.filter(author=current_user, day__number=day_num).exists():
             # messages.error(current_user, 'You already submitted something today!')
             print('User {} was forbidden from posting again today'.format(self.user))
             raise forms.ValidationError("You already submitted something today")
@@ -180,7 +170,7 @@ class CreatePostForm(forms.ModelForm):
             print('USer is not blocked')
         super().clean()
 
-
+# User add post of the day
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     # fields = ['title', 'content']
@@ -199,7 +189,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         today = date.today()
         # day = Day.objects.get(date_posted__date=today)
-        day = Day.objects.last()
+        day = Day.objects.get(number=get_event_day())
         form.instance.day = day
 
         is_private = form.instance.is_private
@@ -217,10 +207,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        day_num = get_event_day()
+        # days_done = Day.objects.filter(number__range=(1, day_num)) 
+        # this_day = Day.objects.values_list('number', flat=True).get(number=self.kwargs.get('day')) 
+        
         context = super(PostCreateView, self).get_context_data(**kwargs)
-        latest_day = Day.objects.last()
-        context['day'] = config_json[str(latest_day.number)]
-        context['latest_day'] = latest_day.number
+        context['brief_day'] = get_brief()
+        context['latest_day'] = Day.objects.values_list('number', flat=True).get(number=day_num) 
         return context
 
     def get_success_url(self):
@@ -256,7 +249,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
         return self.request.user == post.author
 
-
+# Display user/artist profile with their works
 class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html'  # <app>/<model>_<viewtype>.html
@@ -276,10 +269,10 @@ class UserPostListView(ListView):
         context['user_details'] = user
         return context
 
-    def get_queryset(self):
-        user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
-        user = user_profile.user
-        return Post.objects.filter(author=user, is_private=False).order_by('datetime_posted')
+    # def get_queryset(self):
+    #     user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
+    #     user = user_profile.user
+    #     return Post.objects.filter(author=user, is_private=False).order_by('datetime_posted')
 
 
 

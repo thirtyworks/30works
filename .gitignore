@@ -162,4 +162,4 @@ email_templates/
 uwsgi_params
 .vscode/
 test.csv
-
+junk.html

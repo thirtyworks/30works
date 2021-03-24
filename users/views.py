@@ -21,7 +21,7 @@ def register(request):
                 username = form.cleaned_data.get('username')
                 messages.success(request, 'Account created for {}'.format(username))
                 # and send the user back to homepage
-                return redirect('blog-home')
+                return redirect('home')
                 # and send user to login page
                 # return redirect('login')
         else:
@@ -81,8 +81,7 @@ def profile(request):
 
 def artists(request):
     artists = {}
-    users = User.objects.filter(is_staff=False, is_superuser=False)
-    for user in users:
-        artists[str(user.user_profile.acount_id)] = user.username
+    # Get all users/artists except current logged in user
+    users = User.objects.filter(is_staff=False, is_superuser=False).exclude(username=request.user)
     return render(request, 'users/artists.html', context={'artists':users})
     
