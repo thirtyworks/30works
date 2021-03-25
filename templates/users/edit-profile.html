@@ -9,187 +9,56 @@ select,#select2{
 }
 </style>
 <div class="content-section mt-5">
-
-  <form  method="POST" action="/edit-profile/" enctype="multipart/form-data" onsubmit="form_submit()">
-      <div class="text-center">
-        <h2>Profile Info</h2>
+  <form method="POST" action="/edit-profile/" enctype="multipart/form-data">
+    <div class="text-center my-4">
+      <h2>Profile Info</h2>
     </div>
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="first_name">First Name:</label>
+            <input type="text" class="form-control" name="first_name" value="{{ user.first_name|default:'' }}" placeholder="Enter First Name">
+          </div>
 
-      {% csrf_token %}
-        <div class="row">
-          <div class="col-md-8">
+          <div class="form-group col-md-6">
+            <label for="last_name">Last Name:</label>
+            <input type="text" class="form-control" name="last_name" value="{{ user.last_name|default:'' }}" placeholder="Enter Last Name">
+          </div>
+        </div>
+      
         <div class="form-group">
-            <label for="exampleFormControlInput1">Username (please avoid spaces and special characters):</label>
-            <div>
-            <small>Note: This is the name you log in with, and is displayed under all your works</small>
-            </div>
-            <input type="text" class="form-control" name="username" value="{{ user.username|default:'' }}"  placeholder="Enter Username" maxlength="150" required>
-          </div>
-         
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Email address:</label>
-            <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Bio:</label>
-            <textarea class="form-control" name="bio"   placeholder="Enter Bio" >{{ user.user_profile.bio|default:'' }}</textarea>
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Contact Info:</label>
-            <textarea class="form-control" name="contact_info"   placeholder="Enter Contact Info" >{{ user.user_profile.contact_info|default:'' }}</textarea>
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Profile Picture</label>
-            <input type="file" class="form-control" name="profilepic"  placeholder="Enter email"  accept="image/png, image/jpeg"  >
-          </div>
-          {% if user.user_profile.insta_handler|length > 0 %}
-          <div class="form-group" >
-            <label for="exampleFormControlInput1">Instagram:</label>
-            <input type="text" class="form-control insta mb-3" id='insta-1'  placeholder="Enter instagram handle">            
-           <div class="row" id="insta">
-                    
-           </div>
-          </div>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-           <script>
-                  var temp = {{user.user_profile.insta_handler|safe}}
-                 document.getElementById("insta-1").value =  temp[0];
-                 var count = temp.length
-                 for(var i = 1;i< temp.length;i++){
-                  count++;        
-                  $( "#insta" ).append(`
-      <div class="row col-lg-12" id="field-${count}">
-      <div class="col-lg-8">
-        <input type="text" class="form-control mb-3 insta" value="${temp[i]}"  placeholder="Enter instagram handle">
-      </div>
-      <div >
-      <button class="btn btn-danger" type="button" onclick="delete_field(${count})">Delete</button>
-      </div>
-      </div>
-      `)
-                 }
-           </script>
-          {% else %}
-          <div class="form-group" >
-            <label for="exampleFormControlInput1">Instagram:</label>
-            <input type="text" class="form-control insta mb-3"   placeholder="Enter instagram handle">            
-           <div class="row" id="insta">
-                    
-           </div>
-          </div>
-          <script>
-             var count = 0;
-
-          </script>
-         {% endif %}
-          <button class="btn btn-success" type="button" onclick="add_field()">Add Insta Account</button>
-          
-          <input class="d-none" type="text" name="insta_handler" id="insta_handler">
-            <div class="form-group mt-3">
-            <label for="exampleFormControlInput1">Website:</label>
-            <input type="text" class="form-control" name="url" value="{{ user.user_profile.url|default:'' }}" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url"  placeholder="Enter website">
-          </div>
-
-<!--          <div class="form-group">-->
-<!--            <label for="exampleFormControlFile1">Profile Pic(Currently):</label>-->
-<!--            <a href="{{user.userprofile.profilepic.url|default:''}}" id='img' data-name="{{user.userprofile.profilepic.url}}"></a>-->
-<!--        </div>-->
-<!--          <div class="form-group">-->
-<!--            <label for="exampleFormControlFile1">Change:</label>-->
-<!--            <input type="file" class="form-control-file" name="profilepic" accept="image/*" >-->
-<!--          </div>-->
+          <label for="exampleFormControlInput1">Email address:</label>
+          <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
         </div>
-        <div class="col-md-4 text-center">
-          {% if user.user_profile.profilepic.url != ""  %}
-            <img class="account-img" src="{{ user.user_profile.profilepic.url }}">
-            {% endif %}
-            <h2 class="account-heading">{{ user.username }}</h2>
-            <p class="text-secondary">{{ user.email }}</p>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Bio:</label>
+          <textarea class="form-control" name="bio" placeholder="Enter Bio" rows="3" >{{ user.user_profile.bio|default:'' }}</textarea>
         </div>
-      
 
-      </div>
-      <br>
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary btn-lg  " style="background-color: #343a40!important;border-color:#343a40!important ;">Update</button>
+        <div class="form-row mb-4">
+          <div class="form-group col-md-6">
+            <label for="insta-handler">Instagram Profile Name:</label>
+            <input type="text" class="form-control" name="insta_handler" value="{{ user.user_profile.insta_handler|default:'' }}" placeholder="Enter instagram handle">
+          </div>
 
-      </div>
-    </form>
-
+          <div class="form-group col-md-6">
+            <label for="url-handler">Website URL:</label>
+            <input type="text" class="form-control" name="url" value="{{ user.user_profile.url|default:'' }}" placeholder="Enter Website URL">
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-lg btn-block" style="background-color: #343a40!important;border-color:#343a40!important ;">Update</button>
+        </div>
+    </div>
+  </form>
 </div>
-<div class="content-section d-none" >
-<!--        Section to view profile content-->
+<div class="wrapper text-center my-2">
+  <form>
+      <button type="submit" class="btn btn-danger btn-lg btn-block" formaction="{% url 'password_reset' %}">Change Password</button>
+  </form>
+</div>
 
-
-        <div class="media">
-          
-            <img class="rounded-circle account-img" src="{{ user.userprofile.profilepic.url }}">
-           
-        </div>
-<!--        Section to allow user to update info-->
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Profile Info</legend>
-                {{ u_form.as_p }}
-                {{ p_form.as_p }}
-            </fieldset>
-            <div class="form-group">
-                <button class="'btn btn-outline-info" type="submit">Update</button>
-            </div>
-        </form>
-    </div>
-    <script>
-       function add_field(){
-        count++;        
-      
-        $( "#insta" ).append(`
-        <div class="row col-lg-12" id="field-${count}">
-        <div class="col-lg-8">
-          <input type="text" class="form-control mb-3 insta"  placeholder="Enter instagram handle">
-        </div>
-        <div >
-        <button class="btn btn-danger" type="button" onclick="delete_field(${count})">Delete</button>
-        </div>
-        </div>
-        `)
-      }
-      function delete_field(val){
-        $("#field-"+val).remove();
-      }
-      function form_submit(){
-        var arr = [];
-        document.querySelectorAll(".insta").forEach(element => {
-           arr.push(element.value)
-        });
-        document.getElementById("insta_handler").value = JSON.stringify(arr);
-      }
-  //     if(document.getElementById("img")){
-  //   var temp = document.getElementById("img").getAttribute("data-name")
-  //   if(temp.includes('profile_pics/')){
-  //       temp = temp.replace('profile_pics/','')
-  //   }
-  //   document.getElementById('img').innerText =  temp.replace('/media/','')
-  // }
-  // else{
-  //   document.querySelector("img").style.display = "none"
-  // }
-  
-    </script>
-
-    <div class="wrapper">
-    <form>
-        <button type="submit" class="btn btn-secondary btn-lg" formaction="{% url 'password_reset' %}">Change Password</button>
-    </form>
-    </div>
-<style>
-    .wrapper {
-    text-align: center;
-}
-
-.button {
-    position: absolute;
-    top: 50%;
-}
-</style>
 {% endblock content %}

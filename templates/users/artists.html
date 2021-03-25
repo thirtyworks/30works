@@ -20,7 +20,6 @@
           <img src="{{artist.user_profile.profilepic.url}}" class="float-left rounded-circle">
           <div class="message">
             <h5 class="card-title">{{artist.first_name|title }} {{artist.last_name|title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{artist.username }}</h6>
             <div class="actions">
               <a href="{% url 'user-posts' artist.user_profile.acount_id %}" class="card-link">View Works</a>
             </div>

@@ -34,7 +34,6 @@
           <div class="card border-dark">
             <div class="post-info pl-3 pt-2 mb-2">
               <h4 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h4>
-              <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
               <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
             </div>
             {% if post.postpic|is_portrait %}
@@ -64,7 +63,6 @@
           <div class="card border-dark">
             <div class="post-info pl-3 pt-2 mb-2">
               <h4 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h4>
-              <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
               <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
             </div>
             <div class="bg-dark">
@@ -86,7 +84,6 @@
           <div class="card border-dark">
             <div class="post-info pl-3 pt-2 mb-2">
               <h4 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h4>
-              <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
               <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
             </div>
             <div class="post-link text-center bg-dark d-flex">

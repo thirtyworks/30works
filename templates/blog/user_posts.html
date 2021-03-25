@@ -13,12 +13,8 @@
     </div>
     <div class="col-md-12 text-center">
       <h1 class="mb-2">{{ user_details.first_name }} {{ user_details.last_name }}</h1>
-      <h4 class="mb-2">{{ user_details.username  }}</h4>
       {% if user_details.user_profile.bio %}
         <p class="mb-2"><span class="font-weight-bold">Bio:</span> {{ user_details.user_profile.bio }}</p>
-      {% endif %}
-      {% if user_details.user_profile.contact_info %}
-        <p class="mb-2"><span class="font-weight-bold">Contact Info:</span> {{ user_details.user_profile.contact_info }}</p>
       {% endif %}
       {% if user_details.user_profile.url %}
         <p class="mb-2"><span class="font-weight-bold">Website:</span> {{ user_details.user_profile.url }}</p>

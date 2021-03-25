@@ -38,26 +38,25 @@ class MyUserUpdateForm(UserUpdateForm):
         self.current_user = kwargs.get('instance')
         super().__init__(*args, **kwargs)
 
-    def clean(self):
-        print('HUNTING FOR DISALLAWED CHARS')
-        original_username = self.current_user.username  # from init
-        DISALLOWED_CHARS = r" /'!£$%^&*()+=~#:\\\""
-        username = self.data['username']
-        if any(elem in username for elem in DISALLOWED_CHARS):
-            print('Found a disallowed char!!!\n')
-            cleaned_username = copy.deepcopy(original_username)
-            for char in DISALLOWED_CHARS:
-                cleaned_username = cleaned_username.replace(char, '')
-            self.cleaned_data['username'] = cleaned_username
-            # self.cleaned_data['username'] = original_username
-            raise ValidationError("Invalid character in username")
-        super().clean()
+    # def clean(self):
+    #     print('HUNTING FOR DISALLAWED CHARS')
+    #     original_username = self.current_user.username  # from init
+    #     DISALLOWED_CHARS = r" /'!£$%^&*()+=~#:\\\""
+    #     username = self.data['username']
+    #     if any(elem in username for elem in DISALLOWED_CHARS):
+    #         print('Found a disallowed char!!!\n')
+    #         cleaned_username = copy.deepcopy(original_username)
+    #         for char in DISALLOWED_CHARS:
+    #             cleaned_username = cleaned_username.replace(char, '')
+    #         self.cleaned_data['username'] = cleaned_username
+    #         # self.cleaned_data['username'] = original_username
+    #         raise ValidationError("Invalid character in username")
+    #     super().clean()
 
 # Update account profile info
 @login_required
 def profile(request):
     if request.method == 'POST':
-        # u_form = UserUpdateForm(request.POST, instance=request.user)
         u_form = MyUserUpdateForm(request.POST, instance=request.user, request=request)
         p_form = UserProfileUpdateForm(request.POST, request.FILES, instance=request.user.user_profile)
         if u_form.is_valid() and p_form.is_valid():
@@ -66,7 +65,7 @@ def profile(request):
             messages.success(request, 'Your account has been updated')
             return redirect('profile')
         else:
-            messages.error(request, 'Invalid character in username, please use only alphanumeric characters and underscores')
+            messages.error(request, 'Invalid character in first_name and last_name, please use only alphanumeric characters and underscores')
 
     else:
         print('NOT a POST method')

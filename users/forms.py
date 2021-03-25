@@ -21,8 +21,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User # ensure data is saved to User model
-        fields = ['username',
-                  'email']
+        fields = ['first_name', 'last_name','email']
 
 class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
