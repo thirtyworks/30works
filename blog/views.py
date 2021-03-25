@@ -263,7 +263,7 @@ class UserPostListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
         user = user_profile.user
-        posts = Post.objects.filter(author=user).order_by('datetime_posted')
+        posts = Post.objects.filter(author=user).order_by('-datetime_posted')
         context = super(UserPostListView, self).get_context_data(**kwargs)
         context['posts'] = posts
         context['user_details'] = user
