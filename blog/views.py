@@ -68,6 +68,10 @@ def home(request):
 def about(request):
     return render(request, "about.html", context={'title': 'About 30Works'})
     
+def event_day(request):
+    day = get_event_day()
+    return HttpResponseRedirect(reverse('artist-posts', kwargs={'day': day}))
+
 
 # Show all User/Artist posts on a current day
 class PostsListView(ListView):

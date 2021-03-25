@@ -26,14 +26,14 @@ from django.conf.urls.static import static
 from datetime import date, datetime
 import os
 import json
-
+from blog import views as blog_views
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
 
 if datetime.now() > datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021' ), "%d-%m-%Y") :
-    set_homepage = path('', home, name='home')
+    set_homepage = path('', blog_views.event_day, name="home")
 else:
     set_homepage = path('', countdown, name='home')
     
