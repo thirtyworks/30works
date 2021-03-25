@@ -1,95 +1,99 @@
 {% extends "base.html" %}
-{% load embed_video_tags %}
+{% load embed_video_tags thumbnail %}
 {% load index %}
 
 
 {% block content %}
-<style>
+<div class="profile-header p-3 my-3 rounded text-center">
+  <div class="row">
+    <div class="col-md-12">
+      {% thumbnail user_details.user_profile.profilepic "150x150" crop="10px 10px" format="PNG" as im %}
+        <img class="img-fluid img-thumbnail"  src="{{ im.url }}">
+      {% endthumbnail %}
+    </div>
+    <div class="col-md-12 text-center">
+      <h1 class="mb-2">{{ user_details.first_name }} {{ user_details.last_name }}</h1>
+      <h4 class="mb-2">{{ user_details.username  }}</h4>
+      {% if user_details.user_profile.bio %}
+        <p class="mb-2"><span class="font-weight-bold">Bio:</span> {{ user_details.user_profile.bio }}</p>
+      {% endif %}
+      {% if user_details.user_profile.contact_info %}
+        <p class="mb-2"><span class="font-weight-bold">Contact Info:</span> {{ user_details.user_profile.contact_info }}</p>
+      {% endif %}
+      {% if user_details.user_profile.url %}
+        <p class="mb-2"><span class="font-weight-bold">Website:</span> {{ user_details.user_profile.url }}</p>
+      {% endif %}
+      {% if user_details.user_profile.insta_handler %}
+        <p class="mb-2"><span class="font-weight-bold">Insta:</span> {{ user_details.user_profile.insta_handler }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="infinite-container">
+    <div class="row">
 
-.infinite-item{
-  display: none;
-}
-iframe, object, embed{
-    max-width: 100%;
+      {% if posts %}
+      {% for post in posts %}
+      <div class="col-lg-12">
+        <div class="super-header mb-2">
+          <h1>Day {{post.day}}</h1>
+          <hr>
+        </div>
+      </div>
+      <!-- Picture -->
+        {% if post.postpic %}
+        <div class="col-lg-12 mb-3">
+          <div class="card border-dark">
+              <img class="img-fluid" src="{{ post.postpic.url }}">
+            <div class="p-3 text-center">
+              {{post.alt_text}}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      <!-- Picture -->
+        
+        <!-- Video/Audio url -->
+        {% if post.postvideo %}
+        <div class="col-lg-12 mb-3">
+          <div class="bg-dark">
+            {% video post.postvideo as my_video %} 
+                {% video my_video 'huge' %}
+            {% endvideo %}
+          </div>
+          <div class="p-3 text-center">
+            {{post.alt_text}}
+          </div>
+        </div>
+        {% endif %}
+        <!-- Video url -->
 
-}
-img{
-  height: auto;
-}
-@media screen and (max-width: 768px) {
-    iframe,img {
-        max-width: 100% !important;
-        width: auto !important;
-        height: auto !important;
-    }
+        <!-- page url -->
+        {% if post.url %}
+        <div class="col-lg-12 mb-3">
+          <div class="card">
+            <div class="post-link text-center bg-dark d-flex">
+              <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
+            </div>
+            <div class="p-3 text-center">
+              {{post.alt_text}}
+            </div>
+          </div>
+        </div>  
+        {% endif %}
+        <!-- page url -->
+        
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <div class="text-center">
+            <h2>Artist has not posted anything yet. Check back later!</h2>
+          </div>
+        </div>
+        {% endif %}
+        
+      </div>
 
-}
-@media only screen
-    and (min-device-width : 375px)
-    and (max-device-width : 825px)
-    and (orientation : landscape)
-
-{
-  iframe,img {
-        max-width: 100% !important;
-        width: auto !important;
-        height: auto !important;
-    }
-}
-/* #button {
-
-  display: inline-block;
-  background-color: #FF9800;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  border-radius: 4px;
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  transition: background-color .3s,
-    opacity .5s, visibility .5s;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 1000;
-}
-#button::after {
-  content: "\f077";
-  font-family: FontAwesome;
-  font-weight: normal;
-  font-style: normal;
-  font-size: 2em;
-  line-height: 50px;
-  color: #fff;
-}
-#button:hover {
-  cursor: pointer;
-  background-color: #333;
-}
-#button:active {
-  background-color: #555;
-}
-#button.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Styles for the content section */
-
-
-@media (min-width: 500px) {
-
-  #button {
-    margin: 30px;
-  }
-} */
-</style>
-<div class="infinite-container text-center">
-    {% if user.username == user_details.username %}
-      <h1 class="mb-3">My Works</h1>
-    {% else %}
-    <h1 class="mb-3">{{ user_details.first_name }}'s Works</h1>
-    {% endif %}
     {% if user_details.user_profile.insta_handler %}
         <h4><strong>Instagram:</strong> {{ user_details.user_profile.insta_handler }}</h4>
     {% endif %}
@@ -104,84 +108,10 @@ img{
 
     <br>
     <br>
-
-    {% for post in posts %}
-
-
-    <div class="infinite-item" aria-labelledby="{{post.alt_text}}">
-        <br>
-        <!-- The video tag: -->
-        {% if post.postvideo %}
-          {% video post.postvideo as my_video %}
-          {% video my_video "large" %}
-        {% endvideo %}
-
-      <!-- Or embed shortcut: -->
-      {% video my_video '800x600' %}
-      {% elif post.postpic %}
-<!--      <img src="{{ post.postpic.url }}" width="960px" height="720px" data-name='{{post.day.number}}' alt="{{post.alt_text}}">-->
-      <img src="{{ post.postpic.url }}" data-name='{{post.day.number}}' alt="{{post.alt_text}}">
-
-      {% else %}
-      {% if post.url|slice:":4" == 'http' %}
-      <h1> <a href="{{ post.url }}"  target="_blank"> {{ post.url }} </a></h1>
-   {% else %}
-   <h1> <a href="//{{ post.url }}"  target="_blank"> {{ post.url }} </a></h1>
-   {% endif %}
-      {% endif %}
-      <br><br>
-      <h4>{{post.title}}</h4>
-
-      <h4 class="post_day" data-date="{{post.day}}"><a class="btn btn-primary btn-lg mt-2 "  href="/post/{{post.id}}">EDIT POST</a></h4>
-    {% endfor %}
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-  <script>
-         document.querySelectorAll(".post_day").forEach(function(elem){
-       if(elem.getAttribute("data-date") != localStorage.getItem("date_value")){
-            elem.style.display = 'none';
-       }
-     })
-    if(document.querySelector('img')){
-        document.querySelector("select").value = document.querySelector('img').getAttribute("data-name")
-    }
-    else{
-      document.querySelector("select").value = sessionStorage.getItem("value")
-    }
-    var count = 0;
-    $(".infinite-item").slice(0, 2).show();
-
-function load() {
-        $(".infinite-item:hidden").slice(0, 1).slideDown();
-        if ($(".infinite-item:hidden").length == 0) {
-            count ++;
-        }
-        // $('html,body').animate({
-        //     scrollTop: $(this).offset().top
-        // }, 1500);
-
-}
-$(document.body).on('touchmove', onScroll); // for mobile
-$(window).on('scroll', onScroll);
-
-var addition_constant = 0;
-
-// callback
-function onScroll(){
-  if(count === 0){
-    var addition = ($(window).scrollTop() + window.innerHeight);
-    var scrollHeight = (document.body.scrollHeight - 1);
-    
-    if (addition > scrollHeight && addition_constant < addition) {
-        $(window).unbind('scroll');
-        load();
-    }
-  }
-}
-
-</script>
 
 {% endblock content %}
-<!--</body>-->
-<!--</html>-->
+{% block extra_js %}
+
+{% endblock %}

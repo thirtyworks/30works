@@ -170,3 +170,13 @@ iframe, object, embed{
   justify-content: center; 
   flex-wrap: wrap;
 } 
+
+/* Profile page */
+.profile-header{
+  background-color: #ffd1e0;
+}
+
+.profile-header img{
+  background-color: #fff;
+  padding: 5px;
+}
