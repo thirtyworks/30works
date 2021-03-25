@@ -82,6 +82,6 @@ def profile(request):
 def artists(request):
     artists = {}
     # Get all users/artists except current logged in user
-    users = User.objects.filter(is_staff=False, is_superuser=False).exclude(username=request.user)
+    users = User.objects.filter(is_superuser=False).exclude(username=request.user)
     return render(request, 'users/artists.html', context={'artists':users})
     
