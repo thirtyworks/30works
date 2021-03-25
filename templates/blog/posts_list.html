@@ -90,11 +90,11 @@
               <h6 class="m-0 p-0">Username: {{post.author.username}}</h6>
               <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}" class="m-0 p-0"> View profile</a>
             </div>
-            <div class="post-link text-center bg-dark">
-              <h4><a href="{{post.url}}" target="_blank">{{post.alt_text}}</a></h4> 
+            <div class="post-link text-center bg-dark d-flex">
+              <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
             </div>
             <div class="p-3 text-center">
-              Webpage URL
+              {{post.alt_text}}
             </div>
           </div>
         </div>  

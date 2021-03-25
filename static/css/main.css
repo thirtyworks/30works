@@ -164,10 +164,9 @@ iframe, object, embed{
 
 /* posts page */
 .card .post-link {
-  height: 450px; 
-} 
-
-.card .post-link h4{
-  vertical-align: middle;
-  line-height: 450px;  
+  height: 467px; 
+  padding: 10px;
+  align-content: center;
+  justify-content: center; 
+  flex-wrap: wrap;
 } 
