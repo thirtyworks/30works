@@ -170,6 +170,10 @@ iframe, object, embed{
   justify-content: center; 
   flex-wrap: wrap;
 } 
+.card .media-link {
+  height: 300px;
+} 
+
 
 /* Profile page */
 .profile-header{
@@ -179,4 +183,36 @@ iframe, object, embed{
 .profile-header img{
   background-color: #fff;
   padding: 5px;
+}
+
+.post-info a{
+  text-decoration: none;
+}
+.post-info a h2:hover{
+  text-decoration: none;
+  color: #fa0657 !important;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+  .card .media-link {
+    height: 450px;
+  } 
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .card .media-link {
+    height: 550px;
+  } 
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+  .card .media-link {
+    height: 700px;
+  }   
+
+
 }
