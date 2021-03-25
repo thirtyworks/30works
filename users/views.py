@@ -53,7 +53,7 @@ class MyUserUpdateForm(UserUpdateForm):
             raise ValidationError("Invalid character in username")
         super().clean()
 
-
+# Update account profile info
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -77,11 +77,10 @@ def profile(request):
         'u_form': u_form,
         'p_form': p_form
     }
-    return render(request, 'users/profile.html', context)
+    return render(request, 'users/edit-profile.html', context)
 
+# Get all users/artists except current logged in user
 def artists(request):
-    artists = {}
-    # Get all users/artists except current logged in user
     users = User.objects.filter(is_superuser=False).exclude(username=request.user)
     return render(request, 'users/artists.html', context={'artists':users})
     
