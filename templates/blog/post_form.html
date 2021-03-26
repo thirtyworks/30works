@@ -1,16 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-.hide{
-    display: none;
-}
-label{
-    font-weight: bold;
-}
-#select,#select2{
-  display: none !important;
-}
-</style>
 <div class="content-section mt-5">
     <div class="text-center">
     <h2>Submit for <span class="text-info">Day {{latest_day}}</span> </h2>
@@ -109,3 +98,13 @@ label{
 </script>
 
 {% endblock content %}
+{% block extra_css %}
+<style>
+  .hide{
+      display: none;
+  }
+  label{
+      font-weight: bold;
+  }
+  </style>
+{% endblock %}
