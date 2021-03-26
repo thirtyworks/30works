@@ -9,17 +9,16 @@ admin.site.register(Day)
 
 class PostAdmin(admin.ModelAdmin):
     list_filter = (
-        # for ordinary fields
         ('day__number', DropdownFilter),
-        ('author__username', DropdownFilter),
-        # # for choice fields
-        # ('a_choicefield', ChoiceDropdownFilter),
-        # # for related fields
-        # ('a_foreignkey_field', RelatedDropdownFilter),
     )
 
-    list_display = ['title', 'author', 'day', 'anything_else']
+    list_display = ['title', 'get_email', 'day', 'anything_else']
 
-    search_fields = ['title', 'author__username', 'author__email']
+    search_fields = ['title', 'author__username', 'author__email', 'author__first_name', 'author__last_name']
+
+    def get_email(self, obj):
+        return obj.author.email
+    get_email.admin_order_field  = 'email' 
+    get_email.short_description = 'Email' 
 
 admin.site.register(Post, PostAdmin)
