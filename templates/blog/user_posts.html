@@ -20,19 +20,20 @@
         <p class="mb-2"><span class="font-weight-bold">Website:</span> {{ user_details.user_profile.url }}</p>
       {% endif %}
       {% if user_details.user_profile.insta_handler %}
-        <p class="mb-2"><span class="font-weight-bold">Insta:</span> {{ user_details.user_profile.insta_handler }}</p>
+        <span class="font-weight-bold">Instagram: </span><a class="mb-2" href="">{{ user_details.user_profile.insta_handler }}</a>
       {% endif %}
     </div>
   </div>
 </div>
 <div class="infinite-container">
     <div class="row">
-
       {% if posts %}
       {% for post in posts %}
       <div class="col-lg-12">
-        <div class="super-header mb-2">
-          <h1>Day {{post.day}}</h1>
+        <div class="super-header post-info mb-2">
+          <a href="{% url 'artist-posts' post.day %}">
+            <h1><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Day {{post.day}}</i></h1> 
+          </a>
           <hr>
         </div>
       </div>
@@ -40,11 +41,26 @@
         {% if post.postpic %}
         <div class="col-lg-12 mb-3">
           <div class="card border-dark">
-              <img class="img-fluid" src="{{ post.postpic.url }}">
+            <img class="img-fluid" src="{{ post.postpic.url }}">
             <div class="p-3 text-center">
-              {{post.alt_text}}
+              {{post.title}}
             </div>
           </div>
+          {% if user.id == posts.0.author.id %}
+            <div class="status-holder text-right pr-1">
+              {% if not post.is_private %}
+                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+              {% else %}
+                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if user.id == posts.0.author.id and this_day == post.day.number %}
+          <div class="btn-holder text-right">
+            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+          </div>
+          {% endif %}
         </div>
         {% endif %}
       <!-- Picture -->
@@ -52,14 +68,27 @@
         <!-- Video/Audio url -->
         {% if post.postvideo %}
         <div class="col-lg-12 mb-3">
-          <div class="bg-dark">
+          <div class="bg-dark media-link">
             {% video post.postvideo as my_video %} 
-                {% video my_video 'huge' %}
+                {% video my_video '100% x 100%' %}
             {% endvideo %}
           </div>
-          <div class="p-3 text-center">
-            {{post.alt_text}}
+          {% if user.id == posts.0.author.id  %}
+            <div class="status-holder text-right pr-1">
+              {% if not post.is_private %}
+                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+              {% else %}
+                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if user.id == posts.0.author.id and this_day == post.day.number %}
+          <div class="btn-holder text-right">
+            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
           </div>
+          {% endif %}
+     
         </div>
         {% endif %}
         <!-- Video url -->
@@ -71,10 +100,22 @@
             <div class="post-link text-center bg-dark d-flex">
               <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
             </div>
-            <div class="p-3 text-center">
-              {{post.alt_text}}
-            </div>
           </div>
+          {% if user.id == posts.0.author.id %}
+            <div class="status-holder text-right pr-1">
+              {% if not post.is_private %}
+                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+              {% else %}
+                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if user.id == posts.0.author.id and this_day == post.day.number %}
+          <div class="btn-holder text-right">
+            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+          </div>
+          {% endif %}
         </div>  
         {% endif %}
         <!-- page url -->
@@ -88,22 +129,7 @@
         </div>
         {% endif %}
         
-      </div>
-
-    {% if user_details.user_profile.insta_handler %}
-        <h4><strong>Instagram:</strong> {{ user_details.user_profile.insta_handler }}</h4>
-    {% endif %}
-
-    {% if user_details.user_profile.url %}
-        {% if user_details.user_profile.url|slice:":4" == 'http' %}
-            <h4> <a href="{{ user_details.user_profile.url }}"  target="_blank">{{ user_details.user_profile.url }}</a></h4>
-        {% else %}
-            <h4> <a href="//{{ user_details.user_profile.url }}" target="_blank">{{ user_details.user_profile.url }}</a></h4>
-        {% endif %}
-    {% endif %}
-
-    <br>
-    <br>
+    </div>
 </div>
 
 

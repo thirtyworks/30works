@@ -92,56 +92,14 @@ class PostsListView(ListView):
         this_day = Day.objects.values_list('number', flat=True).get(number=self.kwargs.get('day')) 
         days_done = Day.objects.filter(number__range=(1, day_num)) 
 
-        context = super(PostsListView, self).get_context_data(**kwargs)
-        if this_day <= day:
-            posts = Post.objects.filter(day__number=this_day, is_private=False).order_by('-datetime_posted')
-        else:
-            posts = None
+        context = super(PostsListView, self).get_context_data(**kwargs) 
+        posts = Post.objects.filter(day__number=this_day, is_private=False).order_by('-datetime_posted')
+
         context['posts'] = posts
         context['days_done'] = days_done
         context['this_day'] = this_day
         return context
 
-
-
-class PostDetailView(DetailView):
-    model = Post
-
-    def post(self, request, *args, **kwargs):
-        name = request.POST.get("pk")
-        # product = Product.objects.get(pk=pk)
-        thepost = Post.objects.get(pk=name)
-
-        if "rotate-left" in request.POST:
-
-            # if the post is a picture upload
-            if thepost.postpic:
-                print('gunna rotate the post left ' + thepost.title)
-                # open the image
-                im = Image.open(thepost.postpic.path)
-
-                im = im.rotate(90, expand=True)
-
-                # save the image file
-                im.save(thepost.postpic.path)
-                print('SAVED THE IMAGEEEE')
-
-        if "rotate-right" in request.POST:
-
-            # if the post is a picture upload
-            if thepost.postpic:
-                print('gunna rotate the post right ' + thepost.title)
-                # open the image
-                im = Image.open(thepost.postpic.path)
-
-                im = im.rotate(-90, expand=True)
-
-                # save the image file
-                im.save(thepost.postpic.path)
-                print('SAVED THE IMAGEEEE')
-
-
-        return redirect('post-detail', pk=thepost.id)
 
 # Part of handling post form for PostCreateView
 class CreatePostForm(forms.ModelForm):
@@ -156,20 +114,16 @@ class CreatePostForm(forms.ModelForm):
 
     def clean(self):
         day_num = get_event_day()
-        # check that user has not already submitted today
         current_user = self.user  # from init
-        # datetime_posted__date=timezone.now().date() saving here
+
         if Post.objects.filter(author=current_user, day__number=day_num, author__is_staff=False).exists():
-            # messages.error(current_user, 'You already submitted something today!')
             print('User {} was forbidden from posting again today'.format(self.user))
-            raise forms.ValidationError("You already submitted something today")
         else:
             print('This is the users first submission ofthe day 1!!!!')
 
         current_user_profile = UserProfile.objects.get(user=current_user)
         if current_user_profile.blocked:
             print('User us blocked!!!!!!!!!!!!!!!!!!!')
-            raise forms.ValidationError("Sorry, you are not allowed to submit anymore.")
         else:
             print('USer is not blocked')
         super().clean()
@@ -177,7 +131,6 @@ class CreatePostForm(forms.ModelForm):
 # User add post of the day
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    # fields = ['title', 'content']
     form_class = CreatePostForm
 
     def get_form_kwargs(self):
@@ -185,6 +138,19 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def form_invalid(self, form):
+        day_num = get_event_day()
+        current_user_profile = UserProfile.objects.get(user__id=self.request.user.id)
+        if current_user_profile.blocked:
+            print('User us blocked!!!!!!!!!!!!!!!!!!!')
+            messages.error(self.request,"Sorry, you are not allowed to submit anymore.")        
+
+        if Post.objects.filter(author__id=self.request.user.id, day__number=day_num, author__is_staff=False).exists():
+            print('User {} was forbidden from posting again today'.format(self.request.user))
+            messages.error(self.request, "You already submitted something today")   
+
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         '''
@@ -197,16 +163,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.day = day
 
         is_private = form.instance.is_private
-
-        print('HWLLOOOO is this a private post?? {}'.format(is_private))
-        if is_private:
-            try:
-                email_from = settings.EMAIL_HOST_USER
-                send_mail("Thanks for submitting for day {}".format(day.number), "Your work has been received!", email_from, [self.request.user.email])
-            except SMTPResponseException as smtp_exception:
-                print('Problem sending confirmation email!!')
-                print(smtp_exception)
-
 
         return super().form_valid(form)
 
@@ -223,16 +179,20 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('success')
 
-
+# Update user post
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'url']
+    fields = ['title', 'url', 'postpic', 'postvideo', 'alt_text', 'is_private', 'anything_else']
+    template_name_suffix = '_update_form'
 
     def form_valid(self, form):
         '''
         Assign the currently logged-in user as the author of this post
         '''
         form.instance.author = self.request.user
+      
+        print(form.instance.postpic)
+   
         return super().form_valid(form)
 
     def test_func(self):
@@ -240,29 +200,36 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         Check that the currently logged-in user is the author of the post attempting to be updated
         '''
         post = self.get_object()
-        return self.request.user == post.author
+        print(get_event_day() == post.day.number) #todo: add to condition
+        return self.request.user == post.author 
 
+    def get_success_url(self):
+        messages.success(self.request, 'Your post has been updated')
+        return self.request.path_info
+
+# Delete user post
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    success_url = '/'
 
     def test_func(self):
         '''
         Check that the currently logged-in user is the author of the post attempting to be updated
         '''
         post = self.get_object()
+        print(post.author.user_profile.acount_id)
         return self.request.user == post.author
+    
+    def get_success_url(self):
+        post = self.get_object()
+        messages.success(self.request, 'Your post has successfully been deleted')
+        return reverse('user-posts', args=([post.author.user_profile.acount_id]))
 
 # Display user/artist profile with their works
 class UserPostListView(ListView):
     model = Post
-    template_name = 'blog/user_posts.html'  # <app>/<model>_<viewtype>.html
-    # by default ListView will want to loop over a variable called `object_list`, but we called it `posts`
-    # in the dictionary above
+    template_name = 'blog/user_posts.html' 
     context_object_name = 'posts'
-    ordering = ['datetime_posted']  # oldest to newst
-
-    # ordering = ['-date_posted'] # newest to oldest
+    ordering = ['-datetime_posted']  
 
     def get_context_data(self, *, object_list=None, **kwargs):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
@@ -270,40 +237,11 @@ class UserPostListView(ListView):
         posts = Post.objects.filter(author=user).order_by('-datetime_posted')
         context = super(UserPostListView, self).get_context_data(**kwargs)
         context['posts'] = posts
+        context['this_day'] = get_event_day()
         context['user_details'] = user
         return context
 
-    # def get_queryset(self):
-    #     user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
-    #     user = user_profile.user
-    #     return Post.objects.filter(author=user, is_private=False).order_by('datetime_posted')
-
-
-
-
-def user_detail(request):
-    # day = request.POST['day']
-    # username = request.POST['username']
-    day = request.GET['day']
-    username = request.GET['username']
-    try:
-        user = User.objects.get(username=username)
-        user_profile = UserProfile.objects.get(user=user)
-        day_number = Day.objects.get(number=day)
-        # mymodel.objects.filter(first_name__icontains="Foo", first_name__icontains="Bar")
-
-        posts = Post.objects.filter(author=user, day=day_number)
-    except:
-        posts = {}
-    return render(request, "blog/user_blogs.html", context={'posts': posts, 'users': user_profile})
-
-
-# def countdown(request):
-#     start_date = datetime.now()
-#     live_date = datetime.strptime(config_json["live_date"], "%d-%m-%Y") 
-#     remaining_days = abs((live_date - start_date).days)
-#     return render(request, "countdown.html")
-
+# Success page
 def success(request):
-    return render(request, "blog/success.html")
+    return render(request, "success.html")
 

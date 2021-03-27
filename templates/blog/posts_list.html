@@ -5,10 +5,10 @@
 <div class="artist-posts my-4">
   
   <div class="days-nav text-center">
-    Day:
+    <span class="font-weight-bold">Day:</span class="bold">
     {% for i in days_done %}
-        {% if i in this_day %}
-        {{i}} |
+        {% if i.number == this_day %}
+        <span class="text-success font-weight-bold">{{i}}</span> |
         {% else %}
         <a href="{% url 'artist-posts' i %}">
           {{i}}
@@ -18,7 +18,7 @@
   </div>
 
   <div class="super-header mb-5">
-    <h1>Day {{this_day}}</h1>
+    <h1><i class="fa fa-calendar" aria-hidden="true"></i> Day {{this_day}}</h1>
     <hr>
   </div>
 
@@ -34,7 +34,7 @@
             <div class="card border-dark">
               <div class="post-info pl-3 pt-2 mb-3">
                 <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                  <h2 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h2>
+                  <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
                 </a>
               </div>
                 {% if post.postpic|is_portrait %}
@@ -44,9 +44,7 @@
                   {% endthumbnail %}
                   </div>
                 {% else %}
-                  <div class="landscape">
-                    <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-                  </div>
+                  <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
                 {% endif %}     
               <div class="p-3 text-center">
                 {{post.title}}
@@ -62,7 +60,7 @@
           <div class="card border-dark">
             <div class="post-info pl-3 pt-2 mb-3">
               <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                <h2 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h2>
+                <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
               </a>            
             </div>
             <div class="bg-dark media-link">
@@ -81,7 +79,7 @@
           <div class="card border-dark">
             <div class="post-info pl-3 pt-2 mb-3">
               <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                <h2 class="m-0 p-0">{{post.author.first_name|title}} {{post.author.last_name|title}}</h2>
+                <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
               </a>            
             </div>
             <div class="post-link text-center bg-dark d-flex">

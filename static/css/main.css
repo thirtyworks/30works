@@ -170,7 +170,8 @@ iframe, object, embed{
   justify-content: center; 
   flex-wrap: wrap;
 } 
-.card .media-link {
+
+.media-link {
   height: 300px;
 } 
 
@@ -188,14 +189,15 @@ iframe, object, embed{
 .post-info a{
   text-decoration: none;
 }
-.post-info a h2:hover{
+.post-info a h2:hover,
+.post-info a h1:hover{
   text-decoration: none;
   color: #fa0657 !important;
 }
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
-  .card .media-link {
+  .media-link {
     height: 450px;
   } 
 
@@ -203,14 +205,14 @@ iframe, object, embed{
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) { 
-  .card .media-link {
+  .media-link {
     height: 550px;
   } 
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) { 
-  .card .media-link {
+  .media-link {
     height: 700px;
   }   
 
