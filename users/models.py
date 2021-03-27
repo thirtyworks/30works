@@ -14,7 +14,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
     bio = models.TextField(default='', blank=True, null=True)
     contact_info = models.TextField(default='', blank=True, null=True)
-    profilepic = models.ImageField(default='default_profilepic.png', upload_to='profile_pics')
     blocked = models.BooleanField(default=False)
     insta_handler = models.TextField(default='', blank=True, null=True)
     url = models.CharField(max_length=100, blank=True, null=True)
@@ -41,10 +40,3 @@ class UserProfile(models.Model):
             User.objects.filter(username=self.user.username).update(is_active=True)
 
         super(UserProfile, self).save(*args, **kwargs)
-        
-        im = Image.open(self.profilepic.path)
-
-        if im.height > 300 or im.width > 300:
-            output_size = (300,300)
-            im.thumbnail(output_size)
-            im.save(self.profilepic.path)

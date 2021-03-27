@@ -6,11 +6,6 @@
 {% block content %}
 <div class="profile-header p-3 my-3 rounded text-center">
   <div class="row">
-    <div class="col-md-12">
-      {% thumbnail user_details.user_profile.profilepic "150x150" crop="10px 10px" format="PNG" as im %}
-        <img class="img-fluid img-thumbnail"  src="{{ im.url }}">
-      {% endthumbnail %}
-    </div>
     <div class="col-md-12 text-center">
       <h1 class="mb-2">{{ user_details.first_name }} {{ user_details.last_name }}</h1>
       {% if user_details.user_profile.bio %}
