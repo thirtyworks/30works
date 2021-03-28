@@ -22,4 +22,4 @@ def filter_range(start, end):
 @register.simple_tag
 def get_num():   
     current_event_day = get_event_day()
-    return [i for i in range(1, 31) if i <= current_event_day]
+    return [i for i in range(1, 31) if i <= 20]

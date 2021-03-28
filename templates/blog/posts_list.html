@@ -113,54 +113,45 @@
           </div>
         </div>
         {% endif %}    
-      </div>
+      
+    </div>
+
+    {% if is_paginated %}
+    <nav aria-label="navigation">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">&laquo</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="" tabindex="-1" aria-disabled="true">&laquo</a>
+          </li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">&raquo</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   </div>  
 </div>
 
 
 {% endblock %}
-
-{% block extra_js %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<script>
-  if (document.querySelector("img")) {
-    document.querySelector("select").value = document
-      .querySelector("img")
-      .getAttribute("data-name");
-  } else {
-    document.querySelector("select").value = sessionStorage.getItem("value");
-  }
-  var count = 0;
-  $(".infinite-item").slice(0, 2).show();
-
-  function load() {
-    $(".infinite-item:hidden").slice(0, 1).slideDown();
-    if ($(".infinite-item:hidden").length == 0) {
-      count++;
-    }
-    // $('html,body').animate({
-    //     scrollTop: $(this).offset().top
-    // }, 1500);
-  }
-  $(document.body).on("touchmove", onScroll); // for mobile
-  $(window).on("scroll", onScroll);
-
-  var addition_constant = 0;
-
-  // callback
-  function onScroll() {
-    if (count === 0) {
-      var addition = $(window).scrollTop() + window.innerHeight;
-
-      var scrollHeight = document.body.scrollHeight - 1;
-      if (addition > scrollHeight && addition_constant < addition) {
-        $(window).unbind("scroll");
-        load();
-      }
-    }
-  }
-</script>
-{% endblock %}
-
 

@@ -76,15 +76,13 @@ def event_day(request):
 # Show all User/Artist posts on a current day
 class PostsListView(ListView):
     model = Post
-    template_name = 'blog/posts_list.html'  # <app>/<model>_<viewtype>.html
-    # by default ListView will want to loop over a variable called `object_list`, but we called it `posts`
-    # in the dictionary above
-    # context_object_name = 'posts'
-    # ordering = ['date_posted']  # oldest to newst
-    # ordering = ['-date_posted'] # newest to oldest
+    template_name = 'blog/posts_list.html' 
+    paginate_by = 25
+    context_object_name = 'posts'
 
-    # queryset = Post.objects.all()
-    # paginator = Paginator(queryset, paginate_by)
+    def get_queryset(self):
+        this_day = Day.objects.values_list('number', flat=True).get(number=self.kwargs.get('day'))
+        return Post.objects.filter(day__number=this_day, is_private=False).order_by('-datetime_posted')
 
     def get_context_data(self,**kwargs):
         day_num = get_event_day()
@@ -93,9 +91,7 @@ class PostsListView(ListView):
         days_done = Day.objects.filter(number__range=(1, day_num)) 
 
         context = super(PostsListView, self).get_context_data(**kwargs) 
-        posts = Post.objects.filter(day__number=this_day, is_private=False).order_by('-datetime_posted')
-
-        context['posts'] = posts
+    
         context['days_done'] = days_done
         context['this_day'] = this_day
         return context
@@ -228,14 +224,17 @@ class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html' 
     context_object_name = 'posts'
-    ordering = ['-datetime_posted']  
+    paginate_by = 10
 
+    def get_queryset(self):
+        user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
+        user = user_profile.user
+        return Post.objects.filter(author=user).order_by('-datetime_posted')
+    
     def get_context_data(self, *, object_list=None, **kwargs):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
         user = user_profile.user
-        posts = Post.objects.filter(author=user).order_by('-datetime_posted')
         context = super(UserPostListView, self).get_context_data(**kwargs)
-        context['posts'] = posts
         context['this_day'] = get_event_day()
         context['user_details'] = user
         return context

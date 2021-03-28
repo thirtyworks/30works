@@ -29,7 +29,7 @@
             <option value="" selected disabled>?</option>
               {% get_num as event_days %}
               {% for day in event_days %}
-                <option>{{day}}</option>  
+                <option value="{{day}}">{{day}}</option>  
               {% endfor %}
           </select>
           <a class="nav-item nav-link" href="{% url 'artists' %}"
