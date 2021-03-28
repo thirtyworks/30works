@@ -144,7 +144,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
         if Post.objects.filter(author__id=self.request.user.id, day__number=day_num, author__is_staff=False).exists():
             print('User {} was forbidden from posting again today'.format(self.request.user))
-            messages.error(self.request, "You already submitted something today")   
+            messages.error(self.request, "You already submitted a post today.")   
         return super().form_invalid(form)
 
     def form_valid(self, form):
