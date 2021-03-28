@@ -25,8 +25,10 @@
         <!-- Navbar Right Side -->
         <div class="navbar-nav">
           <span class="navbar-text" id="select2">Day: </span>
-          <select class="form_control" id="select">
-              {% for day in 1|range:30 %}
+          <select class="form_control mr-3" id="select">
+            <option value="" selected disabled>?</option>
+              {% get_num as event_days %}
+              {% for day in event_days %}
                 <option>{{day}}</option>  
               {% endfor %}
           </select>

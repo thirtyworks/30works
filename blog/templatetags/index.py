@@ -1,4 +1,6 @@
 from django import template
+from blog.views import get_event_day
+
 register = template.Library()
 
 @register.filter
@@ -16,3 +18,8 @@ def times(number):
 @register.filter(name='range') 
 def filter_range(start, end):   
     return range(start, end+1)
+
+@register.simple_tag
+def get_num():   
+    current_event_day = get_event_day()
+    return [i for i in range(1, 31) if i <= current_event_day]
