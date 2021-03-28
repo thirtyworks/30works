@@ -56,6 +56,17 @@
       {% endif %}
       <!-- page url -->
       
+      <!-- text post -->
+      {% if post.post_text %}
+      <div class="col-lg-12 mb-4">
+        <div class="card border-dark">
+          <div class="post-link text-center bg-dark d-flex">
+            <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+          </div>
+        </div>
+      </div>  
+      {% endif %}
+      <!-- text post -->
 
       {% endif %}
     </div>
@@ -95,9 +106,16 @@
         </div>
         {% endif %}
 
+        {% if post.post_text %}
+        <div class="form-group">
+          <label for="post_text">Text Post: (Max 2000 characters)</label>  
+          <textarea id="id_post_text" class="form-control" maxlength="2000" name="post_text"  rows="10" placeholder="Add Text" required="required">{{post.post_text}}</textarea>
+        </div>
+        {% endif %}
+
         <div class="form-group">
           <label for="exampleFormControlTextarea1">Anything else you'd like to say to us? (Max 250 characters)</label>
-          <textarea class="form-control" name="anything_else"  rows="5" placeholder="Anything else you'd like to say to us?">{{ post.anything_else }}</textarea>
+          <textarea class="form-control" name="anything_else"  rows="5" placeholder="Anything else you'd like to say to us?">{{ post.anything_else|default:'' }}</textarea>
         </div>
         
         <div class="custom-control custom-checkbox mr-sm-2">

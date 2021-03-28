@@ -109,7 +109,7 @@ class CreatePostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'url', 'postpic', 'postvideo', 'day', 'alt_text', 'is_private', 'anything_else']
+        fields = ['title', 'url', 'postpic', 'postvideo', 'post_text', 'day', 'alt_text', 'is_private', 'anything_else']
         exclude = ('day',)
 
     def clean(self):
@@ -132,7 +132,7 @@ class CreatePostForm(forms.ModelForm):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = CreatePostForm
-
+    
     def get_form_kwargs(self):
         """ add user to form kwargs """
         kwargs = super().get_form_kwargs()
@@ -149,7 +149,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         if Post.objects.filter(author__id=self.request.user.id, day__number=day_num, author__is_staff=False).exists():
             print('User {} was forbidden from posting again today'.format(self.request.user))
             messages.error(self.request, "You already submitted something today")   
-
         return super().form_invalid(form)
 
     def form_valid(self, form):
@@ -182,7 +181,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 # Update user post
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'url', 'postpic', 'postvideo', 'alt_text', 'is_private', 'anything_else']
+    fields = ['title', 'url', 'postpic', 'postvideo', 'post_text', 'alt_text', 'is_private', 'anything_else']
     template_name_suffix = '_update_form'
 
     def form_valid(self, form):

@@ -38,21 +38,6 @@ class MyUserUpdateForm(UserUpdateForm):
         self.current_user = kwargs.get('instance')
         super().__init__(*args, **kwargs)
 
-    # def clean(self):
-    #     print('HUNTING FOR DISALLAWED CHARS')
-    #     original_username = self.current_user.username  # from init
-    #     DISALLOWED_CHARS = r" /'!£$%^&*()+=~#:\\\""
-    #     username = self.data['username']
-    #     if any(elem in username for elem in DISALLOWED_CHARS):
-    #         print('Found a disallowed char!!!\n')
-    #         cleaned_username = copy.deepcopy(original_username)
-    #         for char in DISALLOWED_CHARS:
-    #             cleaned_username = cleaned_username.replace(char, '')
-    #         self.cleaned_data['username'] = cleaned_username
-    #         # self.cleaned_data['username'] = original_username
-    #         raise ValidationError("Invalid character in username")
-    #     super().clean()
-
 # Update account profile info
 @login_required
 def profile(request):

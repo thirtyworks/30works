@@ -3,11 +3,9 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from embed_video.fields import EmbedVideoField
-import copy
-from PIL import Image
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-
+from django import forms
 
 class Day(models.Model):
     number = models.IntegerField(verbose_name="Day Number", unique=True)
@@ -23,12 +21,12 @@ class Day(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     datetime_posted = models.DateTimeField(default=timezone.now)
-
     url = models.URLField(blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.ForeignKey(Day, on_delete=models.CASCADE)
     postpic = models.ImageField( upload_to='post_pics',blank=True, null=True)
     postvideo = EmbedVideoField(blank=True, null=True)
+    post_text = models.TextField(blank=True, null=True, max_length=2000)
     alt_text = models.CharField(max_length=250, default=None, null=True, blank=True)
     is_private = models.BooleanField(default=False)
     anything_else = models.CharField(max_length=250, default=None, null=True, blank=True)
@@ -40,6 +38,6 @@ class Post(models.Model):
         return ("Post " + str(self.id) + " " + str(self.title))
 
     def clean(self):
-        if (not self.postpic) and (not self.url) and (not self.postvideo):
-            raise ValidationError("You must specify an image to upload, a webpage URL, or a soundcloud/youtube/vimeo link")
         super().clean()
+        if (not self.postpic) and (not self.url) and (not self.postvideo) and (not self.post_text):
+            raise forms.ValidationError("You must specify an image to upload, a webpage URL, a soundcloud/youtube/vimeo link or a Text post!")
