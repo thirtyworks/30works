@@ -4,14 +4,15 @@
   <form method="POST" action="/edit-profile/" enctype="multipart/form-data">
     <div class="text-center my-4">
       <h2>Profile Info</h2>
+      <h6>Fields marked with a (<span class="text-danger">*</span>) are required</h6>
     </div>
     {% csrf_token %}
     <div class="row">
       <div class="col-md-12">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="first_name">First Name:</label>
-            <input type="text" class="form-control" name="first_name" value="{{ user.first_name|default:'' }}" placeholder="Enter First Name">
+            <label for="first_name">First Name: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="first_name" value="{{ user.first_name|default:'' }}" placeholder="Enter First Name" required>
           </div>
 
           <div class="form-group col-md-6">
@@ -21,7 +22,7 @@
         </div>
       
         <div class="form-group">
-          <label for="exampleFormControlInput1">Email address:</label>
+          <label for="exampleFormControlInput1">Email address: <span class="text-danger">*</span></label>
           <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}"  placeholder="Enter email"  required>
         </div>
 
