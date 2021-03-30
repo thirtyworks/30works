@@ -51,7 +51,7 @@
     </div> -->
 
     <div class="form-group mt-3" id="form" >
-      <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>):</label>
+      <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>): <span class="text-danger">*</span></label>
       <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)" required>
       <label for="alt_text">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
       <textarea class="form-control" maxlength="600"  name="alt_text"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>
@@ -84,19 +84,19 @@
  $('input[type=radio][name=options]').on('change', function() {
    console.log(this.value)
   if(this.value === "3"){
-    $("#form").html(` <label for="pwd">Webpage URL:</label>
+    $("#form").html(` <label for="pwd">Webpage URL: <span class="text-danger">*</span></label>
     <input class="form-control" name="url"  placeholder="Enter Url" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' title="Invalid Url" required />`)
   }
 
   else if(this.value === "4" ){
     $("#form").html(`
-      <label for="post_text">Text Post: (Max 2000 characters)</label>  
-      <textarea id="id_post_text" class="form-control" maxlength="2000" name="post_text"  rows="10" placeholder="Add Text" required="required"></textarea>
+      <label for="post_text">Text Post: (Max 10,000 characters) <span class="text-danger">*</span></label>  
+      <textarea id="id_post_text" class="form-control" maxlength="10000" name="post_text"  rows="10" placeholder="Add Text" required="required"></textarea>
     `)
   }
   else if(this.value === "1" ){
     $("#form").html(`        
-      <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>):</label>
+      <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>): <span class="text-danger">*</span></label>
       <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)" required>
       <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
       <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>
@@ -104,7 +104,7 @@
   }
   else if(this.value === "2" ){
     $("#form").html(` 
-     <label for="email">Post Video:</label>
+     <label for="email">Post Video: <span class="text-danger">*</span></label>
       <input type="url"  class="form-control mb-3" id="id_postvideo" placeholder="Enter Video Url" name="postvideo" required  >
       <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
       <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>`)

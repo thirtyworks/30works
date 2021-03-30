@@ -114,9 +114,9 @@
 
         {% if post.post_text %}
         <div class="form-group">
-          <label for="post_text">Text Post: (Max 2000 characters)</label>  
-          <textarea id="id_post_text" class="form-control" maxlength="2000" name="post_text"  rows="10" placeholder="Add Text" required="required">{{post.post_text}}</textarea>
-        </div>
+          <label for="post_text">Text Post: (Max 10,000 characters)</label>  
+          <textarea id="id_post_text" class="form-control" maxlength="10000" name="post_text"  rows="10" placeholder="Add Text" required="required"></textarea>
+            </div>
         {% endif %}
 
         <div class="form-group">

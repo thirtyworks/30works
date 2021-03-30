@@ -63,7 +63,7 @@
                 <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
               </a>            
             </div>
-            <div class="bg-dark media-link">
+            <div class="bg-dark media-link" title="{{ post.alt_text }}">
               {% video post.postvideo as my_video %} 
                   {% video my_video '100% x 100%' %}
               {% endvideo %}
