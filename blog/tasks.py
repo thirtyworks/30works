@@ -38,44 +38,43 @@ def pswd():
 def send_email(csv):
     df = pd.read_csv(csv)
     for i in df.index:
-    
 
-    try:
-        first_name = df['First Name'][i]
-        first_name.strip()
-        surname = df['Surname'][i]
-        surname.strip()
-        email = df['Email'][i]
-        username = create_username(first_name, surname)
-        password = password_generator(7)
-        # user = User.objects.create_user(
-        #     username=username, 
-        #     password=password, 
-        #     email=email,
-        #     first_name=first_name,
-        #     last_name=surname
-        # )
-        # user.is_superuser = False
-        # user.is_staff = False
-        # user.save()
+        try:
+            first_name = df['First Name'][i]
+            first_name.strip()
+            surname = df['Surname'][i]
+            surname.strip()
+            email = df['Email'][i]
+            username = create_username(first_name, surname)
+            password = password_generator(7)
+            # user = User.objects.create_user(
+            #     username=username, 
+            #     password=password, 
+            #     email=email,
+            #     first_name=first_name,
+            #     last_name=surname
+            # )
+            # user.is_superuser = False
+            # user.is_staff = False
+            # user.save()
 
-        print(f'Created User: {username}\nEmail: {email}\nPass: {password}\n==========')
-        message = render_to_string(
-            'email/new_acount_ready.txt',
-            {
-                'first_name': first_name,
-                'email': email,
-                'password': password,
-            }
-        )
-        send_mail(
-            subject=EMAIL_SUBJECT,
-            from_email=FROM_EMAIL,
-            message=message,
-            recipient_list=[email],)
+            print(f'Created User: {username}\nEmail: {email}\nPass: {password}\n==========')
+            message = render_to_string(
+                'email/new_acount_ready.txt',
+                {
+                    'first_name': first_name,
+                    'email': email,
+                    'password': password,
+                }
+            )
+            send_mail(
+                subject=EMAIL_SUBJECT,
+                from_email=FROM_EMAIL,
+                message=message,
+                recipient_list=[email],)
 
-    except IntegrityError as ie:
-        print(ie)
-        print(f'Unable to create User: {username}\nEmail: {email}\nPass: {password}\n==========')
-        
+        except IntegrityError as ie:
+            print(ie)
+            print(f'Unable to create User: {username}\nEmail: {email}\nPass: {password}\n==========')
+            
     return 'done!'

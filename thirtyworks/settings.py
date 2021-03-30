@@ -203,3 +203,5 @@ CELERY_BEAT_SCHEDULE = {
     },
 
 }
+# celery -A thirtyworks worker --pool=solo -l info - start worker
+# celery -A thirtyworks beat -l info - star beat
