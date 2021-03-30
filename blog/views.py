@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .models import Post, Day
 from django.views.generic import (ListView,
                                   DetailView,
@@ -110,16 +110,20 @@ class CreatePostForm(forms.ModelForm):
 
     def clean(self):
         day_num = get_event_day()
-        current_user = self.user  # from init
-
-        if Post.objects.filter(author=current_user, day__number=day_num, author__is_staff=False).exists():
+        # check that user has not already submitted today
+        current_user = self.user.id # from init
+    
+        if Post.objects.filter(author__id=current_user, day__number=day_num, author__is_staff=False).exists():
+            # messages.error(current_user, 'You already submitted something today!')
             print('User {} was forbidden from posting again today'.format(self.user))
+            raise forms.ValidationError("You already submitted something today")
         else:
-            print('This is the users first submission ofthe day 1!!!!')
+            print('This is the users first submission of the day !!')
 
-        current_user_profile = UserProfile.objects.get(user=current_user)
+        current_user_profile = UserProfile.objects.get(user=current_user.id)
         if current_user_profile.blocked:
             print('User us blocked!!!!!!!!!!!!!!!!!!!')
+            raise forms.ValidationError("Sorry, you are not allowed to submit anymore.")
         else:
             print('USer is not blocked')
         super().clean()
@@ -134,19 +138,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-
-    def form_invalid(self, form):
-        day_num = get_event_day()
-        current_user_profile = UserProfile.objects.get(user__id=self.request.user.id)
-        if current_user_profile.blocked:
-            print('User us blocked!!!!!!!!!!!!!!!!!!!')
-            messages.error(self.request,"Sorry, you are not allowed to submit anymore.")        
-
-        if Post.objects.filter(author__id=self.request.user.id, day__number=day_num, author__is_staff=False).exists():
-            print('User {} was forbidden from posting again today'.format(self.request.user))
-            messages.error(self.request, "You already submitted a post today.")   
-        return super().form_invalid(form)
-
+     
     def form_valid(self, form):
         '''
         Assign the currently logged-in user as the author of this post
