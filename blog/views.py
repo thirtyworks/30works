@@ -120,7 +120,7 @@ class CreatePostForm(forms.ModelForm):
         else:
             print('This is the users first submission of the day !!')
 
-        current_user_profile = UserProfile.objects.get(user=current_user.id)
+        current_user_profile = UserProfile.objects.get(user=current_user)
         if current_user_profile.blocked:
             print('User us blocked!!!!!!!!!!!!!!!!!!!')
             raise forms.ValidationError("Sorry, you are not allowed to submit anymore.")

@@ -38,10 +38,10 @@
                 </a>
               </div>
                 {% if post.postpic|is_portrait %}
-                  <div class="portrait">
-                  {% thumbnail post.postpic "1200x850" crop="center" format="PNG" as im %}
-                      <img class="img-fluid" src="{{ im.url }}" alt="{{ post.alt_text }}">
-                  {% endthumbnail %}
+                  <div class="box">
+                 
+                    <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                 
                   </div>
                 {% else %}
                   <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
