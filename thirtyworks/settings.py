@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import json
-
+from celery.schedules import crontab
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'kronos',
     'embed_video',
     'django_admin_listfilter_dropdown',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -179,11 +180,26 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config_json["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = config_json["EMAIL_HOST_PASSWORD"]
-DEFAULT_FROM_EMAIL='info@thirty.works'
+DEFAULT_FROM_EMAIL='30works <info@thirty.works>'
+
 # 30 works logic stuff
 NUM_DAYS = 30
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
+}
+
+CELERY_BEAT_SCHEDULE = {
+    # "scheduled_task" : {
+    #     "task" : "blog.tasks.add",
+    #     "schedule" : 5.0,
+    #     "args" : (10,10),
+    # },
+    "send_email_pass" : {
+        "task" : "blog.tasks.send_email",
+        "schedule" : crontab(),
+        "args": ('test.csv',)
+    },
+
 }
