@@ -87,8 +87,8 @@
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 250 characters) (<span class="text-danger">*</span>)</label>
-          <textarea class="form-control" name="alt_text"  rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>        
+          <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
+          <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>`)
         </div>
         {% endif %}
 
@@ -97,6 +97,12 @@
           <label for="postmedia">Post Video:</label>
           <input type="url"  class="form-control" id="postmedia" placeholder="Enter Media URL" name="postvideo" value='{{post.postvideo}}' required/>
         </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
+          <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>`)
+        </div>        
+        
         {% endif %}
 
         {% if post.url %}

@@ -27,7 +27,7 @@ class Post(models.Model):
     postpic = models.ImageField( upload_to='post_pics',blank=True, null=True)
     postvideo = EmbedVideoField(blank=True, null=True)
     post_text = models.TextField(blank=True, null=True, max_length=2000)
-    alt_text = models.CharField(max_length=250, default=None, null=True, blank=True)
+    alt_text = models.CharField(max_length=600, default=None, null=True, blank=True)
     is_private = models.BooleanField(default=False)
     anything_else = models.CharField(max_length=250, default=None, null=True, blank=True)
 
