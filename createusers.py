@@ -16,10 +16,6 @@ from blog.views import get_brief, get_event_day
 import json
 
 CSV_FILE = 'test.csv'
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
-    config_json = json.load(f)
 
 def password_generator(size):
     import random

@@ -189,6 +189,11 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+CELERY_BROKER_URL = 'amqp://test:test@212.71.249.145:5672//'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/London'
 
 CELERY_BEAT_SCHEDULE = {
     # "scheduled_task" : {
@@ -198,8 +203,7 @@ CELERY_BEAT_SCHEDULE = {
     # },
     "send_email_pass" : {
         "task" : "blog.tasks.send_email",
-        "schedule" : crontab(),
-        "args": ('test.csv',)
+        "schedule" : crontab(minute='*/2')
     },
 
 }

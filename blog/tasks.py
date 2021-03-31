@@ -35,8 +35,8 @@ def pswd():
     return password_generator(8)
 
 @shared_task
-def send_email(csv):
-    df = pd.read_csv(csv)
+def send_email():
+    df = pd.read_csv('test.csv')
     for i in df.index:
 
         try:
