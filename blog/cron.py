@@ -55,7 +55,7 @@ def email(subject, message, recipient_list):
     email_from = settings.EMAIL_HOST_USER
     send_mail( subject, message, email_from, recipient_list )
 
-@kronos.register('0 0 * * *')
+@kronos.register('* * * * *')
 def test():
     complaints = [
         "I forgot to migrate our applications's cron jobs to our new server! Darn!",
@@ -64,80 +64,81 @@ def test():
 
     print (random.choice(complaints))
 
-@kronos.register('*/2 0 * * *')
+@kronos.register('*/2 * * * *')
 def test_send():
     send_mail('test_subject', 'test-message', 'info@thirtyworks', ['aaialfa12@gmail.com'])
+    print('done')
 
-# @kronos.register('15 15 * * *') # set to 3:15 PM for testing
-@kronos.register('5 0 * * *') # set to 5 past midnight
-def complain():
-    rejected_users = []
-    accepted_users = []
-    latest_day = Day.objects.last()
-    posts = Post.objects.filter(day=latest_day)
-    authors_who_submitted_today = []
-    for post in posts:
-        authors_who_submitted_today.append(post.author.username)
-        print(post.title)
-    users = UserProfile.objects.all()
-    print(authors_who_submitted_today)
-    for user in users:
-        if user.user.is_active and not user.user.is_staff:
-            if user.user.username not in authors_who_submitted_today:
-                rejected_users.append(user.user.email)
-                user.user.is_active = False
-                user.user.save()
-                user.blocked = True
-                user.date_blocked = datetime.now()
-                user.save()
-            else:
-                accepted_users.append(user.user.email)
-    day_number = latest_day.number + 1
-    day = Day(number=day_number)
-    day.save()
+# # @kronos.register('15 15 * * *') # set to 3:15 PM for testing
+# @kronos.register('5 0 * * *') # set to 5 past midnight
+# def complain():
+#     rejected_users = []
+#     accepted_users = []
+#     latest_day = Day.objects.last()
+#     posts = Post.objects.filter(day=latest_day)
+#     authors_who_submitted_today = []
+#     for post in posts:
+#         authors_who_submitted_today.append(post.author.username)
+#         print(post.title)
+#     users = UserProfile.objects.all()
+#     print(authors_who_submitted_today)
+#     for user in users:
+#         if user.user.is_active and not user.user.is_staff:
+#             if user.user.username not in authors_who_submitted_today:
+#                 rejected_users.append(user.user.email)
+#                 user.user.is_active = False
+#                 user.user.save()
+#                 user.blocked = True
+#                 user.date_blocked = datetime.now()
+#                 user.save()
+#             else:
+#                 accepted_users.append(user.user.email)
+#     day_number = latest_day.number + 1
+#     day = Day(number=day_number)
+#     day.save()
 
-    # accepted_subject = "Accepted."
-    accepted_subject = "30/30 Day {}".format(day_number)
-    accepted_message = "{}".format(DAILY_BRIEF_EMAIL)
-    brief = config_json[str(day_number)]
-    accepted_message = accepted_message.format(day_number, day_number, brief)
+#     # accepted_subject = "Accepted."
+#     accepted_subject = "30/30 Day {}".format(day_number)
+#     accepted_message = "{}".format(DAILY_BRIEF_EMAIL)
+#     brief = config_json[str(day_number)]
+#     accepted_message = accepted_message.format(day_number, day_number, brief)
 
-    # rejected_subject = "Rejected."
-    rejected_subject = "30/30 - oh noo, our commiserations"
-    # rejected_message = "You are being blocked to use the system."
-    rejected_message = "{}".format(COMMISERATIONS_EMAIL)
-    rejected_message = rejected_message.format(brief)
+#     # rejected_subject = "Rejected."
+#     rejected_subject = "30/30 - oh noo, our commiserations"
+#     # rejected_message = "You are being blocked to use the system."
+#     rejected_message = "{}".format(COMMISERATIONS_EMAIL)
+#     rejected_message = rejected_message.format(brief)
 
-    # debugging
-    # print(accepted_users)
-    # print(rejected_users)
-    print('accept message: ')
-    print(accepted_message)
-    print('reject message: ')
-    print(rejected_message)
+#     # debugging
+#     # print(accepted_users)
+#     # print(rejected_users)
+#     print('accept message: ')
+#     print(accepted_message)
+#     print('reject message: ')
+#     print(rejected_message)
 
-    # email(rejected_subject, rejected_message, rejected_users)
-    # print("Email has been sent to rejected users.")
-    # email(accepted_subject, accepted_message, accepted_users)
-    # print("Email has been sent to active users.")
+#     # email(rejected_subject, rejected_message, rejected_users)
+#     # print("Email has been sent to rejected users.")
+#     # email(accepted_subject, accepted_message, accepted_users)
+#     # print("Email has been sent to active users.")
 
-    # wait to send out emails
-    print('Sleeping...')
-    time.sleep(300)
+#     # wait to send out emails
+#     print('Sleeping...')
+#     time.sleep(300)
 
-    # send email to rejected users
-    for i, rejected_user in enumerate(rejected_users):
-        if i > 0 and (i % 50) == 0:
-            print('Sleeping...')
-            time.sleep(720)
-        email(rejected_subject, rejected_message, [rejected_user])
+#     # send email to rejected users
+#     for i, rejected_user in enumerate(rejected_users):
+#         if i > 0 and (i % 50) == 0:
+#             print('Sleeping...')
+#             time.sleep(720)
+#         email(rejected_subject, rejected_message, [rejected_user])
 
-    # send email to active users
-    for i, accepted_user in enumerate(accepted_users):
-        if i > 0 and (i % 50) == 0:
-            print('Sleeping...')
-            time.sleep(720)
-        email(accepted_subject, accepted_message, [accepted_user])
+#     # send email to active users
+#     for i, accepted_user in enumerate(accepted_users):
+#         if i > 0 and (i % 50) == 0:
+#             print('Sleeping...')
+#             time.sleep(720)
+#         email(accepted_subject, accepted_message, [accepted_user])
 
 # python manage.py installtasks
 # python manage.py showtasks
