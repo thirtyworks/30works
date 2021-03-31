@@ -60,16 +60,16 @@ for i in df.index:
         email = df['Email'][i]
         username = create_username(first_name, surname)
         password = password_generator(7)
-        # user = User.objects.create_user(
-        #     username=username, 
-        #     password=password, 
-        #     email=email,
-        #     first_name=first_name,
-        #     last_name=surname
-        # )
-        # user.is_superuser = False
-        # user.is_staff = False
-        # user.save()
+        user = User.objects.create_user(
+            username=username, 
+            password=password, 
+            email=email,
+            first_name=first_name,
+            last_name=surname
+        )
+        user.is_superuser = False
+        user.is_staff = False
+        user.save()
 
         print(f'Created User: {username}\nEmail: {email}\nPass: {password}\n==========')
         message = render_to_string(
@@ -86,7 +86,14 @@ for i in df.index:
                 'current_event_day': a_day,
                 'brief_of_the_day': brief,
             }
-        )       
+        )   
+        brief_message_html = render_to_string(
+            'email/daily_brief.html',
+            {
+                'current_event_day': a_day,
+                'brief_of_the_day': brief,
+            }
+        )     
         send_mail(
             subject=EMAIL_SUBJECT,
             from_email=FROM_EMAIL,
@@ -97,6 +104,7 @@ for i in df.index:
             subject=EMAIL_BRIEF_SUBJECT,
             from_email=FROM_EMAIL,
             message=brief_message,
+            html_message=brief_message_html,
             recipient_list=[email],)        
 
     except IntegrityError as ie:
