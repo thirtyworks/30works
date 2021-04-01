@@ -10,6 +10,7 @@ import json
 from datetime import datetime
 import time
 from blog.views import get_brief, get_event_day
+from django.utils import timezone
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -39,10 +40,10 @@ def test():
 
     print (random.choice(complaints))
 
-@kronos.register('*/2 * * * *')
-def test_send():
-    send_mail('test_subject', 'test-message', 'info@thirtyworks', ['aaialfa12@gmail.com'])
-    print('done')
+# @kronos.register('*/2 * * * *')
+# def test_send():
+#     send_mail('test_subject', 'test-message', 'info@thirtyworks', ['aaialfa12@gmail.com'])
+#     print('done')
 
 # @kronos.register('15 15 * * *') # set to 3:15 PM for testing
 @kronos.register('20 0 * * *') # set to 20 past midnight
@@ -105,21 +106,23 @@ def daily_emails():
             print(f'{user_email} is rejected!') 
 
 
-@kronos.register('45 21 * * *') # test
+@kronos.register('55 21 * * *') # test
 def test_sending():
     # rejected_users = []
     # accepted_users = []
-    time.sleep(2)
     latest_day = 2
+    print(timezone.now().strftime('%d-%m-%Y, %X') )
+    print(f'The day is now: {latest_day}')
     brief = get_brief()
+    print(f'Brief is: {brief}')
     EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
     previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
-    authors_that_posted = ['aabdulmajeed@gmail.com']  
+    authors_that_posted = ['aabdulmajeed.isa@gmail.com']  
     print(authors_that_posted)
     # for post in posts:
     #     authors_who_submitted_today.append(post.author.username)
     #     print(post.title)
-    users = ['aaialfa12@gmail.com', 'aabdulmajeed@gmail.com']
+    users = ['aaialfa12@gmail.com', 'aabdulmajeed.isa@gmail.com']
     for user_email in users:
         if user_email in authors_that_posted:
             # Accepted
