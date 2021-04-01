@@ -110,7 +110,7 @@ def daily_emails():
 def test_sending():
     # rejected_users = []
     # accepted_users = []
-    latest_day = 2
+    latest_day = get_event_day()
     print(timezone.now().strftime('%d-%m-%Y, %X') )
     print(f'The day is now: {latest_day}')
     brief = get_brief()
