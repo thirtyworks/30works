@@ -44,75 +44,171 @@ def test_send():
     print('done')
 
 # @kronos.register('15 15 * * *') # set to 3:15 PM for testing
-@kronos.register('* * * * *') # set to 5 past midnight
+@kronos.register('20 0 * * *') # set to 20 past midnight
 def daily_emails():
-    rejected_users = []
-    accepted_users = []
+    # rejected_users = []
+    # accepted_users = []
+    time.sleep(2)
     latest_day = get_event_day()
-    previous_day = 1 if get_event_day() - 1 <= 0 else get_event_day() - 1
-    authors_that_posted = [post.author.id for post in Post.objects.filter(day=1, author__is_active=True).distinct('author__email')]
-    for post in posts:
-        authors_who_submitted_today.append(post.author.username)
-        print(post.title)
-    users = [user.id for user in UserProfile.objects.filter(user__is_active=True, user__is_staff=False)]
-    print(authors_who_submitted_today)
-    for user_id in users:
-        if user_id not in authors_that_posted:
-            rejected_users.append(user.user.email)
-            user = UserProfile.objects.get(user=user_id)
+    brief = get_brief()
+    EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
+    previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
+    authors_that_posted = [post.author.email for post in Post.objects.filter(day__number=previous_day, author__is_active=True, author__is_staff=False).distinct('author')]  
+    print(authors_that_posted)
+    # for post in posts:
+    #     authors_who_submitted_today.append(post.author.username)
+    #     print(post.title)
+    users = [user.user.email for user in UserProfile.objects.filter(user__is_active=True, user__is_staff=False)]
+    for user_email in users:
+        if user_email in authors_that_posted:
+            # Accepted
+            brief_message = render_to_string(
+            'email/daily_brief.txt',
+                {
+                    'current_event_day': latest_day,
+                    'brief_of_the_day': brief,
+                }
+            )   
+            brief_message_html = render_to_string(
+            'email/daily_brief.html',
+                {
+                    'current_event_day': latest_day,
+                    'brief_of_the_day': brief,
+                }
+            ) 
+            send_mail(
+                subject=EMAIL_BRIEF_SUBJECT,
+                from_email=FROM_EMAIL,
+                message=brief_message,
+                html_message=brief_message_html,
+                recipient_list=[user_email],
+            )    
+            print(f'{user_email} is accepted.')         
+        else:
+            # Rejected
+            user = UserProfile.objects.get(user__email=user_email)           
             user.user.is_active = False
             user.user.save()
             user.blocked = True
             user.date_blocked = datetime.now()
             user.save()
+            com_message = render_to_string('email/final_commiseration.txt')   
+            com_message_html = render_to_string('email/final_commiseration.html')
+            send_mail(
+                subject=EMAIL_FINAL_COM_SUBJECT,
+                from_email=FROM_EMAIL,
+                message=com_message,
+                html_message=com_message_html,
+                recipient_list=[user_email],
+            ) 
+            print(f'{user_email} is rejected!') 
+
+
+@kronos.register('45 21 * * *') # test
+def test_sending():
+    # rejected_users = []
+    # accepted_users = []
+    time.sleep(2)
+    latest_day = 2
+    brief = get_brief()
+    EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
+    previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
+    authors_that_posted = ['aabdulmajeed@gmail.com']  
+    print(authors_that_posted)
+    # for post in posts:
+    #     authors_who_submitted_today.append(post.author.username)
+    #     print(post.title)
+    users = ['aaialfa12@gmail.com', 'aabdulmajeed@gmail.com']
+    for user_email in users:
+        if user_email in authors_that_posted:
+            # Accepted
+            brief_message = render_to_string(
+            'email/daily_brief.txt',
+                {
+                    'current_event_day': latest_day,
+                    'brief_of_the_day': brief,
+                }
+            )   
+            brief_message_html = render_to_string(
+            'email/daily_brief.html',
+                {
+                    'current_event_day': latest_day,
+                    'brief_of_the_day': brief,
+                }
+            ) 
+            send_mail(
+                subject=EMAIL_BRIEF_SUBJECT,
+                from_email=FROM_EMAIL,
+                message=brief_message,
+                html_message=brief_message_html,
+                recipient_list=[user_email],
+            )    
+            print(f'{user_email} is accepted.')         
         else:
-            accepted_users.append(user.user.email)
-    day_number = latest_day.number + 1
-    day = Day(number=day_number)
-    day.save()
+            # Rejected
+            # user = UserProfile.objects.get(user__email=user_email)           
+            # user.user.is_active = False
+            # user.user.save()
+            # user.blocked = True
+            # user.date_blocked = datetime.now()
+            # user.save()
+            com_message = render_to_string('email/final_commiseration.txt')   
+            com_message_html = render_to_string('email/final_commiseration.html')
+            send_mail(
+                subject=EMAIL_FINAL_COM_SUBJECT,
+                from_email=FROM_EMAIL,
+                message=com_message,
+                html_message=com_message_html,
+                recipient_list=[user_email],
+            ) 
+            print(f'{user_email} is rejected!') 
 
-    # accepted_subject = "Accepted."
-    accepted_subject = "30/30 Day {}".format(day_number)
-    accepted_message = "{}".format(DAILY_BRIEF_EMAIL)
-    brief = config_json[str(day_number)]
-    accepted_message = accepted_message.format(day_number, day_number, brief)
+    # day_number = latest_day.number + 1
+    # day = Day(number=day_number)
+    # # day.save()
 
-    # rejected_subject = "Rejected."
-    rejected_subject = "30/30 - oh noo, our commiserations"
-    # rejected_message = "You are being blocked to use the system."
-    rejected_message = "{}".format(COMMISERATIONS_EMAIL)
-    rejected_message = rejected_message.format(brief)
+    # # accepted_subject = "Accepted."
+    # accepted_subject = "30/30 Day {}".format(day_number)
+    # accepted_message = "{}".format(DAILY_BRIEF_EMAIL)
+    # brief = config_json[str(day_number)]
+    # accepted_message = accepted_message.format(day_number, day_number, brief)
 
-    # debugging
-    # print(accepted_users)
-    # print(rejected_users)
-    print('accept message: ')
-    print(accepted_message)
-    print('reject message: ')
-    print(rejected_message)
+    # # rejected_subject = "Rejected."
+    # rejected_subject = "30/30 - oh noo, our commiserations"
+    # # rejected_message = "You are being blocked to use the system."
+    # rejected_message = "{}".format(COMMISERATIONS_EMAIL)
+    # rejected_message = rejected_message.format(brief)
 
-    # email(rejected_subject, rejected_message, rejected_users)
-    # print("Email has been sent to rejected users.")
-    # email(accepted_subject, accepted_message, accepted_users)
-    # print("Email has been sent to active users.")
+    # # debugging
+    # # print(accepted_users)
+    # # print(rejected_users)
+    # print('accept message: ')
+    # print(accepted_message)
+    # print('reject message: ')
+    # print(rejected_message)
 
-    # wait to send out emails
-    print('Sleeping...')
-    time.sleep(300)
+    # # email(rejected_subject, rejected_message, rejected_users)
+    # # print("Email has been sent to rejected users.")
+    # # email(accepted_subject, accepted_message, accepted_users)
+    # # print("Email has been sent to active users.")
 
-    # send email to rejected users
-    for i, rejected_user in enumerate(rejected_users):
-        if i > 0 and (i % 50) == 0:
-            print('Sleeping...')
-            time.sleep(720)
-        email(rejected_subject, rejected_message, [rejected_user])
+    # # wait to send out emails
+    # print('Sleeping...')
+    # time.sleep(300)
 
-    # send email to active users
-    for i, accepted_user in enumerate(accepted_users):
-        if i > 0 and (i % 50) == 0:
-            print('Sleeping...')
-            time.sleep(720)
-        email(accepted_subject, accepted_message, [accepted_user])
+    # # send email to rejected users
+    # for i, rejected_user in enumerate(rejected_users):
+    #     if i > 0 and (i % 50) == 0:
+    #         print('Sleeping...')
+    #         time.sleep(720)
+    #     email(rejected_subject, rejected_message, [rejected_user])
+
+    # # send email to active users
+    # for i, accepted_user in enumerate(accepted_users):
+    #     if i > 0 and (i % 50) == 0:
+    #         print('Sleeping...')
+    #         time.sleep(720)
+    #     email(accepted_subject, accepted_message, [accepted_user])
 
 # python manage.py installtasks
 # python manage.py showtasks
