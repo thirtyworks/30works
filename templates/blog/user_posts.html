@@ -12,10 +12,10 @@
         <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-book" aria-hidden="true"></i> Bio:</span> {{ user_details.user_profile.bio }}</p>
       {% endif %}
       {% if user_details.user_profile.url %}
-        <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-globe" aria-hidden="true"></i> Website:</span> <a href="http://{{ user_details.user_profile.url }}">{{ user_details.user_profile.url }}</a> </p>
+        <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-globe" aria-hidden="true"></i> Website:</span> <a target="_blank" href="{{ user_details.user_profile.url }}">{{ user_details.user_profile.url }}</a> </p>
       {% endif %}
       {% if user_details.user_profile.insta_handler %}
-      <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram: </span><a class="mb-2" target="_blank" href="https://www.instagram.com/{{ user_details.user_profile.insta_handler }}">@{{ user_details.user_profile.insta_handler }}</a></p> 
+      <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram: </span><a  target="_blank" href="https://www.instagram.com/{{ user_details.user_profile.insta_handler }}">@{{ user_details.user_profile.insta_handler }}</a></p> 
       {% endif %}
     </div>
   </div>
