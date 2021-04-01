@@ -221,7 +221,7 @@ class UserPostListView(ListView):
     def get_queryset(self):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
         user = user_profile.user
-        return Post.objects.filter(author=user).order_by('-datetime_posted')
+        return Post.objects.filter(author=user).order_by('-day')
     
     def get_context_data(self, *, object_list=None, **kwargs):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
@@ -235,3 +235,6 @@ class UserPostListView(ListView):
 def success(request):
     return render(request, "success.html")
 
+def profile(request):
+    user = UserProfile.objects.get(user=request.user.id)
+    return HttpResponseRedirect(reverse('profile'))
