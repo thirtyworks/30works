@@ -18,12 +18,9 @@ config_file = os.path.join(BASE_DIR, '30works.json')
 with open(config_file, 'r') as f:
     config_json = json.load(f)
 
-this_event_day = get_event_day()
-brief = get_brief()
 
 
 FROM_EMAIL='30works <info@thirty.works>'
-EMAIL_BRIEF_SUBJECT = f"30works30days {this_event_day} Brief"
 EMAIL_FIRST_COM_SUBJECT = "Oh noooo…claim your free pass!"
 EMAIL_FINAL_COM_SUBJECT = "Oh noooo…sad to see you go"
 
@@ -50,7 +47,7 @@ def test():
 def daily_emails():
     # rejected_users = []
     # accepted_users = []
-    time.sleep(2)
+    time.sleep(1)
     latest_day = get_event_day()
     brief = get_brief()
     EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
@@ -117,6 +114,7 @@ def test_sending():
     print(f'Brief is: {brief}')
     EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
     previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
+    print(f'Yesturday was: {previous_day}')
     authors_that_posted = ['aabdulmajeed.isa@gmail.com']  
     print(authors_that_posted)
     # for post in posts:
@@ -150,12 +148,12 @@ def test_sending():
             print(f'{user_email} is accepted.')         
         else:
             # Rejected
-            # user = UserProfile.objects.get(user__email=user_email)           
-            # user.user.is_active = False
-            # user.user.save()
-            # user.blocked = True
-            # user.date_blocked = datetime.now()
-            # user.save()
+            user = UserProfile.objects.get(user__email=user_email)           
+            user.user.is_active = False
+            user.user.save()
+            user.blocked = True
+            user.date_blocked = datetime.now()
+            user.save()
             com_message = render_to_string('email/final_commiseration.txt')   
             com_message_html = render_to_string('email/final_commiseration.html')
             send_mail(
