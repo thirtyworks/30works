@@ -116,7 +116,7 @@ class CreatePostForm(forms.ModelForm):
         if Post.objects.filter(author__id=current_user, day__number=day_num, author__is_staff=False).exists():
             # messages.error(current_user, 'You already submitted something today!')
             print('User {} was forbidden from posting again today'.format(self.user))
-            raise forms.ValidationError("You already submitted something today")
+            raise forms.ValidationError("You already submitted a post today")
         else:
             print('This is the users first submission of the day !!')
 
