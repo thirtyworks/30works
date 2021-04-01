@@ -28,14 +28,14 @@ def email(subject, message, recipient_list):
     email_from = settings.EMAIL_HOST_USER
     send_mail( subject, message, email_from, recipient_list )
 
-@kronos.register('* * * * *')
-def test():
-    complaints = [
-        "I forgot to migrate our applications's cron jobs to our new server! Darn!",
-        "I'm out of complaints! Damnit!"
-    ]
+# @kronos.register('* * * * *')
+# def test():
+#     complaints = [
+#         "I forgot to migrate our applications's cron jobs to our new server! Darn!",
+#         "I'm out of complaints! Damnit!"
+#     ]
 
-    print (random.choice(complaints))
+#     print (random.choice(complaints))
 
 # @kronos.register('*/2 * * * *')
 # def test_send():
@@ -49,11 +49,14 @@ def daily_emails():
     # accepted_users = []
     time.sleep(1)
     latest_day = get_event_day()
+    print(f'The day is now: {latest_day}')
     brief = get_brief()
+    print(f'Brief is: {brief}')
     EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
     previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
     authors_that_posted = [post.author.email for post in Post.objects.filter(day__number=previous_day, author__is_active=True, author__is_staff=False).distinct('author')]  
     print(authors_that_posted)
+    print('Total unique post of the day: ' + str(len(authors_that_posted)))    
     # for post in posts:
     #     authors_who_submitted_today.append(post.author.username)
     #     print(post.title)
@@ -116,7 +119,7 @@ def test_sending():
     previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
     print(f'Yesturday was: {previous_day}')
     authors_that_posted = ['aabdulmajeed.isa@gmail.com']  
-    print(authors_that_posted)
+    print('Total unique post of the day: ' + str(len(authors_that_posted)))  
     # for post in posts:
     #     authors_who_submitted_today.append(post.author.username)
     #     print(post.title)
