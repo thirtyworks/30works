@@ -88,7 +88,7 @@
 
         <div class="form-group">
           <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
-          <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>`)
+          <textarea class="form-control" name="alt_text" maxlength="600" rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>
         </div>
         {% endif %}
 
@@ -100,8 +100,8 @@
 
         <div class="form-group">
           <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
-          <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>`)
-        </div>        
+          <textarea class="form-control" name="alt_text" maxlength="600" rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>
+        </div>
         
         {% endif %}
 
