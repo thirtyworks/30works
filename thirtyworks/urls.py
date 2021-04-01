@@ -32,17 +32,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
 
-if datetime.now() >= datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021' ), "%d-%m-%Y") :
-    set_homepage = path('', blog_views.event_day, name="home")
-else:
-    set_homepage = path('', countdown, name='home')
+# if datetime.now() >= datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021' ), "%d-%m-%Y") :
+#     set_homepage = path('', blog_views.event_day, name="home")
+# else:
+#     set_homepage = path('', countdown, name='home')
     
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
-    set_homepage,
+    path('', blog_views.event_day, name="home"),
     path('home-view/', home, name='home-view'),
     path('', include('blog.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
