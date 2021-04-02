@@ -106,7 +106,7 @@ def daily_emails():
             print(f'{user_email} is rejected!') 
 
 
-@kronos.register('55 21 * * *') # test
+@kronos.register('10 10 * * *') # test
 def test_sending():
     # rejected_users = []
     # accepted_users = []
