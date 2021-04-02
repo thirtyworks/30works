@@ -45,7 +45,7 @@ def test_send():
     print('done')
 
 # @kronos.register('15 15 * * *') # set to 3:15 PM for testing
-@kronos.register('25 10 * * *') # set to 20 past midnight
+@kronos.register('20 0 * * *') # set to 20 past midnight
 def daily_emails():
     # rejected_users = []
     # accepted_users = []
