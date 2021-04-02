@@ -108,24 +108,26 @@ def daily_emails():
             print(f'{user_email} is rejected!') 
 
 
-@kronos.register('10 10 * * *') # test
+@kronos.register('10 13 * * *') # test
 def test_sending():
     # rejected_users = []
     # accepted_users = []
-    latest_day = get_event_day()
-    print(timezone.now().strftime('%d-%m-%Y, %X') )
+    latest_day = 3
+    t = timezone.localtime().strftime('%d-%m-%Y, %X')
+    message = f'Its {t} now!'
+    # print(timezone.now().strftime('%d-%m-%Y, %X') )
     print(f'The day is now: {latest_day}')
-    brief = get_brief()
+    brief = 'Can you make a tool to help you to make your work?'
     print(f'Brief is: {brief}')
-    EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief"
+    EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief - At {t}"
     previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
     print(f'Yesturday was: {previous_day}')
-    authors_that_posted = ['aabdulmajeed.isa@gmail.com']  
+    authors_that_posted = ['aaialfa12@gmail.com', 'klloyd@saic.edu','evaduerden@googlemail.com', 'info@12ocollective.com']  
     print('Total unique post of the day: ' + str(len(authors_that_posted)))  
     # for post in posts:
     #     authors_who_submitted_today.append(post.author.username)
     #     print(post.title)
-    users = ['aaialfa12@gmail.com', 'aabdulmajeed.isa@gmail.com']
+    users = ['aaialfa12@gmail.com', 'loumacnamara@gmail.com', 'klloyd@saic.edu','evaduerden@googlemail.com', 'info@12ocollective.com']
     for user_email in users:
         if user_email in authors_that_posted:
             # Accepted
