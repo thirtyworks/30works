@@ -37,9 +37,11 @@ def email(subject, message, recipient_list):
 
 #     print (random.choice(complaints))
 
-@kronos.register('*/2 * * * *')
+@kronos.register('38 10 * * *')
 def test_send():
-    send_mail('test_subject', 'test-message', 'info@thirtyworks', ['aaialfa12@gmail.com'])
+    t = timezone.localtime().strftime('%d-%m-%Y, %X')
+    message = f'Its {t} now!'
+    send_mail('test_subject', message, 'info@thirtyworks', ['aaialfa12@gmail.com'])
     print('done')
 
 # @kronos.register('15 15 * * *') # set to 3:15 PM for testing
