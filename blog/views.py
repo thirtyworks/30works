@@ -31,7 +31,7 @@ with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
 
 def get_event_day():
-    now = timezone.now().strftime('%d-%m-%Y, %X') 
+    now = timezone.localtime().strftime('%d-%m-%Y, %X')
     # datetime.strptime('01-04-2021, 00:20:00', "%d-%m-%Y, %X") 
     day = (datetime.strptime(now, "%d-%m-%Y, %X") - datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021, 00:20:00'), "%d-%m-%Y, %X")).days + 1
     if day > 30:
