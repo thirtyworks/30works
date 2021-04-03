@@ -61,7 +61,7 @@ def daily_emails():
     # for post in posts:
     #     authors_who_submitted_today.append(post.author.username)
     #     print(post.title)
-    users = [user.user.email for user in UserProfile.objects.filter(user__is_active=True, user__is_staff=False)]
+    users = [user.user.email for user in UserProfile.objects.filter(user__is_active=True, user__is_staff=False, blocked=False)]
     for user_email in users:
         if user_email in authors_that_posted:
             # Accepted
