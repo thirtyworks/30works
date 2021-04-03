@@ -142,9 +142,6 @@ footer {
 }
 
 /* post_list */
-.infinite-item{
-  display: none;
-}
 iframe, object, embed{
     max-width: 100%;
 

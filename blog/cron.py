@@ -49,7 +49,6 @@ def test_send():
 def daily_emails():
     # rejected_users = []
     # accepted_users = []
-    time.sleep(1)
     latest_day = get_event_day()
     print(f'The day is now: {latest_day}')
     brief = get_brief()
@@ -108,7 +107,7 @@ def daily_emails():
             print(f'{user_email} is rejected!') 
 
 
-@kronos.register('10 13 * * *') # test
+# @kronos.register('10 13 * * *') 
 def test_sending():
     # rejected_users = []
     # accepted_users = []
