@@ -18,11 +18,7 @@
 
     {% block extra_css %}{% endblock %}
 
-    {% if title %}
-        <title>30 works - {{ title }}</title>
-    {% else %}
-        <title>30 works </title>
-    {% endif %}
+    <title>30works {% block title %}{% endblock %}</title>
 
 </head>
 <body>

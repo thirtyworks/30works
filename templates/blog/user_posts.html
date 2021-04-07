@@ -2,7 +2,7 @@
 {% load embed_video_tags thumbnail %}
 {% load index %}
 
-
+{% block title %}- {{ user_details.first_name }} {{ user_details.last_name }}{% endblock %}
 {% block content %}
 <div class="profile-header px-5 py-4 my-3 rounded">
   <div class="row">
