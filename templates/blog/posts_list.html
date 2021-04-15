@@ -39,18 +39,23 @@
                   <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
                 </a>
               </div>
-                {% if post.postpic|is_portrait %}
-                  <div class="box">
-                 
-                    <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-                 
+                {% check_img_type post.postpic.url as type%}
+                {% if type == 'gif'  %}
+                  <div class="text-center gif-box">
+                    <img src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
                   </div>
                 {% else %}
-                  <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-                {% endif %}     
-              <div class="p-3 text-center">
-                <h4>{{post.title}}</h4>
-              </div>
+                  {% if post.postpic|is_portrait %}
+                    <div class="box">
+                      <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                    </div>
+                  {% else %}
+                    <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                  {% endif %}     
+                {% endif %}
+                <div class="p-3 text-center">
+                  <h4>{{post.title}}</h4>
+                </div>
             </div>
           </div>
           {% endif %}
