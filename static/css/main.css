@@ -298,7 +298,10 @@ embed {
   background-color: #b367b5;
   border-color: #b367b5;
 }
-
+.gif{
+  max-width: 100%;
+  height: auto;
+}
 .gif-box{
   background-color: #feecf2;
   padding: 15px 0px;

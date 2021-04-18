@@ -41,9 +41,13 @@
               </div>
                 {% check_img_type post.postpic.url as type%}
                 {% if type == 'gif'  %}
-                  <div class="text-center gif-box">
-                    <img src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-                  </div>
+                  {% if post.postpic.width > 500 %}
+                    <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                  {% else %}
+                    <div class="text-center gif-box">
+                      <img class="gif" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                    </div>
+                  {% endif %}
                 {% else %}
                   {% if post.postpic|is_portrait %}
                     <div class="box">
