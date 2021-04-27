@@ -24,132 +24,133 @@
     <div class="row">
       {% if posts %}
       {% for post in posts %}
-      <div class="col-lg-12">
-        <div class="super-header post-info mb-2">
-          <a href="{% url 'artist-posts' post.day %}">
-            <h1><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Day {{post.day}}</i></h1> 
-          </a>
-          <hr>
+        {% if not post.is_private or user.email == post.author.email  %}
+        <div class="col-lg-12">
+          <div class="super-header post-info mb-2">
+            <a href="{% url 'artist-posts' post.day %}">
+              <h1><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Day {{post.day}}</i></h1> 
+            </a>
+            <hr>
+          </div>
         </div>
-      </div>
-      <!-- Picture -->
-        {% if post.postpic %}
-        <div class="col-lg-12 mb-3">
-          <div class="card border-dark">
-            <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-            <div class="p-3 text-center">
-              <h4>{{post.title}}</h4>
+        <!-- Picture -->
+          {% if post.postpic %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+              <div class="p-3 text-center">
+                <h4>{{post.title}}</h4>
+              </div>
             </div>
-          </div>
-          {% if user.id == posts.0.author.id %}
-            <div class="status-holder text-right pr-1">
-              {% if not post.is_private %}
-                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
-              {% else %}
-                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
-              {% endif %}
+            {% if user.id == posts.0.author.id %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
             </div>
-          {% endif %}
-          {% if user.id == posts.0.author.id and this_day == post.day.number %}
-          <div class="btn-holder text-right">
-            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
-            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
-          </div>
-          {% endif %}
-        </div>
-        {% endif %}
-      <!-- Picture -->
-        
-        <!-- Video/Audio url -->
-        {% if post.postvideo %}
-        <div class="col-lg-12 mb-3">
-          <div class="card border-dark">
-            <div class="bg-dark media-link" title="{{ post.alt_text }}">
-              {% video post.postvideo as my_video %} 
-                  {% video my_video '100% x 100%' %}
-              {% endvideo %}
-            </div>
-            <div class="p-3 text-center">
-              <h4>{{post.title}}</h4>
-            </div>
-          </div>
-          {% if user.id == posts.0.author.id  %}
-            <div class="status-holder text-right pr-1">
-              {% if not post.is_private %}
-                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
-              {% else %}
-                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
-              {% endif %}
-            </div>
-          {% endif %}
-          {% if user.id == posts.0.author.id and this_day == post.day.number %}
-          <div class="btn-holder text-right">
-            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
-            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+            {% endif %}
           </div>
           {% endif %}
-     
-        </div>
-        {% endif %}
-        <!-- Video url -->
+        <!-- Picture -->
+          
+          <!-- Video/Audio url -->
+          {% if post.postvideo %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <div class="bg-dark media-link" title="{{ post.alt_text }}">
+                {% video post.postvideo as my_video %} 
+                    {% video my_video '100% x 100%' %}
+                {% endvideo %}
+              </div>
+              <div class="p-3 text-center">
+                <h4>{{post.title}}</h4>
+              </div>
+            </div>
+            {% if user.id == posts.0.author.id  %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+            </div>
+            {% endif %}
+      
+          </div>
+          {% endif %}
+          <!-- Video url -->
 
-        <!-- page url -->
-        {% if post.url %}
-        <div class="col-lg-12 mb-3">
-          <div class="card border-dark">
-            <div class="post-link text-center bg-dark d-flex">
-              <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
+          <!-- page url -->
+          {% if post.url %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <div class="post-link text-center bg-dark d-flex">
+                <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
+              </div>
             </div>
-          </div>
-          {% if user.id == posts.0.author.id %}
-            <div class="status-holder text-right pr-1">
-              {% if not post.is_private %}
-                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
-              {% else %}
-                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
-              {% endif %}
+            {% if user.id == posts.0.author.id %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
             </div>
+            {% endif %}
+          </div>  
           {% endif %}
-          {% if user.id == posts.0.author.id and this_day == post.day.number %}
-          <div class="btn-holder text-right">
-            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
-            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
-          </div>
-          {% endif %}
-        </div>  
-        {% endif %}
-        <!-- page url -->
+          <!-- page url -->
 
-        <!-- text post -->
-        {% if post.post_text %}
-        <div class="col-lg-12 mb-3">
-          <div class="card border-dark">
-            <div class="post-link text-center bg-dark d-flex">
-              <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+          <!-- text post -->
+          {% if post.post_text %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <div class="post-link text-center bg-dark d-flex">
+                <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+              </div>
+              <div class="p-3 text-center">
+                <h4>{{post.title}}</h4>
+              </div>
             </div>
-            <div class="p-3 text-center">
-              <h4>{{post.title}}</h4>
+            {% if user.id == posts.0.author.id %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
             </div>
-          </div>
-          {% if user.id == posts.0.author.id %}
-            <div class="status-holder text-right pr-1">
-              {% if not post.is_private %}
-                <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
-              {% else %}
-                <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
-              {% endif %}
-            </div>
+            {% endif %}
+          </div>  
           {% endif %}
-          {% if user.id == posts.0.author.id and this_day == post.day.number %}
-          <div class="btn-holder text-right">
-            <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
-            <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
-          </div>
+          <!-- text post -->
           {% endif %}
-        </div>  
-        {% endif %}
-        <!-- text post -->
-
         {% endfor %}
         {% else %}
         <div class="col-md-12">
