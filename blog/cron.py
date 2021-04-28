@@ -224,9 +224,10 @@ def test_sending():
 # python manage.py installtasks
 # python manage.py showtasks
 
-def a_job():
+def a_job(day):
     # testing logic
     print('event is', get_event_day_with_limit() )
+    check_event = day
     if check_event > 30:
         return 'Event is over!'
     else:
