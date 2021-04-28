@@ -41,6 +41,15 @@ def get_event_day():
     print('Its day:', day)
     return day
 
+def get_event_day_with_limit():
+    now = timezone.localtime().strftime('%d-%m-%Y, %X')
+    day = (datetime.strptime(now, "%d-%m-%Y, %X") - datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021, 00:20:00'), "%d-%m-%Y, %X")).days + 1
+    if day > 30:
+        day = 31
+    if day < 1:
+        day = 1 
+    return day
+
 def get_brief():
     df = pd.read_csv(os.path.join(BASE_DIR, 'briefs.csv'))
     day = get_event_day()
@@ -228,7 +237,7 @@ class UserPostListView(ListView):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
         user = user_profile.user
         context = super(UserPostListView, self).get_context_data(**kwargs)
-        context['this_day'] = get_event_day()
+        context['this_day'] = get_event_day_with_limit()
         context['user_details'] = user
         return context
 

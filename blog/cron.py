@@ -9,7 +9,7 @@ import os
 import json
 from datetime import datetime
 import time
-from blog.views import get_brief, get_event_day
+from blog.views import get_brief, get_event_day, get_event_day_with_limit
 from django.utils import timezone
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,6 +49,9 @@ def test_send():
 def daily_emails():
     # rejected_users = []
     # accepted_users = []
+    check_event = get_event_day_with_limit() 
+    if check_event > 30:
+        return 'Event is over!'
     latest_day = get_event_day()
     print(f'The day is now: {latest_day}')
     brief = get_brief()
@@ -222,4 +225,9 @@ def test_sending():
 # python manage.py showtasks
 
 def a_job():
-  print('okay!')
+    # testing logic
+    print('event is', get_event_day_with_limit() )
+    if check_event > 30:
+        return 'Event is over!'
+    else:
+        return 'Still on-going!'
