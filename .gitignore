@@ -168,3 +168,6 @@ celerybeat-schedule.bak
 celerybeat-schedule.dat
 celerybeat-schedule.dir
 backup.json
+
+certificate.pdf
+artists.csv

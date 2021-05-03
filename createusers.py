@@ -1,5 +1,6 @@
 """
 Usage: $ python manage.py shell < createusers.py
+or     $ python manage.py shell then run exec(open('createusers.py').read()) in shell
 
 """
 from django.contrib.auth.models import User
