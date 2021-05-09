@@ -43,14 +43,16 @@ class UserProfileAdmin(admin.ModelAdmin):
         #     row = writer.writerow([getattr(obj, field) for field in field_names] + [email_address, first_name])
         
         # limited fields
-        writer.writerow(['first_name', 'last_name','email'])
+        writer.writerow(['first_name', 'last_name','email', 'instagram', 'website'])
         for obj in queryset:
             userprofile = obj
             user = userprofile.user
+            instagram = userprofile.insta_handler
+            website = userprofile.url
             email_address = user.email
             first_name = user.first_name
             last_name = user.last_name
-            row = writer.writerow([ first_name, last_name, email_address])
+            row = writer.writerow([ first_name, last_name, email_address, instagram, website])
         return response
 
     export_as_csv.short_description = "Export Selected"
