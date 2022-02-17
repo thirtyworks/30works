@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load embed_video_tags thumbnail %}
+{% load index %}
+
+{% block title %}- {{ user_details.first_name }} {{ user_details.last_name }}{% endblock %}
+{% block content %}
+<div class="profile-header px-5 py-4 my-3 rounded">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-3">{{ user_details.first_name }} {{ user_details.last_name }}</h1>
+      {% if user_details.user_profile.bio %}
+        <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-book" aria-hidden="true"></i> Bio:</span> {{ user_details.user_profile.bio }}</p>
+      {% endif %}
+      {% if user_details.user_profile.url %}
+        <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-globe" aria-hidden="true"></i> Website:</span> <a target="_blank" href="{{ user_details.user_profile.url }}">{{ user_details.user_profile.url }}</a> </p>
+      {% endif %}
+      {% if user_details.user_profile.insta_handler %}
+      <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram: </span><a  target="_blank" href="https://www.instagram.com/{{ user_details.user_profile.insta_handler }}">@{{ user_details.user_profile.insta_handler }}</a></p> 
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="infinite-container mb-4">
+    <div class="row">
+      {% if posts %}
+      {% for post in posts %}
+        {% if not post.is_private or user.email == post.author.email  %}
+        <div class="col-lg-12">
+          <div class="super-header post-info mb-2">
+            <a href="{% url 'artist-posts' post.day %}">
+              <h1><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Day {{post.day}}</i></h1> 
+            </a>
+            <hr>
+          </div>
+        </div>
+        <!-- Picture -->
+          {% if post.postpic %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+              <div class="p-3 text-center">
+                <h4>{{post.title}}</h4>
+              </div>
+            </div>
+            {% if user.id == posts.0.author.id %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+        <!-- Picture -->
+          
+          <!-- Video/Audio url -->
+          {% if post.postvideo %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <div class="bg-dark media-link" title="{{ post.alt_text }}">
+                {% video post.postvideo as my_video %} 
+                    {% video my_video '100% x 100%' %}
+                {% endvideo %}
+              </div>
+              <div class="p-3 text-center">
+                <h4>{{post.title}}</h4>
+              </div>
+            </div>
+            {% if user.id == posts.0.author.id  %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+            </div>
+            {% endif %}
+      
+          </div>
+          {% endif %}
+          <!-- Video url -->
+
+          <!-- page url -->
+          {% if post.url %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <div class="post-link text-center bg-dark d-flex">
+                <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
+              </div>
+            </div>
+            {% if user.id == posts.0.author.id %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+            </div>
+            {% endif %}
+          </div>  
+          {% endif %}
+          <!-- page url -->
+
+          <!-- text post -->
+          {% if post.post_text %}
+          <div class="col-lg-12 mb-3">
+            <div class="card border-dark">
+              <div class="post-link text-center bg-dark d-flex">
+                <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+              </div>
+              <div class="p-3 text-center">
+                <h4>{{post.title}}</h4>
+              </div>
+            </div>
+            {% if user.id == posts.0.author.id %}
+              <div class="status-holder text-right pr-1">
+                {% if not post.is_private %}
+                  <h5 class="text-success" data-toggle="tooltip" data-placement="top" title="Your post is public"><i class="fa fa-eye" aria-hidden="true"></i> Public</h5>
+                {% else %}
+                  <h5 class="text-danger" data-toggle="tooltip" data-placement="top" title="Your post is private"><i class="fa fa-eye-slash" aria-hidden="true"></i> Private</h5>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if user.id == posts.0.author.id and this_day == post.day.number %}
+            <div class="btn-holder text-right">
+              <a href="{% url 'post-update' post.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+              <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm" role="button" aria-pressed="true">Delete</a>
+            </div>
+            {% endif %}
+          </div>  
+          {% endif %}
+          <!-- text post -->
+          {% endif %}
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <div class="text-center">
+            <h2>Artist has not posted anything yet. Check back later!</h2>
+          </div>
+        </div>
+        {% endif %}
+        
+    </div>
+    {% if is_paginated %}
+    <nav aria-label="navigation">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">&laquo</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="" tabindex="-1" aria-disabled="true">&laquo</a>
+          </li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">&raquo</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+</div>
+
+
+{% endblock content %}
+{% block extra_js %}
+
+{% endblock %}

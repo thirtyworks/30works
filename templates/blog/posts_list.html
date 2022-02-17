@@ -1,0 +1,148 @@
+{% extends "base.html" %} 
+{% load embed_video_tags index thumbnail static %} 
+{% block title %}- Day {{this_day}}{% endblock %}
+{% block content %}
+<div class="artist-posts my-4">
+  
+  <div class="days-nav text-center my-3">
+    <span class="font-weight-bold">Day:</span class="bold">
+    {% for i in days_done %}
+        {% if i.number == this_day %}
+        <span class="text-success font-weight-bold">{{i}} </span>|
+        {% else %}
+        <span>
+          <a href="{% url 'artist-posts' i %}">
+            {{i}}
+          </a> 
+        </span>|
+        {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="super-header mb-5">
+    <h1><i class="fa fa-calendar" aria-hidden="true"></i> Day {{this_day}}</h1>
+    <hr>
+  </div>
+
+  <div class="my-4">
+    <div class="row infinite-container">
+
+      {% if posts %}
+      {% for post in posts %}
+        
+        <!-- Picture -->
+          {% if post.postpic %}
+          <div class="col-lg-12 mb-4 infinite-item">
+            <div class="card border-dark">
+              <div class="post-info pl-3 pt-2 mb-3">
+                <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                  <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+                </a>
+              </div>
+                {% if post.postpic|is_portrait %}
+                  <div class="box">
+                    <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                  </div>
+                {% else %}
+                  {% if post.postpic.width > 500 %}
+                    <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                  {% else %}
+                    <div class="text-center gif-box">
+                      <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                    </div>
+                  {% endif %}
+                {% endif %}     
+                <div class="p-3 text-center">
+                  <h4>{{post.title}}</h4>
+                </div>
+            </div>
+          </div>
+          {% endif %}
+        <!-- Picture -->
+        
+        <!-- Video/Audio url -->
+        {% if post.postvideo %}
+        <div class="col-lg-12 mb-4 infinite-item">
+          <div class="card border-dark">
+            <div class="post-info pl-3 pt-2 mb-3">
+              <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+              </a>            
+            </div>
+            <div class="bg-dark media-link" title="{{ post.alt_text }}">
+              {% video post.postvideo as my_video %} 
+                  {% video my_video '100% x 100%' %}
+              {% endvideo %}
+            </div>
+            <div class="p-3 text-center">
+              <h4>{{post.title}}</h4>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <!-- Video url -->
+
+        <!-- page url -->
+        {% if post.url %}
+        <div class="col-lg-12 mb-4 infinite-item">
+          <div class="card border-dark">
+            <div class="post-info pl-3 pt-2 mb-3">
+              <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+              </a>            
+            </div>
+            <div class="post-link text-center bg-dark d-flex">
+              <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
+            </div>
+          </div>
+        </div>  
+        {% endif %}
+        <!-- page url -->
+
+        <!-- text post -->
+        {% if post.post_text %}
+        <div class="col-lg-12 mb-4 infinite-item">
+          <div class="card border-dark">
+            <div class="post-info pl-3 pt-2 mb-3">
+              <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+              </a>
+            </div>
+            <div class="post-link text-center bg-dark d-flex">
+              <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+            </div>
+            <div class="p-3 text-center">
+              <h4>{{post.title}}</h4>
+            </div>
+          </div>
+        </div>  
+        {% endif %}
+        <!-- text post -->
+
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <div class="text-center">
+            <h2>Nothing to see here yet. Check back later!</h2>
+          </div>
+        </div>
+        {% endif %}    
+      
+    </div>
+    <div class="infinite-loading text-center">
+      <i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+    </div>
+    {% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+    {% endif %}
+  
+        
+ 
+      
+
+  
+    
+  </div>  
+</div>
+{% endblock %}
+

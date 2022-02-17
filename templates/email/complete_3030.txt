@@ -1,0 +1,15 @@
+Congratulations {{ user_first_name }}!
+
+You completed the challenge of making work everyday for the whole month of April!
+
+This is a huge achievement and we hope you enjoyed making your works as much as we enjoyed seeing them!
+
+We’ve attached a certificate to commemorate your completion of the project!
+
+Please send us your thoughts on the project, we’d love to hear what you thought, you can leave anonymous feedback and thoughts <a href="https://docs.google.com/forms/d/e/1FAIpQLScL7sKuGkIbk5KBdUVZIf9-PoZr8zULfydLQmhh4WWPR5F1rQ/viewform?usp=sf_link">here on 3030 reviews page</a>.
+
+Thank you for taking part in 3030 and we hope to see you next year in 3030 2022 !!
+
+Much love,
+
+12ø

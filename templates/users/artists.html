@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}- Artists{% endblock %}
+{% block content %}
+{% load static %}
+<div class="my-5">
+  <div class="super-header">
+    <h1>Meet the Artists</h1>
+    <hr>
+  </div>
+  <div class="row artist-cards">
+    {% for artist in artists %}
+    <div class="artist-card col-sm-6 col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="message">
+            <h5 class="card-title">{{artist.first_name }} {{artist.last_name }}</h5>
+            <div class="actions">
+              <a href="{% url 'user-posts' artist.user_profile.acount_id %}" class="card-link">View Works</a>
+            </div>
+          </div>
+        </div>
+      </div>        
+    </div>
+    {% endfor %} 
+  </div>
+</div>
+{% endblock %}

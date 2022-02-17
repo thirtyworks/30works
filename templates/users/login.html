@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}- Login{% endblock %}
+{% block content %}
+<style>
+label{
+    font-weight: bold;
+}
+select{
+    display: none !important ;
+}
+</style>
+<div class="content-section mt-5">
+   
+<form method="POST">
+    {% csrf_token %}
+    <div class="text-center">
+        <h2>Log In</h2>
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger text-center" role="alert">
+          {{ form.non_field_errors.0 }}
+        </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="username" class="form-control" placeholder="Enter Email" required>
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+    </div>
+    <br>
+    <div class="text-center">
+    <button type="submit" class="btn btn-primary btn-lg" style="background-color: #343a40!important;border-color:#343a40!important ;">Login</button>
+    <a href="{% url 'password_reset' %}">Forgot password?</a>
+</div>
+  </form>
+</div>
+    
+{% endblock content %}

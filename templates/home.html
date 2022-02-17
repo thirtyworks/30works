@@ -1,0 +1,27 @@
+{% extends "base.html" %} 
+{% block title %}- Home{% endblock %}
+{% block content %}
+<div class="my-4">
+  <div class="super-header text-center mb-5">
+    <h1>30works30days / 2021</h1>
+  </div>
+  <div class="row day-cards">
+    {% for day in days_done %}
+    <div class="col-sm-6 col-md-6 col-lg-4 mb-3">
+      <div class="card border border-dark">
+        <div class="card-body">
+            <h5 class="card-title">Day {{day}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{artist.username }}</h6>
+            <div class="actions">
+              <a href="{% url 'artist-posts' day %}" class="card-link">View All Works</a>
+            </div>
+          
+        </div>
+      </div>
+    </div>  
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock content %}
