@@ -57,5 +57,3 @@ def auto_generate_day_pages():
         print('All 30 days now exist!')
     else:
         print('All 30 days already exist')
-
-auto_generate_day_pages()
