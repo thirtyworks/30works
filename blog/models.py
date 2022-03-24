@@ -41,3 +41,21 @@ class Post(models.Model):
         super().clean()
         if (not self.postpic) and (not self.url) and (not self.postvideo) and (not self.post_text):
             raise forms.ValidationError("You must specify an image to upload, a webpage URL, a soundcloud/youtube/vimeo link or a Text post!")
+
+def auto_generate_day_pages():
+    """
+    Automatically creates all 30 days pages. If the pages already exists, it will not run.  
+    """
+    if len(Day.objects.all()) != 30:
+        for i in range(1,31):
+            try:
+                Day.objects.create(number=i)
+                print('Day {} added!'.format(i))
+                Day.save
+            except:
+                print('Day {} already exists'.format(i))
+        print('All 30 days now exist!')
+    else:
+        print('All 30 days already exist')
+
+auto_generate_day_pages()

@@ -27,7 +27,6 @@ from datetime import date, datetime
 import os
 import json
 from blog import views as blog_views
-from blog.views import auto_generate_day_pages
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,7 +46,6 @@ urlpatterns = [
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-auto_generate_day_pages()
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

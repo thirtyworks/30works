@@ -53,24 +53,8 @@ def get_brief():
     brief_day_string = df['BRIEFS'][day-1]
     return brief_day_string
 
-def auto_generate_day_pages():
-    """
-    Automatically creates all 30 days pages. If the pages already exists, it will not run.  
-    """
-    if len(Day.objects.all()) != 30:
-        for i in range(1,31):
-            try:
-                Day.objects.create(number=i)
-                print('Day {} added!'.format(i))
-                Day.save
-            except:
-                print('Day {} already exists'.format(i))
-        print('All 30 days now exist!')
-    else:
-        print('All 30 days already exist')
 
 def home(request):
-    auto_generate_day_pages()
     day_num = get_event_day()
     days_done = Day.objects.filter(number__range=(1, day_num)).order_by('-number')
     # current date - starting date
@@ -84,7 +68,6 @@ def event_day(request):
     Return redirect page to current event day. 
     If the current date is before the event day 1 or after day 30, it caps at day 1 or day 30 respectively.
     '''
-    auto_generate_day_pages()
     day = get_event_day() # Get the current event day
     return HttpResponseRedirect(reverse('artist-posts', kwargs={'day': day}))
 
