@@ -10,7 +10,7 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('success', views.success, name="success"),
-    path('posts/day/<int:day>', PostsListView.as_view(), name="artist-posts"),
+    path('day/<int:day>', PostsListView.as_view(), name="artist-posts"),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('post/edit/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/edit/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),

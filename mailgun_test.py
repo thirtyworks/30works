@@ -4,6 +4,7 @@ import requests
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Gets private data from '30works.json' file. FILE MOST BE IN ROOT DIRECTORY.
 config_file = os.path.join('30works.json')
 with open(config_file, 'r') as f:
     config_json = json.load(f)

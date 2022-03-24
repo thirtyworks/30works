@@ -2,10 +2,18 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import json
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+config_file = os.path.join(BASE_DIR, '30works.json')
+with open(config_file, 'r') as f:
+    config_json = json.load(f)
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'thirtyworks.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', config_json["DJANGO_SETTINGS_MODULE"])
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

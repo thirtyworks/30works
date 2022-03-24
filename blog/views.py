@@ -27,49 +27,50 @@ import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Gets private data from '30works.json' file. FILE MOST BE IN ROOT DIRECTORY.
 with open(os.path.join(BASE_DIR, '30works.json'), 'r') as f:
     config_json = json.load(f)
 
 def get_event_day():
+    """
+    Return the value (day_number) by subtracting the current date (now) with first event day (RELEASE_DATE).
+    If value is less than 1, it caps at 1. And if its greater than 30, it caps at 30.
+    """
     now = timezone.localtime().strftime('%d-%m-%Y, %X')
-    # datetime.strptime('01-04-2021, 00:20:00', "%d-%m-%Y, %X") 
-    day = (datetime.strptime(now, "%d-%m-%Y, %X") - datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021, 00:20:00'), "%d-%m-%Y, %X")).days + 1
-    if day > 30:
-        day = 30
-    if day < 1:
-        day = 1 
-    print('Its day:', day)
-    return day
-
-def get_event_day_with_limit():
-    now = timezone.localtime().strftime('%d-%m-%Y, %X')
-    day = (datetime.strptime(now, "%d-%m-%Y, %X") - datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021, 00:20:00'), "%d-%m-%Y, %X")).days + 1
-    if day > 30:
-        day = 31
-    if day < 1:
-        day = 1 
-    return day
+    day_number = (datetime.strptime(now, "%d-%m-%Y, %X") - datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021, 00:20:00'), "%d-%m-%Y, %X")).days + 1
+    if day_number > 30:
+        day_number = 30
+    if day_number < 1:
+        day_number = 1
+    return day_number
 
 def get_brief():
+    """
+    Reads from the 'briefs.csv' file and return the brief of the day (string)
+    """
     df = pd.read_csv(os.path.join(BASE_DIR, 'briefs.csv'))
-    day = get_event_day()
-    brief_day = df['BRIEFS'][day-1]
-    return brief_day
+    day = get_event_day() # get current day
+    brief_day_string = df['BRIEFS'][day-1]
+    return brief_day_string
 
-def home(request):
+def auto_generate_day_pages():
+    """
+    Automatically creates all 30 days pages. If the pages already exists, it will not run.  
+    """
     if len(Day.objects.all()) != 30:
         for i in range(1,31):
             try:
                 Day.objects.create(number=i)
                 print('Day {} added!'.format(i))
+                Day.save
             except:
                 print('Day {} already exists'.format(i))
-            Day.save
         print('All 30 days now exist!')
     else:
         print('All 30 days already exist')
-    
-    latest_day = Day.objects.last()
+
+def home(request):
+    auto_generate_day_pages()
     day_num = get_event_day()
     days_done = Day.objects.filter(number__range=(1, day_num)).order_by('-number')
     # current date - starting date
@@ -79,7 +80,12 @@ def about(request):
     return render(request, "about.html", context={'title': 'About 30Works'})
     
 def event_day(request):
-    day = get_event_day()
+    '''
+    Return redirect page to current event day. 
+    If the current date is before the event day 1 or after day 30, it caps at day 1 or day 30 respectively.
+    '''
+    auto_generate_day_pages()
+    day = get_event_day() # Get the current event day
     return HttpResponseRedirect(reverse('artist-posts', kwargs={'day': day}))
 
 
@@ -231,13 +237,13 @@ class UserPostListView(ListView):
     def get_queryset(self):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
         user = user_profile.user
-        return Post.objects.filter(author=user).order_by('-day')
+        return Post.objects.filter(author=user).order_by('-day', '-datetime_posted')
     
     def get_context_data(self, *, object_list=None, **kwargs):
         user_profile = UserProfile.objects.get(acount_id=self.kwargs.get('acount_id')) 
         user = user_profile.user
         context = super(UserPostListView, self).get_context_data(**kwargs)
-        context['this_day'] = get_event_day_with_limit()
+        context['this_day'] = get_event_day()
         context['user_details'] = user
         return context
 

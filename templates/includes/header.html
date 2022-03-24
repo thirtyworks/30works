@@ -27,7 +27,7 @@
           <span class="navbar-text" id="select2">Day: </span>
           <select class="form_control mr-3" id="select">
             <option value="" selected disabled>#</option>
-              {% get_num as event_days %}
+              {% get_event_days as event_days %}
               {% for day in event_days %}
                 <option value="{{day}}">{{day}}</option>  
               {% endfor %}

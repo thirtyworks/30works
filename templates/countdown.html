@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block content %}
+
+
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/countdown.css' %}">
 <div class="container">
@@ -12,13 +12,6 @@
       <li><span id="seconds"></span>Seconds</li>
     </ul>
   </div>
-  <div class="message">
-    <div id="content">
-      <span class="emoji">🥳</span>
-      <span class="emoji">🎉</span>
-      <span class="emoji">🎂</span>
-    </div>
-  </div>
 </div>
 
   <script>
@@ -30,7 +23,7 @@
         day = hour * 24;
 
   let birthday = "{{release_date|escapejs}}",
-      countDown = new Date(birthday).getTime(),
+      countDown = new Date(birthday).getTime(), 
       x = setInterval(function() {    
 
         let now = new Date().getTime(),
@@ -56,4 +49,3 @@
   }());
        
   </script>
-{% endblock content %}

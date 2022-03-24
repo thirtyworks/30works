@@ -1,3 +1,4 @@
+from distutils.log import error
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import MyUserCreationForm, UserUpdateForm, UserProfileUpdateForm
@@ -44,13 +45,14 @@ def profile(request):
     if request.method == 'POST':
         u_form = MyUserUpdateForm(request.POST, instance=request.user, request=request)
         p_form = UserProfileUpdateForm(request.POST, request.FILES, instance=request.user.user_profile)
+        print(u_form.error_class.as_data)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
             messages.success(request, 'Your account has been updated')
             return redirect('profile')
         else:
-            messages.error(request, 'Invalid character in first_name and last_name, please use only alphanumeric characters and underscores')
+            messages.error(request, 'Invalid character in first_name or last_name, please use only alphanumeric characters and underscores')
 
     else:
         print('NOT a POST method')

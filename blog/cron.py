@@ -9,11 +9,12 @@ import os
 import json
 from datetime import datetime
 import time
-from blog.views import get_brief, get_event_day, get_event_day_with_limit
+from blog.views import get_brief, get_event_day
 from django.utils import timezone
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Gets private data from '30works.json' file. FILE MOST BE IN ROOT DIRECTORY.
 config_file = os.path.join(BASE_DIR, '30works.json')
 with open(config_file, 'r') as f:
     config_json = json.load(f)
@@ -49,10 +50,9 @@ def test_send():
 def daily_emails():
     # rejected_users = []
     # accepted_users = []
-    check_event = get_event_day_with_limit() 
-    if check_event > 30:
+    latest_day = get_event_day() 
+    if latest_day > 30:
         return 'Event is over!'
-    latest_day = get_event_day()
     print(f'The day is now: {latest_day}')
     brief = get_brief()
     print(f'Brief is: {brief}')
@@ -226,7 +226,7 @@ def test_sending():
 
 def a_job(day):
     # testing logic
-    print('event is', get_event_day_with_limit() )
+    print('event is', get_event_day() )
     check_event = day
     if check_event > 30:
         return 'Event is over!'
