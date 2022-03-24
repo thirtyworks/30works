@@ -46,14 +46,16 @@ def auto_generate_day_pages():
     """
     Automatically creates all 30 days pages. If the pages already exists, it will not run.  
     """
-    if len(Day.objects.all()) != 30:
-        for i in range(1,31):
-            try:
-                Day.objects.create(number=i)
-                print('Day {} added!'.format(i))
-                Day.save
-            except:
-                print('Day {} already exists'.format(i))
-        print('All 30 days now exist!')
-    else:
-        print('All 30 days already exist')
+    for i in range(1,31):
+        try:
+            Day.objects.create(number=i)
+            print('Day {} added!'.format(i))
+            Day.save
+        except:
+            if len(Day.objects.all()) == 30:
+                print('All 30 days already exist')
+                return
+            print('Day {} already exists'.format(i))
+    print('All 30 days now exist!')
+    
+        
