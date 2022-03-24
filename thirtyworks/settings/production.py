@@ -4,14 +4,12 @@ DEBUG = False
 
 DATABASES = {
     'default': {
-    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config_json["DATABASE_NAME"],
         'USER': config_json["DATABASE_USERNAME"],
         'PASSWORD': config_json["DATABASE_PASSWORD"],
         'HOST': '127.0.0.1',
         'PORT': '5432',
-    }
     }
 }
 
