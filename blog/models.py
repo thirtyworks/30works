@@ -3,8 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from embed_video.fields import EmbedVideoField
-from django.core.exceptions import ValidationError
-from django.contrib import messages
 from django import forms
 
 class Day(models.Model):

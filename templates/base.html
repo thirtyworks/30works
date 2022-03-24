@@ -28,7 +28,7 @@
   {% get_event_release_date as release_date %}
   {% is_event_ready current_date release_date as is_ready %} 
 
-  {% if is_ready %}
+  {% if is_ready or user.is_staff %}
     <div class="container main">  
       <div class="row">
         <div class="col-md-12">
@@ -45,6 +45,9 @@
           {% block content %}{% endblock %}
         </div>
       </div>
+      {% if not is_ready and user.is_staff  %}
+      <span class="badge badge-warning fixed-bottom">Coming Soon Mode</span>
+      {% endif %}
     </div>
   {% else %}
   {% include 'countdown.html' with release_date=release_date %}
