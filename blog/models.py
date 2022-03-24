@@ -42,7 +42,7 @@ class Post(models.Model):
         if (not self.postpic) and (not self.url) and (not self.postvideo) and (not self.post_text):
             raise forms.ValidationError("You must specify an image to upload, a webpage URL, a soundcloud/youtube/vimeo link or a Text post!")
 
-def auto_generate_day_pages():
+def auto_generate_day_pages(sender,**kwargs):
     """
     Automatically creates all 30 days pages. If the pages already exists, it will not run.  
     """
