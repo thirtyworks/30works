@@ -11,6 +11,7 @@ from datetime import datetime
 import time
 from blog.views import get_brief, get_event_day
 from django.utils import timezone
+from django.core.management.base import BaseCommand
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -174,61 +175,20 @@ def test_sending():
             ) 
             print(f'{user_email} is rejected!') 
 
-    # day_number = latest_day.number + 1
-    # day = Day(number=day_number)
-    # # day.save()
+@kronos.register('* * * * *', args={'-l': 'nb'})
+class Command(BaseCommand):
 
-    # # accepted_subject = "Accepted."
-    # accepted_subject = "30/30 Day {}".format(day_number)
-    # accepted_message = "{}".format(DAILY_BRIEF_EMAIL)
-    # brief = config_json[str(day_number)]
-    # accepted_message = accepted_message.format(day_number, day_number, brief)
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '-l', '--language',
+            dest='language',
+            type=str,
+            default='en',
+        )
 
-    # # rejected_subject = "Rejected."
-    # rejected_subject = "30/30 - oh noo, our commiserations"
-    # # rejected_message = "You are being blocked to use the system."
-    # rejected_message = "{}".format(COMMISERATIONS_EMAIL)
-    # rejected_message = rejected_message.format(brief)
+    def handle(self, *args, **options):
+        if options['language'] == 'en':
+          print('Hello, world!')
 
-    # # debugging
-    # # print(accepted_users)
-    # # print(rejected_users)
-    # print('accept message: ')
-    # print(accepted_message)
-    # print('reject message: ')
-    # print(rejected_message)
-
-    # # email(rejected_subject, rejected_message, rejected_users)
-    # # print("Email has been sent to rejected users.")
-    # # email(accepted_subject, accepted_message, accepted_users)
-    # # print("Email has been sent to active users.")
-
-    # # wait to send out emails
-    # print('Sleeping...')
-    # time.sleep(300)
-
-    # # send email to rejected users
-    # for i, rejected_user in enumerate(rejected_users):
-    #     if i > 0 and (i % 50) == 0:
-    #         print('Sleeping...')
-    #         time.sleep(720)
-    #     email(rejected_subject, rejected_message, [rejected_user])
-
-    # # send email to active users
-    # for i, accepted_user in enumerate(accepted_users):
-    #     if i > 0 and (i % 50) == 0:
-    #         print('Sleeping...')
-    #         time.sleep(720)
-    #     email(accepted_subject, accepted_message, [accepted_user])
-
-# python manage.py installtasks
-# python manage.py showtasks
-
-def a_job(day):
-    # testing logic
-    print('event is', get_event_day() )
-    check_event = day
-    if check_event > 30:
-        return 'Event is over!'
-    else:
-        return 'Still on-going!'
+        if options['language'] == 'nb':
+          print('Hei, verden!')
