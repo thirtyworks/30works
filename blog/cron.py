@@ -52,13 +52,13 @@ def test_sending_random_brief_every_minute():
         email = df['email'][i].strip()
         t = timezone.localtime().strftime('%d-%m-%Y, %X')
         message = f"""
-            Hello {first_name},
-            This is the test email. The brief is: {brief}
-            Its {t} now!
-
+            Hello {first_name},\n
+            This is the test email. \n\n
+            The brief is: {brief}\n
+            Its {t} now!\n\n
             bye.
         """
-        send_mail(f'test brief Day {latest_day} {brief}', message, 'info@thirtyworks', [email])
+        send_mail(f'test brief Day {latest_day}', message, 'info@thirtyworks', [email])
     print('done')
 
 @kronos.register('20 0 * * *') # set to 20 past midnight
