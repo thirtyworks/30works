@@ -17,12 +17,8 @@ DATABASES = {
 SECRET_KEY = config_json["SECRET_KEY"]
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ['thirty.works', 'www.thirty.works', '212.71.249.151'] 
+ALLOWED_HOSTS = ['thirty.works', 'www.thirty.works'] 
 
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
 
 try:
     from .local import *
