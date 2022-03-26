@@ -44,12 +44,15 @@ def get_event_day():
         day_number = 1
     return day_number
 
-def get_brief():
+def get_brief(the_day=0):
     """
     Reads from the 'briefs.csv' file and return the brief of the day (string)
     """
     df = pd.read_csv(os.path.join(BASE_DIR, 'briefs.csv'))
-    day = get_event_day() # get current day
+    if the_day < 1:
+        day = get_event_day() # get current day
+    else:
+        day=the_day
     brief_day_string = df['BRIEFS'][day-1]
     return brief_day_string
 
