@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from blog.views import get_brief, get_event_day
 
-CSV_FILE = 'test.csv'
+CSV_FILE = 'data.csv'
 
 def password_generator(size):
     import random

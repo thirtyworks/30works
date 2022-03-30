@@ -13,6 +13,7 @@ from blog.views import get_brief, get_event_day
 from django.utils import timezone
 from django.core.management.base import BaseCommand
 import pandas as pd
+from createusers import create_users_and_send_emails
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -64,6 +65,11 @@ def test_sending_random_brief_every_minute():
 @kronos.register('20 0 * * *') # set to 20 past midnight
 def daily_emails():
     latest_day = get_event_day() 
+    if latest_day == 1:
+        print('Creating acounts and sending first brief to participants..')
+        create_users_and_send_emails()
+        print('bye')
+        return 'Day 1 done!'
     if latest_day > 30:
         return 'Event is over!'
     print(f'The day is now: {latest_day}')
@@ -186,21 +192,3 @@ def test_sending():
                 recipient_list=[user_email],
             ) 
             print(f'{user_email} is rejected!') 
-
-@kronos.register('* * * * *', args={'-l': 'nb'})
-class Command(BaseCommand):
-
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '-l', '--language',
-            dest='language',
-            type=str,
-            default='en',
-        )
-
-    def handle(self, *args, **options):
-        if options['language'] == 'en':
-          print('Hello, world!')
-
-        if options['language'] == 'nb':
-          print('Hei, verden!')
