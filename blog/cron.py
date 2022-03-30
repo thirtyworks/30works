@@ -22,7 +22,7 @@ config_file = os.path.join(BASE_DIR, '30works.json')
 with open(config_file, 'r') as f:
     config_json = json.load(f)
 
-CSV_FILE = os.path.join(BASE_DIR, 'test.csv')
+CSV_FILE = os.path.join(BASE_DIR, 'data.csv')
 
 FROM_EMAIL='30works <info@thirty.works>'
 EMAIL_FIRST_COM_SUBJECT = "Oh noooo…claim your free pass!"
@@ -153,8 +153,7 @@ def daily_emails():
     if latest_day == 1:
         print('Creating acounts and sending first brief to participants..')
         create_users_and_send_emails()
-        print('bye')
-        return 'Day 1 done!'
+        return 'Day 1 is over!'
     if latest_day > 30:
         return 'Event is over!'
     print(f'The day is now: {latest_day}')
