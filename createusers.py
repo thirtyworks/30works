@@ -7,8 +7,7 @@ from django.contrib.auth.models import User
 import pandas as pd
 from django.db.utils import IntegrityError
 from django.template.loader import render_to_string
-from django.core.mail import send_mail, send_mass_mail
-from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from blog.views import get_brief, get_event_day
 
