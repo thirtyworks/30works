@@ -40,7 +40,7 @@ def test_send():
     send_mail('test_subject', message, 'info@thirtyworks', ['TEST123@gmail.com'])
     print('done')
 
-@kronos.register('* * * * *')
+# @kronos.register('* * * * *')
 def test_sending_random_brief_every_minute():
     random_number = random.randint(1, 30)
     latest_day = random_number
@@ -84,71 +84,6 @@ def daily_emails():
     #     authors_who_submitted_today.append(post.author.username)
     #     print(post.title)
     users = [user.user.email for user in UserProfile.objects.filter(user__is_active=True, user__is_staff=False, blocked=False)]
-    for user_email in users:
-        if user_email in authors_that_posted:
-            # Accepted
-            brief_message = render_to_string(
-            'email/daily_brief.txt',
-                {
-                    'current_event_day': latest_day,
-                    'brief_of_the_day': brief,
-                }
-            )   
-            brief_message_html = render_to_string(
-            'email/daily_brief.html',
-                {
-                    'current_event_day': latest_day,
-                    'brief_of_the_day': brief,
-                }
-            ) 
-            send_mail(
-                subject=EMAIL_BRIEF_SUBJECT,
-                from_email=FROM_EMAIL,
-                message=brief_message,
-                html_message=brief_message_html,
-                recipient_list=[user_email],
-            )    
-            print(f'{user_email} is accepted.')         
-        else:
-            # Rejected
-            user = UserProfile.objects.get(user__email=user_email)           
-            user.user.is_active = False
-            user.user.save()
-            user.blocked = True
-            user.date_blocked = datetime.now()
-            user.save()
-            com_message = render_to_string('email/final_commiseration.txt')   
-            com_message_html = render_to_string('email/final_commiseration.html')
-            send_mail(
-                subject=EMAIL_FINAL_COM_SUBJECT,
-                from_email=FROM_EMAIL,
-                message=com_message,
-                html_message=com_message_html,
-                recipient_list=[user_email],
-            ) 
-            print(f'{user_email} is rejected!') 
-
-
-# @kronos.register('10 13 * * *') 
-def test_sending():
-    # rejected_users = []
-    # accepted_users = []
-    latest_day = 3
-    t = timezone.localtime().strftime('%d-%m-%Y, %X')
-    message = f'Its {t} now!'
-    # print(timezone.now().strftime('%d-%m-%Y, %X') )
-    print(f'The day is now: {latest_day}')
-    brief = 'Can you make a tool to help you to make your work?'
-    print(f'Brief is: {brief}')
-    EMAIL_BRIEF_SUBJECT = f"30works30days {latest_day} Brief - At {t}"
-    previous_day = 1 if latest_day - 1 <= 0 else latest_day - 1
-    print(f'Yesturday was: {previous_day}')
-    authors_that_posted = ['ABC@gmail.com', 'info@12ocollective.com']
-    print('Total unique post of the day: ' + str(len(authors_that_posted)))  
-    # for post in posts:
-    #     authors_who_submitted_today.append(post.author.username)
-    #     print(post.title)
-    users = ['ABC@gmail.com', 'info@12ocollective.com']
     for user_email in users:
         if user_email in authors_that_posted:
             # Accepted
