@@ -119,7 +119,7 @@ def email(subject, message, recipient_list):
 
 @kronos.register('38 10 * * *')
 def test_send():
-    t = timezone.localtime().strftime('%d-%m-%Y, %X')
+    t = timezone.now().strftime('%d-%m-%Y, %X')
     message = f'Its {t} now!'
     send_mail('test_subject', message, 'info@thirtyworks', ['TEST123@gmail.com'])
     print('done')
@@ -136,7 +136,7 @@ def test_sending_random_brief_every_minute():
     for i in df.index:
         first_name = df['first_name'][i].strip()
         email = df['email'][i].strip()
-        t = timezone.localtime().strftime('%d-%m-%Y, %X')
+        t = timezone.now().strftime('%d-%m-%Y, %X')
         message = f"""
             Hello {first_name},\n
             This is the test email. \n\n

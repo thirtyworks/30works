@@ -36,7 +36,7 @@ def get_event_day():
     Return the value (day_number) by subtracting the current date (now) with first event day (RELEASE_DATE).
     If value is less than 1, it caps at 1. And if its greater than 30, it caps at 30.
     """
-    now = timezone.localtime().strftime('%d-%m-%Y, %X')
+    now = timezone.now().strftime('%d-%m-%Y, %X')
     day_number = (datetime.strptime(now, "%d-%m-%Y, %X") - datetime.strptime(config_json.get('RELEASE_DATE', '01-04-2021, 00:20:00'), "%d-%m-%Y, %X")).days + 1
     if day_number > 30:
         day_number = 30
