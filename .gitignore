@@ -168,4 +168,5 @@ note.txt
 30works.json
 test.csv
 data.csv
+__data.csv
 # End of https://www.toptal.com/developers/gitignore/api/django
