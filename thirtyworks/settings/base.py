@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_admin_listfilter_dropdown',
     'sorl.thumbnail',
     'kronos',
+    'email_log',
 ]
 
 MIDDLEWARE = [
@@ -154,7 +155,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # email config stuff
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'email_log.backends.EmailBackend'
 EMAIL_HOST = 'smtp.eu.mailgun.org'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
