@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django_admin_listfilter_dropdown',
     'sorl.thumbnail',
     'kronos',
-    'email_log',
+    'email_log', 
 ]
 
 MIDDLEWARE = [
