@@ -195,19 +195,22 @@ def daily_emails():
             print(f'{user_email} is accepted.')         
         else:
             # Rejected
-            user = UserProfile.objects.get(user__email=user_email)           
-            user.user.is_active = False
-            user.user.save()
-            user.blocked = True
-            user.date_blocked = datetime.now()
-            user.save()
-            com_message = render_to_string('email/final_commiseration.txt')   
-            com_message_html = render_to_string('email/final_commiseration.html')
-            send_mail(
-                subject=EMAIL_FINAL_COM_SUBJECT,
-                from_email=FROM_EMAIL,
-                message=com_message,
-                html_message=com_message_html,
-                recipient_list=[user_email],
-            ) 
-            print(f'{user_email} is rejected!') 
+            try:
+                user = UserProfile.objects.get(user__email=user_email) 
+                user.user.is_active = False
+                user.user.save()
+                user.blocked = True
+                user.date_blocked = datetime.now()
+                user.save()
+                com_message = render_to_string('email/final_commiseration.txt')   
+                com_message_html = render_to_string('email/final_commiseration.html')
+                send_mail(
+                    subject=EMAIL_FINAL_COM_SUBJECT,
+                    from_email=FROM_EMAIL,
+                    message=com_message,
+                    html_message=com_message_html,
+                    recipient_list=[user_email],
+                ) 
+                print(f'{user_email} is rejected!') 
+            except:
+                print(user_email, ':is not a unique email!')
