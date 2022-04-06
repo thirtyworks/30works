@@ -136,7 +136,7 @@ def test_sending_random_brief_every_minute():
     for i in df.index:
         first_name = df['first_name'][i].strip()
         email = df['email'][i].strip()
-        t = timezone.now().strftime('%d-%m-%Y, %X')
+        t = timezone.localtime().strftime('%d-%m-%Y, %X')
         message = f"""
             Hello {first_name},\n
             This is the test email. \n\n
