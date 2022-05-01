@@ -1,24 +1,11 @@
 import pandas as pd
 import numpy as np
-import os
-from django.core.mail import EmailMessage, send_mail, EmailMultiAlternatives
-from django.utils.html import strip_tags
-from django.utils.safestring import mark_safe
-import random
-from blog.models import Day, Post
-from users.models import UserProfile
-# from django.core.mail import send_mail
-from django.conf import settings
-from datetime import datetime, timedelta
-import time
-import os
-import json
-import copy
+from django.core.mail import EmailMultiAlternatives
+from datetime import datetime
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import io
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 from reportlab.lib.colors import HexColor
 from django.template.loader import render_to_string
 
@@ -28,10 +15,12 @@ FROM_EMAIL='30works <info@thirty.works>'
 CERTIFICATE_TEMPLATE_PATH = "certificate.pdf"
 EMAIL_SUBJECT = '3030 completed!'
 CSV_FILE = 'test.csv'
+NEXT_YEAR = datetime.now().year+1
 
 
 # load list of users and emails to receive certificates
 df_user_list = pd.read_csv(CSV_FILE).replace({np.nan: None}) # All blank fields is replaced with None
+f = open('log.txt', 'a')
 
 for i, row in df_user_list.iterrows():
     
@@ -46,7 +35,7 @@ for i, row in df_user_list.iterrows():
     # can.drawString(50, 100, "Hello !!! !  ! !!! :)")
     can.setFillColor(HexColor('#a87b00'))
     can.setFont("Helvetica", 28)
-    can.drawCentredString(x=792/2, y=224, text=full_name)
+    can.drawCentredString(x=840/2, y=280, text=full_name)
     can.save()
 
     #move to the beginning of the StringIO buffers
@@ -68,15 +57,16 @@ for i, row in df_user_list.iterrows():
         'email/complete_3030.html',
         {
             'user_first_name': first_name,
+            'next_year': NEXT_YEAR,
         }
     )
     message = render_to_string(
         'email/complete_3030.txt',
         {
             'user_first_name': first_name,
+            'next_year': NEXT_YEAR,
         }
     )
-    
 
     # # now create an email message
     email = EmailMultiAlternatives(
@@ -89,5 +79,11 @@ for i, row in df_user_list.iterrows():
     email.attach_file(CERTIFICATE_TEMP_SAVEPATH)
     email.content_subtype = 'html'
     email.send()
-    print(f'{i} - Sent email to: {user_email}')
+    text = f'{i+1} - Sent email to {first_name} {last_name}: {user_email} [{datetime.now()}] \n'
+    f.write(text)
+    print(text)
+f.write('\n')
+f.write('--------------------------------------------------------------------------')
+f.write('\n')
+f.close()
  
