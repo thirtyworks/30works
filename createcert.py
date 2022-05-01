@@ -13,9 +13,9 @@ CERTIFICATE_TEMP_SAVEPATH = 'user_certificate.pdf'
 OUTPUT_LOG_PATH = 'log.csv'
 FROM_EMAIL='30works <info@thirty.works>'
 CERTIFICATE_TEMPLATE_PATH = "certificate.pdf"
-EMAIL_SUBJECT = '3030 completed!'
+EMAIL_SUBJECT = 'You completed 30/30'
 CSV_FILE = 'test.csv'
-NEXT_YEAR = datetime.now().year+1
+YEAR = datetime.now().year
 
 
 # load list of users and emails to receive certificates
@@ -57,14 +57,14 @@ for i, row in df_user_list.iterrows():
         'email/complete_3030.html',
         {
             'user_first_name': first_name,
-            'next_year': NEXT_YEAR,
+            'year': YEAR,
         }
     )
     message = render_to_string(
         'email/complete_3030.txt',
         {
             'user_first_name': first_name,
-            'next_year': NEXT_YEAR,
+            'year': YEAR,
         }
     )
 
