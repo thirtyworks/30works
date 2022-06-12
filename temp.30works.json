@@ -1,0 +1,12 @@
+{
+    "SECRET_KEY": "random_set_of_characters_and_numbers",
+    "EMAIL_HOST_USER": "postmaster@info.thirty.works",
+    "EMAIL_HOST_PASSWORD": "",
+    "DATABASE_USERNAME": "tw",
+    "DATABASE_PASSWORD": "admin",
+    "DATABASE_NAME": "thirtyworksdb",
+    "DATABASE_HOST": "localhost",
+    "DATABASE_PORT": "5432",
+    "RELEASE_DATE": "01-04-2022, 00:20:00",
+    "DJANGO_SETTINGS_MODULE": "thirtyworks.settings.dev"
+  }

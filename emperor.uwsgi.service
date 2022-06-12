@@ -1,0 +1,9 @@
+[Unit]
+Description=uwsgi emperor for thirtyworks website
+After=network.target
+[Service]
+User=tw
+Restart=always
+ExecStart=/home/tw/env/tw_env/bin/uwsgi --emperor /home/tw/env/tw_env/vassals --uid www-data --gid www-data
+[Install]
+WantedBy=multi-user.target
