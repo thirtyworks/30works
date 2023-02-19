@@ -1,58 +1,69 @@
 {% load static index %}
 
-<header class="site-header">
-  <nav class="navbar navbar-expand-md navbar-light bg-dark fixed-top">
+<header class="site-header sticky-top">
+  <nav class="navbar navbar-expand-lg bg-lime">
     <div class="container">
-      <a class="navbar-brand" href="/">
-        <img alt='Home' src="{% static 'logo.png' %}" style='width: 48px!important'>
+      <a class="navbar-brand me-5" href="/">
+        <img alt='Home' src="{% static '3030 x Artquest.svg' %}" style='width: 48px!important'>
       </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarToggle"
-        aria-controls="navbarToggle"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarToggle">
-        <div class="navbar-nav mr-auto">
-          <!--              <a class="nav-item nav-link" href="/">Home</a>-->
-          <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
-        </div>
-        <!-- Navbar Right Side -->
-        <div class="navbar-nav">
-          <span class="navbar-text" id="select2">Day: </span>
-          <select class="form_control mr-3" id="select">
-            <option value="" selected disabled>#</option>
-              {% get_event_days as event_days %}
-              {% for day in event_days %}
-                <option value="{{day}}">{{day}}</option>  
-              {% endfor %}
-          </select>
-          <a class="nav-item nav-link" href="{% url 'artists' %}"
-            >Artists</a
-          >
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item me-4">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item me-4">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item me-4">
+            <a class="nav-link" href="{% url 'artists' %}">Artists</a>
+          </li>
 
           {% if user.is_authenticated %}
-          <a class="nav-item nav-link" href="{% url 'profile' %}"
-            >Edit Profile</a
-          >
-          <a
-            class="nav-item nav-link"
-            href="{% url 'user-posts' user.user_profile.acount_id %}"
-            >My Works</a
-          >
-          <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-          <a class="nav-item nav-link" href="{% url 'post-create' %}">SUBMIT</a>
+            <li class="nav-item me-4">
+              <a class="nav-link" href="{% url 'profile' %}">Edit Profile</a>
+            </li>
+            <li class="nav-item me-4">
+              <a class="nav-link"href="{% url 'user-posts' user.user_profile.acount_id %}">My Works</a>
+            </li>
+          {% endif %}  
 
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <span class="navbar-text" id="select2">Day: </span>
+          <li class="nav-item me-5 mb-3 mb-lg-0">
+            <select class="form_control mr-3" id="select">
+              <option value="" selected disabled>#</option>
+                {% get_event_days as event_days %}
+                {% for day in event_days %}
+                  <option value="{{day}}">{{day}}</option>  
+                {% endfor %}
+            </select>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item me-1 mb-1 mb-lg-0">
+              <a href="{% url 'post-create' %}">
+                <button class="btn btn-success">Submit Work</button>
+              </a>
+            </li>
+            <li class="nav-item me-1 mb-1 mb-lg-0">
+              <a href="{% url 'logout' %}">
+                <button class="btn btn-danger">Logout</button>
+              </a>
+            </li>
           {% else %}
-          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <li class="nav-item">
+              <a href="{% url 'login' %}">
+                <button class="btn btn-primary">Login</button>
+              </a>
+            </li>
           {% endif %}
-        </div>
+        </ul>
       </div>
     </div>
   </nav>
 </header>
+
+
