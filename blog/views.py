@@ -65,6 +65,9 @@ def home(request):
 
 def about(request):
     return render(request, "about.html", context={'title': 'About 30Works'})
+
+def faq(request):
+    return render(request, "faq.html", context={'title': 'FAQ 30Works'})
     
 def event_day(request):
     '''
