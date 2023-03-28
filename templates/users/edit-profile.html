@@ -37,7 +37,8 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">@</span>
             </div>
-            <input type="text" class="form-control" name="insta_handler" value="{{ user.user_profile.insta_handler|default:'' }}" placeholder="Enter instagram handle" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" name="insta_handler" value="{{ user.user_profile.insta_handler|default:'' }}" placeholder="Enter instagram handle name without '@' " aria-describedby="basic-addon1">
+            <small class="w-100 text-success">We tag some daily public submissions on Instagram!</small>
           </div>    
         </div>
 
