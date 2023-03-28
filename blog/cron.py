@@ -127,6 +127,7 @@ def email(subject, message, recipient_list):
     email_from = settings.EMAIL_HOST_USER
     send_mail( subject, message, email_from, recipient_list )
 
+@kronos.register('38 10 * * *')
 def test_send_emails():
     latest_day = 1
     brief = get_brief(1)
