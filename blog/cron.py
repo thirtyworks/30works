@@ -191,7 +191,7 @@ def test_send_emails():
         from_email=FROM_EMAIL,
         message=message,
         html_message=message_html,
-        recipient_list=[email],
+        recipient_list=test_receivers,
     )
     print('done')
 
