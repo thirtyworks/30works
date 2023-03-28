@@ -42,7 +42,7 @@ a_day = get_event_day()
 brief = get_brief()
 
 FROM_EMAIL='30works <info@thirty.works>'
-EMAIL_SUBJECT = "Your new 30works account is ready"
+EMAIL_SUBJECT = "Your new 30works30days account is ready"
 EMAIL_BRIEF_SUBJECT = f"30works30days {a_day} Brief"
 
 
@@ -75,10 +75,20 @@ def create_users_and_send_emails():
                 'email/new_acount_ready.txt',
                 {
                     'first_name': first_name,
+                    'last_name': last_name,
                     'email': email,
                     'password': password,
                 }
             )
+            message_html = render_to_string(
+                'email/new_acount_ready.html',
+                {
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'email': email,
+                    'password': password,
+                }
+            ) 
             brief_message = render_to_string(
                 'email/daily_brief.txt',
                 {
@@ -97,6 +107,7 @@ def create_users_and_send_emails():
                 subject=EMAIL_SUBJECT,
                 from_email=FROM_EMAIL,
                 message=message,
+                html_message=message_html,
                 recipient_list=[email],)
 
             send_mail(
@@ -116,6 +127,72 @@ def email(subject, message, recipient_list):
     email_from = settings.EMAIL_HOST_USER
     send_mail( subject, message, email_from, recipient_list )
 
+def test_send_emails():
+    latest_day = 1
+    brief = get_brief(1)
+    email = "test@something.com"
+    password = "testpass123"
+    first_name = "test"
+    last_name = "tester"
+    test_receivers = []
+
+    message = render_to_string(
+        'email/new_acount_ready.txt',
+        {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'password': password,
+        }
+    )
+    message_html = render_to_string(
+        'email/new_acount_ready.html',
+        {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'password': password,
+        }
+    ) 
+    brief_message = render_to_string(
+    'email/daily_brief.txt',
+        {
+            'current_event_day': latest_day,
+            'brief_of_the_day': brief,
+        }
+    )   
+    brief_message_html = render_to_string(
+    'email/daily_brief.html',
+        {
+            'current_event_day': latest_day,
+            'brief_of_the_day': brief,
+        }
+    ) 
+    com_message = render_to_string('email/final_commiseration.txt')   
+    com_message_html = render_to_string('email/final_commiseration.html')
+
+    send_mail(
+        subject=EMAIL_BRIEF_SUBJECT,
+        from_email=FROM_EMAIL,
+        message=brief_message,
+        html_message=brief_message_html,
+        recipient_list=test_receivers,
+    )    
+    send_mail(
+        subject=EMAIL_FINAL_COM_SUBJECT,
+        from_email=FROM_EMAIL,
+        message=com_message,
+        html_message=com_message_html,
+        recipient_list=test_receivers,
+    ) 
+    send_mail(
+        subject=EMAIL_SUBJECT,
+        from_email=FROM_EMAIL,
+        message=message,
+        html_message=message_html,
+        recipient_list=[email],
+    )
+    print('done')
 
 @kronos.register('38 10 * * *')
 def test_send():

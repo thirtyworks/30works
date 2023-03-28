@@ -27,7 +27,7 @@ a_day = get_event_day()
 brief = get_brief()
 
 FROM_EMAIL='30works <info@thirty.works>'
-EMAIL_SUBJECT = "Your new 30works account is ready"
+EMAIL_SUBJECT = "Your new 30works30days account is ready"
 EMAIL_BRIEF_SUBJECT = f"30works30days {a_day} Brief"
 
 
@@ -60,10 +60,20 @@ def create_users_and_send_emails():
                 'email/new_acount_ready.txt',
                 {
                     'first_name': first_name,
+                    'last_name': last_name,
                     'email': email,
                     'password': password,
                 }
             )
+            message_html = render_to_string(
+                'email/new_acount_ready.html',
+                {
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'email': email,
+                    'password': password,
+                }
+            ) 
             brief_message = render_to_string(
                 'email/daily_brief.txt',
                 {
@@ -82,7 +92,9 @@ def create_users_and_send_emails():
                 subject=EMAIL_SUBJECT,
                 from_email=FROM_EMAIL,
                 message=message,
-                recipient_list=[email],)
+                html_message=message_html,
+                recipient_list=[email],
+            )
 
             send_mail(
                 subject=EMAIL_BRIEF_SUBJECT,

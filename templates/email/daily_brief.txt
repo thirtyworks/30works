@@ -4,8 +4,9 @@ Deadline: 23:59 * Today
 
 Brief :  {{ brief_of_the_day }}
 
-Submit your work today through the thirty.works portal link here http://www.thirty.works/post/new (submit button is in the top right corner) 
+Submit your work today through the thirty.works portal link here https://thirty.works/post/new/  
 
 *This is U.K. time (GMT+1:00 or BST)
 
-12ø xx
+Best of luck,
+The Artquest Team
