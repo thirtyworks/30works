@@ -82,7 +82,7 @@ def event_day(request):
 class PostsListView(ListView):
     model = Post
     template_name = 'blog/posts_list.html' 
-    paginate_by = 15
+    paginate_by = 30
     context_object_name = 'posts'
 
     def get_queryset(self):

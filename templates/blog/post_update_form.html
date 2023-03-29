@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-section mt-3 container">
     <div class="text-center my-3">
-    <h2>Edit Post for <span class="text-info">Day  {{ post.day }}</span> </h2>
+    <h2>Edit Post for <span class="text-success">Day  {{ post.day }}</span> </h2>
         <h6>Fields marked with a (<span class="text-danger">*</span>) are required</h6>
     </div>
     <h2>Your Current Post:</h2>
@@ -12,29 +12,27 @@
     <div class="row">
       {% if post %}
      
-      <!-- Picture -->
+      {% comment %} <!-- Picture --> {% endcomment %}
         {% if post.postpic %}
         <div class="col-lg-12 mb-3">
           <div class="card border-dark">
-              {% if post.postpic|is_portrait %}
-                <div class="portrait">
-                {% thumbnail post.postpic "1200x850" crop="center" format="PNG" as im %}
-                    <img class="img-fluid" src="{{ im.url }}" alt="{{ post.alt_text }}">
-                {% endthumbnail %}
+            <div class="gallery">
+              <a class="mfp-image" href="{{ post.postpic.url }}" title="{{post.title}}">
+                <div class="box center-img">
+                  <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
                 </div>
-              {% else %}
-                  <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-              {% endif %}     
+              </a>  
+            </div>    
           </div>
         </div>
         {% endif %}
-      <!-- Picture -->
+      {% comment %} <!-- Picture --> {% endcomment %}
       
-      <!-- Video/Audio url -->
+      {% comment %} <!-- Video/Audio url --> {% endcomment %}
       {% if post.postvideo %}
       <div class="col-lg-12 mb-3">
         <div class="card border-dark">
-          <div class="bg-dark media-link">
+          <div class="bg-lime media-link">
             {% video post.postvideo as my_video %} 
                 {% video my_video '100% x 100%' %}
             {% endvideo %}
@@ -42,93 +40,94 @@
         </div>
       </div>
       {% endif %}
-      <!-- Video url -->
+      {% comment %} <!-- Video url --> {% endcomment %}
 
-      <!-- page url -->
+      {% comment %} <!-- page url --> {% endcomment %}
       {% if post.url %}
       <div class="col-lg-12 mb-3">
         <div class="card border-dark">
-          <div class="post-link text-center bg-dark d-flex">
+          <div class="post-link text-center bg-lime d-flex">
             <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
           </div>
         </div>
       </div>  
       {% endif %}
-      <!-- page url -->
+      {% comment %} <!-- page url --> {% endcomment %}
       
-      <!-- text post -->
+      {% comment %} <!-- text post --> {% endcomment %}
       {% if post.post_text %}
       <div class="col-lg-12 mb-4">
         <div class="card border-dark">
-          <div class="post-link text-center bg-dark d-flex">
+          <div class="post-link text-center bg-lime d-flex">
             <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
           </div>
         </div>
       </div>  
       {% endif %}
-      <!-- text post -->
+      {% comment %} <!-- text post --> {% endcomment %}
 
       {% endif %}
     </div>
 
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="alert alert-danger text-center hide">
-        </div>
-          <div class="form-group">
-          <label for="title">Title: <span class="text-danger">*</span></label>
-          <input type="text" value="{{ post.title }}" class="form-control" id="title" placeholder="Enter Title" name="title" maxlength="100" required>
-        </div>
+      <div class="alert alert-danger text-center hide"></div>
 
-        {% if post.postpic %}
-        <div class="form-group">
-          <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>):</label>
-          <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)">
-        </div>
+      <div class="col mb-2">
+        <label for="title">Title: <span class="text-danger">*</span></label>
+        <input type="text" value="{{ post.title }}" class="form-control" id="title" placeholder="Enter Title" name="title" maxlength="100" required>
+      </div>
 
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
-          <textarea class="form-control" name="alt_text" maxlength="600" rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>
-        </div>
-        {% endif %}
+      {% if post.postpic %}
+      <div class="col mb-2">
+        <label for="exampleFormControlFile1">Post New Image (Maximum upload file size: <span class='text-danger'>5 MB</span>):</label>
+        <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)">
+      </div>
 
-        {% if post.postvideo %}
-        <div class="form-group">
-          <label for="postmedia">Post Video:</label>
-          <input type="url"  class="form-control" id="postmedia" placeholder="Enter Media URL" name="postvideo" value='{{post.postvideo}}' required/>
-        </div>
+      
 
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
-          <textarea class="form-control" name="alt_text" maxlength="600" rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>
-        </div>
-        
-        {% endif %}
+      <div class="col mb-2">
+        <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
+        <textarea class="form-control" name="alt_text" maxlength="600" rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>
+      </div>
+      {% endif %}
 
-        {% if post.url %}
-        <div class="form-group">
-          <label for="url">Webpage URL:</label>
-          <input class="form-control" name="url"  placeholder="Enter Website URL" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' value='{{ post.url }}' required/>
-        </div>
-        {% endif %}
+      {% if post.postvideo %}
+      <div class="col mb-2">
+        <label for="postmedia">Post Video:</label>
+        <input type="url"  class="form-control" id="postmedia" placeholder="Enter Media URL" name="postvideo" value='{{post.postvideo}}' required/>
+      </div>
 
-        {% if post.post_text %}
-        <div class="form-group">
-          <label for="post_text">Text Post: (Max 10,000 characters)</label>  
-          <textarea id="id_post_text" class="form-control" maxlength="10000" name="post_text"  rows="10" placeholder="Add Text" required="required">{{ post.post_text }}</textarea>
-        </div>
-        {% endif %}
+      <div class="col mb-2">
+        <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
+        <textarea class="form-control" name="alt_text" maxlength="600" rows="5" placeholder="Enter Alt-text" required="required">{{ post.alt_text }}</textarea>
+      </div>
+      
+      {% endif %}
 
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Anything else you'd like to say to us? (Max 250 characters)</label>
-          <textarea class="form-control" name="anything_else"  rows="5" placeholder="Anything else you'd like to say to us?">{{ post.anything_else|default:'' }}</textarea>
-        </div>
-        
-        <div class="custom-control custom-checkbox mr-sm-2">
-          <input type="checkbox" class="custom-control-input" {% if post.is_private %}checked{% else %}{% endif %} name="is_private" id="customControlAutosizing">
-            <label class="custom-control-label" for="customControlAutosizing">Tick this box if you <span class="text-danger"><u>DO NOT</u></span> want this work to be made public.</label>
-        </div>
-      <br>
+      {% if post.url %}
+      <div class="col mb-2">
+        <label for="url">Webpage URL:</label>
+        <input class="form-control" name="url"  placeholder="Enter Website URL" pattern='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$' value='{{ post.url }}' required/>
+      </div>
+      {% endif %}
+
+      {% if post.post_text %}
+      <div class="col mb-2">
+        <label for="post_text">Text Post: (Max 10,000 characters)</label>  
+        <textarea id="id_post_text" class="form-control" maxlength="10000" name="post_text"  rows="10" placeholder="Add Text" required="required">{{ post.post_text }}</textarea>
+      </div>
+      {% endif %}
+
+      <div class="col mb-2">
+        <label for="exampleFormControlTextarea1">Anything else you'd like to say to us? (Max 250 characters)</label>
+        <textarea class="form-control" name="anything_else"  rows="5" placeholder="Anything else you'd like to say to us?">{{ post.anything_else|default:'' }}</textarea>
+      </div>
+      
+      <div class="custom-control custom-checkbox mr-sm-2">
+        <input type="checkbox" class="custom-control-input" {% if post.is_private %}checked{% else %}{% endif %} name="is_private" id="customControlAutosizing">
+        <label class="custom-control-label" for="customControlAutosizing">Tick this box if you <span class="text-danger"><u>DO NOT</u></span> want this work to be made public.</label>
+      </div>
       <div class="text-center my-3">
         <button type="submit" class="btn btn-warning btn-lg btn-block"  id="submitbutton1">Update Post</button>
       </div>

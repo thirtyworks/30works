@@ -29,24 +29,64 @@
     <div class="row infinite-container">
       
       {% if posts %}
-        {% for post in posts %}
-          
-          {% comment %} <!-- Picture --> {% endcomment %}
-            {% if post.postpic %}
+          {% for post in posts %}
+            
+            {% comment %} <!-- Picture --> {% endcomment %}
+              {% if post.postpic %}
 
-            <div class="col-md-6 mb-4 infinite-item item-o">
-              <div class="card">
-                <div class="card-header post-info">
-                  {{post.title}}
+              <div class="col-md-6 mb-4 infinite-item item-o">
+                <div class="card">
+                  <div class="card-header post-info">
+                    {{post.title}}
+                  </div>
+                  <div class="gallery">
+                    <a class="mfp-image" href="{{ post.postpic.url }}" title="{{post.title}}">
+                      <div class="box center-img">
+                        <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                      </div>
+                      {% comment %} 
+                        {% if post.postpic|is_portrait %}
+                          <div class="box center-img">
+                            <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                          </div>
+                        {% else %}
+                          {% if post.postpic.width > 500 %}
+                          <div class="box">
+                            <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                          </div>
+                          {% else %}
+                            <div class="text-center gif-box">
+                              <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                            </div>
+                          {% endif %}
+                        {% endif %}  
+                      {% endcomment %}
+                    </a>  
+                  </div>
+                  <div class="card-footer text-muted post-info">
+                    Work By: 
+                    <a class="text-decoration-none link-success" href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                      {{post.author.first_name}} {{post.author.last_name}}
+                    </a>
+                  </div>
                 </div>
-                <div class="gallery">
-                  <a class="mfp-image" href="{{ post.postpic.url }}" title="{{post.title}}">
-                    <div class="box center-img">
-                      <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+              </div>
+
+              {% comment %}  later
+                <div class="col-md-6 mb-4 infinite-item">
+                  <div class="card border-dark">
+                    <div class="post-info pl-3 pt-2 mb-3">
+                      <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                        <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+                      </a>
                     </div>
-                    {% comment %} 
+                    <div class="gallery">
+                      <a class="mfp-image" href="{{ post.postpic.url }}" title="{{post.title}}">
+                        <img src="{{ post.postpic.url }}"/>
+                      </a>  
+                    </div>
                       {% if post.postpic|is_portrait %}
-                        <div class="box center-img">
+                        <div class="box">
                           <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
                         </div>
                       {% else %}
@@ -59,162 +99,79 @@
                             <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
                           </div>
                         {% endif %}
-                      {% endif %}  
-                    {% endcomment %}
-                  </a>  
-                </div>
-                <div class="card-footer text-muted post-info">
-                  Work By: 
-                  <a class="text-decoration-none link-success" href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                    {{post.author.first_name}} {{post.author.last_name}}
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {% comment %}  later
-              <div class="col-md-6 mb-4 infinite-item">
-                <div class="card border-dark">
-                  <div class="post-info pl-3 pt-2 mb-3">
-                    <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                      <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
-                    </a>
-                  </div>
-                  <div class="gallery">
-                    <a class="mfp-image" href="{{ post.postpic.url }}" title="{{post.title}}">
-                      <img src="{{ post.postpic.url }}"/>
-                    </a>  
-                  </div>
-                    {% if post.postpic|is_portrait %}
-                      <div class="box">
-                        <img class="img-portrait" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
+                      {% endif %}     
+                      <div class="p-3 text-center">
+                        <h4>{{post.title}}</h4>
                       </div>
-                    {% else %}
-                      {% if post.postpic.width > 500 %}
-                      <div class="box">
-                        <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-                      </div>
-                      {% else %}
-                        <div class="text-center gif-box">
-                          <img class="img-fluid" src="{{ post.postpic.url }}" alt="{{ post.alt_text }}">
-                        </div>
-                      {% endif %}
-                    {% endif %}     
-                    <div class="p-3 text-center">
-                      <h4>{{post.title}}</h4>
-                    </div>
-                </div>
-              </div> 
-            {% endcomment %}
-            
-            {% endif %}
-          {% comment %} <!-- Picture --> {% endcomment %}
-          
-          {% comment %} <!-- Video/Audio url --> {% endcomment %}
-          {% if post.postvideo %}
-
-          <div class="col-md-6 mb-4 infinite-item item-o">
-            <div class="card">
-              <div class="card-header post-info">
-                {{post.title}}
-                <div class="gallery me-3">
-                  <a class="mfp-iframe mfp-absolute" title="{{post.title}}" href="{{ post.postvideo }}"><i class="bi bi-box-arrow-up-right"></i></a>  
-                </div>
-              </div>
-              <div class="gallery media-link">
-                {% video post.postvideo as my_video %} 
-                    {% video my_video '100% x 100%' %}
-                {% endvideo %}
-              </div>
-              <div class="card-footer text-muted post-info">
-                Work By: 
-                <a class="text-decoration-none link-success" href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                  {{post.author.first_name}} {{post.author.last_name}}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {% comment %} Later
-          <div class="col-md-6 mb-4 infinite-item">
-            <div class="card border-dark">
-              <div class="post-info pl-3 pt-2 mb-3">
-                <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                  <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
-                </a>            
-              </div>
+                  </div>
+                </div> 
+              {% endcomment %}
               
-              <div class="bg-dark media-link" title="{{ post.alt_text }}">
-                <div class="gallery ">
-                  <a class="mfp-iframe" title="{{post.title}}" href="{{ post.postvideo }}">video</a>  
-                </div>
-                {% video post.postvideo as my_video %} 
-                    {% video my_video '100% x 100%' %}
-                {% endvideo %}
-              </div>
-              <div class="p-3 text-center">
-                <h4>{{post.title}}</h4>
-              </div>
-            </div>
-          </div> 
-          {% endcomment %}
+              {% endif %}
+            {% comment %} <!-- Picture --> {% endcomment %}
+            
+            {% comment %} <!-- Video/Audio url --> {% endcomment %}
+            {% if post.postvideo %}
 
-          {% endif %}
-          {% comment %} <!-- Video url --> {% endcomment %}
-
-          {% comment %} <!-- page url --> {% endcomment %}
-          {% if post.url %}
-          <div class="col-md-6 mb-4 infinite-item item-o">
-            <div class="card">
-              <div class="card-header post-info">
-                {{post.title}} - Link
-              </div>
-              <div>
-                <div class="post-link text-center bg-lime d-flex">
-                  <h4><a class="link-success" href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
-                </div>
-              </div>
-              <div class="card-footer text-muted post-info">
-                Work By: 
-                <a class="text-decoration-none link-success" href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                  {{post.author.first_name}} {{post.author.last_name}}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {% comment %} later
-          <div class="col-md-6 mb-4 infinite-item">
-            <div class="card border-dark">
-              <div class="post-info pl-3 pt-2 mb-3">
-                <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                  <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
-                </a>            
-              </div>
-              <div class="post-link text-center bg-dark d-flex">
-                <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
-              </div>
-            </div>
-          </div>   
-          {% endcomment %}
-
-          {% endif %}
-          {% comment %} <!-- page url --> {% endcomment %}
-
-          {% comment %} <!-- text post --> {% endcomment %}
-          {% if post.post_text %}
-          
             <div class="col-md-6 mb-4 infinite-item item-o">
               <div class="card">
                 <div class="card-header post-info">
                   {{post.title}}
                   <div class="gallery me-3">
-                    <a class="mfp-inline mfp-absolute open-popup-link" title="Expand" href="#test-popup"><i class="bi bi-box-arrow-up-right"></i></a>  
+                    <a class="mfp-iframe mfp-absolute" title="{{post.title}}" href="{{ post.postvideo }}"><i class="bi bi-box-arrow-up-right"></i></a>  
                   </div>
                 </div>
-                <div class="gallery">
+                <div class="gallery media-link">
+                  {% video post.postvideo as my_video %} 
+                      {% video my_video '100% x 100%' %}
+                  {% endvideo %}
+                </div>
+                <div class="card-footer text-muted post-info">
+                  Work By: 
+                  <a class="text-decoration-none link-success" href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                    {{post.author.first_name}} {{post.author.last_name}}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {% comment %} Later
+            <div class="col-md-6 mb-4 infinite-item">
+              <div class="card border-dark">
+                <div class="post-info pl-3 pt-2 mb-3">
+                  <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                    <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+                  </a>            
+                </div>
+                
+                <div class="bg-dark media-link" title="{{ post.alt_text }}">
+                  <div class="gallery ">
+                    <a class="mfp-iframe" title="{{post.title}}" href="{{ post.postvideo }}">video</a>  
+                  </div>
+                  {% video post.postvideo as my_video %} 
+                      {% video my_video '100% x 100%' %}
+                  {% endvideo %}
+                </div>
+                <div class="p-3 text-center">
+                  <h4>{{post.title}}</h4>
+                </div>
+              </div>
+            </div> 
+            {% endcomment %}
+
+            {% endif %}
+            {% comment %} <!-- Video url --> {% endcomment %}
+
+            {% comment %} <!-- page url --> {% endcomment %}
+            {% if post.url %}
+            <div class="col-md-6 mb-4 infinite-item item-o">
+              <div class="card">
+                <div class="card-header post-info">
+                  {{post.title}} - Link
+                </div>
+                <div>
                   <div class="post-link text-center bg-lime d-flex">
-                    <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+                    <h4><a class="link-success" href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
                   </div>
                 </div>
                 <div class="card-footer text-muted post-info">
@@ -224,54 +181,100 @@
                   </a>
                 </div>
               </div>
-              <div id="test-popup" title="{{post.title}}" class="white-popup mfp-hide">
-                <textarea class="post-text-view-block" title="{{post.title}}" name="posttext" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
-                <div class="inline-caption">{{post.title}}</div>
-              </div>
             </div>
 
-          {% comment %} later
-          <div class="col-md-6 mb-4 infinite-item">
-            <div class="card border-dark">
-              <div class="post-info pl-3 pt-2 mb-3">
-                <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
-                  <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
-                </a>
+            {% comment %} later
+            <div class="col-md-6 mb-4 infinite-item">
+              <div class="card border-dark">
+                <div class="post-info pl-3 pt-2 mb-3">
+                  <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                    <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+                  </a>            
+                </div>
+                <div class="post-link text-center bg-dark d-flex">
+                  <h4><a href="{{post.url}}" target="_blank">{{post.title}}</a></h4> 
+                </div>
               </div>
-              <div class="gallery">
-                <a class="mfp-inline open-popup-link" title="TEEEEEEEEEEEEETTTTTT" href="#test-popup">text</a>  
-              </div>
-              <div id="test-popup" title="{{post.title}}" class="white-popup mfp-hide">
-                <textarea class="post-text-view-block" title="{{post.title}}" name="posttext" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
-                <div class="inline-caption">Your Inline Content Caption</div>
-              </div> 
-              <div class="post-link text-center bg-dark d-flex">
-                <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
-              </div>
-              <div class="p-3 text-center">
-                <h4>{{post.title}}</h4>
-              </div>
-            </div>
-          </div>   
-          {% endcomment %}
+            </div>   
+            {% endcomment %}
 
-          {% endif %}
-          {% comment %} <!-- text post --> {% endcomment %}
+            {% endif %}
+            {% comment %} <!-- page url --> {% endcomment %}
 
-        {% endfor %}
+            {% comment %} <!-- text post --> {% endcomment %}
+            {% if post.post_text %}
+            
+              <div class="col-md-6 mb-4 infinite-item item-o">
+                <div class="card">
+                  <div class="card-header post-info">
+                    {{post.title}}
+                    <div class="gallery me-3">
+                      <a class="mfp-inline mfp-absolute open-popup-link" title="Expand" href="#post-popup-{{post.id}}"><i class="bi bi-box-arrow-up-right"></i></a>  
+                    </div>
+                  </div>
+                  <div class="gallery">
+                    <div class="post-link text-center bg-lime d-flex">
+                      <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+                    </div>
+                  </div>
+                  <div class="card-footer text-muted post-info">
+                    Work By: 
+                    <a class="text-decoration-none link-success" href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                      {{post.author.first_name}} {{post.author.last_name}}
+                    </a>
+                  </div>
+                </div>
+                <div id="post-popup-{{post.id}}" title="{{post.title}}" class="white-popup mfp-hide">
+                  <textarea class="post-text-view-block" title="{{post.title}}" name="posttext" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+                  <div class="inline-caption">{{post.title}}</div>
+                </div>
+              </div>
+
+            {% comment %} later
+            <div class="col-md-6 mb-4 infinite-item">
+              <div class="card border-dark">
+                <div class="post-info pl-3 pt-2 mb-3">
+                  <a href="{% url 'user-posts' post.author.id|stringformat:'04d' %}"> 
+                    <h2 class="m-0 p-0">{{post.author.first_name}} {{post.author.last_name}}</h2>
+                  </a>
+                </div>
+                <div class="gallery">
+                  <a class="mfp-inline open-popup-link" title="TEEEEEEEEEEEEETTTTTT" href="#test-popup">text</a>  
+                </div>
+                <div id="test-popup" title="{{post.title}}" class="white-popup mfp-hide">
+                  <textarea class="post-text-view-block" title="{{post.title}}" name="posttext" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+                  <div class="inline-caption">Your Inline Content Caption</div>
+                </div> 
+                <div class="post-link text-center bg-dark d-flex">
+                  <textarea name="posttext" id="post-text-view" cols="30" rows="10" readonly>{{post.post_text}}</textarea>
+                </div>
+                <div class="p-3 text-center">
+                  <h4>{{post.title}}</h4>
+                </div>
+              </div>
+            </div>   
+            {% endcomment %}
+
+            {% endif %}
+            {% comment %} <!-- text post --> {% endcomment %}
+
+          {% endfor %}
         {% else %}
         <div class="col-md-12">
           <div class="text-center">
             <h2>Nothing to see here yet. Check back later!</h2>
           </div>
         </div>
-      {% endif %}    
+      {% endif %}  
+        
     </div>
-    <div class="infinite-loading text-center">
-      <i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+    <div class="infinite-loading mt-5 text-center">
+      <div class="spinner-grow text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
     {% if page_obj.has_next %}
-    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+      <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
     {% endif %}
   </div>  
 

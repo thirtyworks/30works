@@ -162,7 +162,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config_json["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = config_json["EMAIL_HOST_PASSWORD"]
-DEFAULT_FROM_EMAIL='30works <info@thirty.works>'
+DEFAULT_FROM_EMAIL='30works30days <info@thirty.works>'
 
 # 30 works logic stuff
 NUM_DAYS = 30
