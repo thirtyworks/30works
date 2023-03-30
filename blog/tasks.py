@@ -8,7 +8,7 @@ from django.core.mail import send_mail, send_mass_mail
 from django.contrib.auth.models import User
 
 CSV_FILE = 'test.csv'
-FROM_EMAIL='30works <info@thirty.works>'
+FROM_EMAIL='30works30days <info@thirty.works>'
 EMAIL_SUBJECT = "Your new 30works account is ready"
 
 def password_generator(size):

@@ -26,7 +26,7 @@ def create_username(firstname, surname):
 a_day = get_event_day()
 brief = get_brief()
 
-FROM_EMAIL='30works <info@thirty.works>'
+FROM_EMAIL='30works30days <info@thirty.works>'
 EMAIL_SUBJECT = "Your new 30works30days account is ready"
 EMAIL_BRIEF_SUBJECT = f"30works30days {a_day} Brief"
 

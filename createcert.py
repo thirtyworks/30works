@@ -11,7 +11,7 @@ from django.template.loader import render_to_string
 
 CERTIFICATE_TEMP_SAVEPATH = 'user_certificate.pdf'
 OUTPUT_LOG_PATH = 'log.csv'
-FROM_EMAIL='30works <info@thirty.works>'
+FROM_EMAIL='30works30days <info@thirty.works>'
 CERTIFICATE_TEMPLATE_PATH = "certificate.pdf"
 EMAIL_SUBJECT = 'You completed 30/30'
 CSV_FILE = 'test.csv'
