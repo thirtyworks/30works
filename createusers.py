@@ -96,12 +96,12 @@ def create_users_and_send_emails():
                 recipient_list=[email],
             )
 
-            send_mail(
-                subject=EMAIL_BRIEF_SUBJECT,
-                from_email=FROM_EMAIL,
-                message=brief_message,
-                html_message=brief_message_html,
-                recipient_list=[email],)        
+            # send_mail(
+            #     subject=EMAIL_BRIEF_SUBJECT,
+            #     from_email=FROM_EMAIL,
+            #     message=brief_message,
+            #     html_message=brief_message_html,
+            #     recipient_list=[email],)        
 
         except IntegrityError as ie:
             print(ie)
