@@ -195,7 +195,7 @@ def test_send_emails():
     )
     print('done')
 
-@kronos.register('38 10 * * *')
+@kronos.register('0 14 * * *')
 def test_send():
     t = timezone.now().strftime('%d-%m-%Y, %X')
     message = f'Its {t} now!'
@@ -225,12 +225,35 @@ def test_sending_random_brief_every_minute():
         send_mail(f'test brief Day {latest_day}', message, 'info@thirtyworks', [email])
     print('done')
 
-@kronos.register('20 0 * * *') # set to 20 past midnight
+@kronos.register('0 0 * * *') # set to 20 past midnight
 def daily_emails():
     latest_day = get_event_day() 
     if latest_day == 1:
-        print('Creating acounts and sending first brief to participants..')
-        create_users_and_send_emails()
+        print('Sending day 1 briefs')
+        brief = get_brief()
+        users = [user.user.email for user in UserProfile.objects.filter(user__is_active=True, user__is_staff=False, blocked=False)]
+        for user_email in users:
+            brief_message = render_to_string(
+            'email/daily_brief.txt',
+                {
+                    'current_event_day': latest_day,
+                    'brief_of_the_day': brief,
+                }
+            )   
+            brief_message_html = render_to_string(
+            'email/daily_brief.html',
+                {
+                    'current_event_day': latest_day,
+                    'brief_of_the_day': brief,
+                }
+            ) 
+            send_mail(
+                subject=EMAIL_BRIEF_SUBJECT,
+                from_email=FROM_EMAIL,
+                message=brief_message,
+                html_message=brief_message_html,
+                recipient_list=[user_email],
+            ) 
         return 'Day 1 is over!'
     if latest_day > 30:
         return 'Event is over!'
