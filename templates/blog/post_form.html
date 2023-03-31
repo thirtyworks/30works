@@ -19,30 +19,31 @@
       </div>
       {% endfor %}
     {% endif %}
-    
-    <div class="form-group">
-      <label for="email">Title <span class="text-danger">*</span></label>
-      <input type="text" class="form-control" id="email" placeholder="Enter Title" name="title" maxlength="100" required>
-    </div>
-
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="options" id="inlineRadio1" value="1" checked>
-      <label class="form-check-label" for="inlineRadio1"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload JPEG / PNG / GIF</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="options" id="inlineRadio2" value="2">
-      <label class="form-check-label" for="inlineRadio2"><i class="fa fa-play-circle" aria-hidden="true"></i> Vimeo / Youtube / Soundcloud URL</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="options" id="inlineRadio3" value="3">
-      <label class="form-check-label" for="inlineRadio3"><i class="fa fa-globe" aria-hidden="true"></i> Webpage URL</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="options" id="inlineRadio4" value="4">
-      <label class="form-check-label" for="inlineRadio4"><i class="fa fa-align-justify" aria-hidden="true"></i> Text Post</label>
+    <div class="mb-3">
+      <div class="form-group">
+        <label for="email">Title <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="email" placeholder="Enter Title" name="title" maxlength="100" required>
+      </div>
+  
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="options" id="inlineRadio1" value="1" checked>
+        <label class="form-check-label" for="inlineRadio1"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload JPEG / PNG / GIF</label>
+      </div>
+  
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="options" id="inlineRadio2" value="2">
+        <label class="form-check-label" for="inlineRadio2"><i class="fa fa-play-circle" aria-hidden="true"></i> Vimeo / Youtube / Soundcloud URL</label>
+      </div>
+  
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="options" id="inlineRadio3" value="3">
+        <label class="form-check-label" for="inlineRadio3"><i class="fa fa-globe" aria-hidden="true"></i> Webpage URL</label>
+      </div>
+  
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="options" id="inlineRadio4" value="4">
+        <label class="form-check-label" for="inlineRadio4"><i class="fa fa-align-justify" aria-hidden="true"></i> Text Post</label>
+      </div>
     </div>
 
     <!-- 
@@ -51,11 +52,15 @@
       <textarea id="id_post_text" class="form-control" maxlength="2000" name="post_text"  rows="10" placeholder="Add Text" required="required"></textarea>
     </div> -->
 
-    <div class="form-group mt-3" id="form" >
-      <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>): <span class="text-danger">*</span></label>
-      <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)" required>
-      <label for="alt_text">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
-      <textarea class="form-control" maxlength="600"  name="alt_text"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>
+    <div class="col mb-2" id="form" >
+      <div class="col mb-2">
+        <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>): <span class="text-danger">*</span></label>
+        <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)" required>
+      </div>
+      <div class="col mb-2">
+        <label for="alt_text">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
+        <textarea class="form-control" maxlength="600"  name="alt_text"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>
+      </div>
     </div>
 
     <div class="form-group">
@@ -97,11 +102,14 @@
   }
   else if(this.value === "1" ){
     $("#form").html(`        
-      <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>): <span class="text-danger">*</span></label>
-      <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)" required>
-      <label for="exampleFormControlTextarea1">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
-      <textarea class="form-control" name="alt_text" maxlength="600"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>
-     `)
+      <div class="col mb-2">
+        <label for="exampleFormControlFile1">Post Image (Maximum upload file size: <span class='text-danger'>5 MB</span>): <span class="text-danger">*</span></label>
+        <input type="file" class="form-control-file mb-3" name="postpic" accept="image/gif, image/jpeg, image/png"  id="id_postpic" onchange="validateSize(this)" required>
+      </div>
+      <div class="col mb-2">
+        <label for="alt_text">Visual description for screen-readers (Max 600 characters) (<span class="text-danger">*</span>)</label>
+        <textarea class="form-control" maxlength="600"  name="alt_text"  rows="5" placeholder="Enter Alt-text" required="required"></textarea>
+      </div>     `)
   }
   else if(this.value === "2" ){
     $("#form").html(` 

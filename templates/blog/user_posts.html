@@ -11,13 +11,13 @@
       <div class="col-md-12">
         <h1 class="mb-3">{{ user_details.first_name }} {{ user_details.last_name }}</h1>
         {% if user_details.user_profile.bio %}
-          <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-book" aria-hidden="true"></i> Bio:</span> {{ user_details.user_profile.bio }}</p>
+          <p class="mb-2"><span class="font-weight-bold"><i class="bi bi-journals" aria-hidden="true"></i> <b>Bio:</b></span> {{ user_details.user_profile.bio }}</p>
         {% endif %}
         {% if user_details.user_profile.url %}
-          <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-globe" aria-hidden="true"></i> Website:</span> <a target="_blank" href="{{ user_details.user_profile.url }}">{{ user_details.user_profile.url }}</a> </p>
+          <p class="mb-2"><span class="font-weight-bold"><i class="bi bi-globe" aria-hidden="true"></i> <b>Website:</b></span> <a target="_blank" class="text-decoration-none" href="{{ user_details.user_profile.url }}">{{ user_details.user_profile.url }}</a> </p>
         {% endif %}
         {% if user_details.user_profile.insta_handler %}
-        <p class="mb-2"><span class="font-weight-bold"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram: </span><a  target="_blank" href="https://www.instagram.com/{{ user_details.user_profile.insta_handler }}">@{{ user_details.user_profile.insta_handler }}</a></p> 
+        <p class="mb-2"><span class="font-weight-bold"><i class="bi bi-instagram" aria-hidden="true"></i> <b>Instagram:</b></span> <a target="_blank" class="text-decoration-none" href="https://www.instagram.com/{{ user_details.user_profile.insta_handler }}">@{{ user_details.user_profile.insta_handler }}</a></p> 
         {% endif %}
       </div>
     </div>
