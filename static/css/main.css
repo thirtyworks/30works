@@ -339,7 +339,7 @@ embed {
   text-align: center;
 }
 
-.super-header h1{
+.super-header h4{
   transition: 0.2s;
 }
 
@@ -348,7 +348,7 @@ embed {
   background: #b1ba8f !important;
 }
 
-.header-shrink h1{
+.header-shrink h4{
   font-size: 1rem !important;
 }
 

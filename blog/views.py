@@ -96,9 +96,10 @@ class PostsListView(ListView):
         days_done = Day.objects.filter(number__range=(1, day_num)) 
 
         context = super(PostsListView, self).get_context_data(**kwargs) 
-    
+        context['latest_day'] = Day.objects.values_list('number', flat=True).get(number=day_num) 
         context['days_done'] = days_done
         context['this_day'] = this_day
+        context['brief_day'] = get_brief(the_day=this_day)
         return context
 
 
