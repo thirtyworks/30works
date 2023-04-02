@@ -1,6 +1,7 @@
 (function () {
   $(document).ready(function () {
-    $(".gallery a").magnificPopup({
+    $(".gallery").magnificPopup({
+      delegate: 'a',
       gallery: {
         enabled: false,
       },
@@ -36,4 +37,6 @@
       },
     });
   });
+
+
 })();
