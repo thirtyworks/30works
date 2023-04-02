@@ -6,13 +6,12 @@ User = get_user_model()
 class EmailBackend(object):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = User.objects.get(email=username)
+            user = User.objects.get(email__iexact=username)
         except MultipleObjectsReturned:
-            user = User.objects.filter(email=username).order_by('id').first()
+            user = User.objects.filter(email__iexact=username).order_by('id').first()
         except ObjectDoesNotExist:
             return None
         if user.check_password(password):
-            print(user)
             return user
         return None
     
