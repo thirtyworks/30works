@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from blog.models import Day
 from django.forms import ValidationError
 from django.contrib.auth.models import User
+from users.models import UserProfile
 import copy
 from django.db.models.functions import Lower
 
@@ -68,5 +69,12 @@ def profile(request):
 # Get all users/artists except current logged in user
 def artists(request):
     users = User.objects.filter().exclude(username=request.user.id).order_by(Lower('first_name'))
-    return render(request, 'users/artists.html', context={'artists':users})
+    user_with_profiles = []
+    for user in users:
+        try:
+            if user.user_profile.acount_id:
+                user_with_profiles.append(user)
+        except UserProfile.DoesNotExist:
+            print(user.get_full_name(), ': has no profile!')
+    return render(request, 'users/artists.html', context={'artists':user_with_profiles})
     
