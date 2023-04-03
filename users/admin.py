@@ -11,11 +11,11 @@ from django.http import HttpResponse
 class UserProfileAdmin(admin.ModelAdmin):
     list_filter = ['blocked', ('date_blocked', DropdownFilter),]
 
-    list_display = ['first_name', 'last_name','user', 'get_email']
+    list_display = ['first_name', 'last_name','user', 'get_email', 'acount_id']
 
     actions = ['export_as_csv']
 
-    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email']
+    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'acount_id']
 
     def first_name(self, obj):
         return obj.user.first_name
