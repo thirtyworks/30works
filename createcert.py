@@ -56,14 +56,14 @@ for i, row in df_user_list.iterrows():
     alt_message = render_to_string(
         'email/complete_3030.html',
         {
-            'user_first_name': first_name,
+            'user_first_name': full_name,
             'year': YEAR,
         }
     )
     message = render_to_string(
         'email/complete_3030.txt',
         {
-            'user_first_name': first_name,
+            'user_first_name': full_name,
             'year': YEAR,
         }
     )
