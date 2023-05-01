@@ -34,8 +34,8 @@ for i, row in df_user_list.iterrows():
     can = canvas.Canvas(packet)
     # can.drawString(50, 100, "Hello !!! !  ! !!! :)")
     can.setFillColor(HexColor('#a87b00'))
-    can.setFont("Helvetica", 28)
-    can.drawCentredString(x=840/2, y=280, text=full_name)
+    can.setFont("Helvetica", 23)
+    can.drawCentredString(x=805/2, y=227, text=full_name)
     can.save()
 
     #move to the beginning of the StringIO buffers
